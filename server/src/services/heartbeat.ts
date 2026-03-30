@@ -2688,6 +2688,20 @@ export function heartbeatService(db: Db) {
           },
         });
         await releaseIssueExecutionAndPromote(finalizedRun);
+
+        // Post adapter-provided issue comment (used by adapters like ollama_local
+        // that return a response but don't have their own API access to post comments).
+        if (outcome === "succeeded" && issueId) {
+          const resultObj = parseObject(adapterResult.resultJson);
+          const issueComment = readNonEmptyString(resultObj.issueComment);
+          if (issueComment) {
+            try {
+              await issuesSvc.addComment(issueId, issueComment, { agentId: agent.id });
+            } catch (commentErr) {
+              logger.warn({ err: commentErr, runId, issueId }, "failed to post adapter issue comment");
+            }
+          }
+        }
       }
 
       if (finalizedRun) {

@@ -15,7 +15,7 @@ const manifest: PaperclipPluginManifestV1 = {
   displayName: "Memory Engine",
   description:
     "Fact extraction from completed tasks, full-text search across memory files, AI-driven consolidation, and flush-to-MEMORY.md for promoting daily entries to long-term memory.",
-  author: "Shine Operations",
+  author: "Shine People Solutions",
   categories: ["automation", "ui"],
   capabilities: [
     "companies.read",

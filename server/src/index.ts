@@ -424,9 +424,16 @@ export async function startServer(): Promise<StartedServer> {
   }
   
   if (config.deploymentMode === "local_trusted" && !isLoopbackHost(config.host)) {
-    throw new Error(
-      `local_trusted mode requires loopback host binding (received: ${config.host}). ` +
-        "Use authenticated mode for non-loopback deployments.",
+    if (process.env.PAPERCLIP_ALLOW_TRUSTED_LAN !== "true") {
+      throw new Error(
+        `local_trusted mode requires loopback host binding (received: ${config.host}). ` +
+          "Use authenticated mode for non-loopback deployments, " +
+          "or set PAPERCLIP_ALLOW_TRUSTED_LAN=true for trusted VPN networks (e.g. Tailscale).",
+      );
+    }
+    logger.warn(
+      { host: config.host },
+      "local_trusted mode bound to non-loopback address — ensure the network is trusted (e.g. Tailscale VPN)",
     );
   }
   
