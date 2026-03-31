@@ -1,5 +1,5 @@
 export const PLUGIN_ID = "shine.telegram";
-export const PLUGIN_VERSION = "0.1.0";
+export const PLUGIN_VERSION = "0.2.0";
 
 export const TOOL_NAMES = {
   telegramSend: "telegram_send",
@@ -16,4 +16,9 @@ export const EXPORT_NAMES = {
 
 export const STATE_KEYS = {
   recentMessages: "recent-messages",
+  messageMap: "message-map",
+} as const;
+
+export const WEBHOOK_KEYS = {
+  telegramUpdate: "telegram-update",
 } as const;

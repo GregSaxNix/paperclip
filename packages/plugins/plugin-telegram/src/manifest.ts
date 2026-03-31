@@ -5,6 +5,7 @@ import {
   PLUGIN_VERSION,
   SLOT_IDS,
   TOOL_NAMES,
+  WEBHOOK_KEYS,
 } from "./constants.js";
 
 const manifest: PaperclipPluginManifestV1 = {
@@ -13,19 +14,22 @@ const manifest: PaperclipPluginManifestV1 = {
   version: PLUGIN_VERSION,
   displayName: "Telegram",
   description:
-    "Telegram Bot integration for sending notifications on completed issues, agent errors, and ad-hoc messages via the Telegram Bot API.",
+    "Two-way Telegram Bot integration — notifications for completed issues and agent errors, plus reply-to-comment routing and bot commands (/status, /issues, /agents, /approve).",
   author: "Shine People Solutions",
   categories: ["connector", "ui"],
   capabilities: [
     "companies.read",
     "agents.read",
     "issues.read",
+    "issues.update",
     "issue.comments.read",
+    "issue.comments.create",
     "plugin.state.read",
     "plugin.state.write",
     "events.subscribe",
     "activity.log.write",
     "http.outbound",
+    "webhooks.receive",
     "agent.tools.register",
     "ui.dashboardWidget.register",
   ],
@@ -33,6 +37,14 @@ const manifest: PaperclipPluginManifestV1 = {
     worker: "./dist/worker.js",
     ui: "./dist/ui",
   },
+  webhooks: [
+    {
+      endpointKey: WEBHOOK_KEYS.telegramUpdate,
+      displayName: "Telegram Bot Updates",
+      description:
+        "Receives inbound messages from Telegram (set via setWebhook). Handles reply-to-notification routing and bot commands.",
+    },
+  ],
   instanceConfigSchema: {
     type: "object",
     properties: {
@@ -45,6 +57,12 @@ const manifest: PaperclipPluginManifestV1 = {
         type: "string",
         title: "Chat ID",
         description: "Telegram chat ID to send notifications to",
+      },
+      webhookSecret: {
+        type: "string",
+        title: "Webhook Secret Token",
+        description:
+          "Secret token for verifying inbound Telegram webhooks. Set this to a random string and pass the same value in setWebhook's secret_token parameter.",
       },
       notifyOnRoutineComplete: {
         type: "boolean",

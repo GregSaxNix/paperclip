@@ -424,7 +424,9 @@ export async function startServer(): Promise<StartedServer> {
   }
   
   if (config.deploymentMode === "local_trusted" && !isLoopbackHost(config.host)) {
-    if (process.env.PAPERCLIP_ALLOW_TRUSTED_LAN !== "true") {
+    const allowTrustedLan = process.env.PAPERCLIP_ALLOW_TRUSTED_LAN === "true"
+      || process.env.PAPERCLIP_ALLOW_TRUSTED_LAN === "1";
+    if (!allowTrustedLan) {
       throw new Error(
         `local_trusted mode requires loopback host binding (received: ${config.host}). ` +
           "Use authenticated mode for non-loopback deployments, " +
