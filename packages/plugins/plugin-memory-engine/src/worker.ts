@@ -61,8 +61,10 @@ async function resolveAgentHome(
     const agent = await ctx.agents.get(agentId, companyId);
     if (!agent) return null;
     const adapterConfig = agent.adapterConfig as Record<string, unknown>;
-    const instructionsRootPath = adapterConfig.instructionsRootPath as string | undefined;
-    if (instructionsRootPath) return instructionsRootPath;
+    const instructionsRootPath = adapterConfig?.instructionsRootPath as string | undefined;
+    // instructionsRootPath points to .../agents/{id}/instructions but memory
+    // files (MEMORY.md, memory/, life/) live in the parent agent directory
+    if (instructionsRootPath) return path.resolve(instructionsRootPath, "..");
   } catch {
     // Fall through
   }
@@ -293,8 +295,8 @@ const plugin = definePlugin({
 
     // ── Data handlers (for UI) ───────────────────────────────────────────
     ctx.data.register("memory-stats", async (params) => {
-      let companyId = params.companyId as string | undefined;
-      let agentId = params.agentId as string | undefined;
+      let companyId = (params.companyId as string | undefined) || undefined;
+      let agentId = (params.agentId as string | undefined) || undefined;
 
       if (!companyId) companyId = (await firstCompanyId(ctx)) ?? undefined;
       if (!companyId) return { error: "No company found" };
@@ -319,8 +321,8 @@ const plugin = definePlugin({
 
     // ── Action handlers (for UI) ─────────────────────────────────────────
     ctx.actions.register("trigger-flush", async (params) => {
-      let companyId = params.companyId as string | undefined;
-      let agentId = params.agentId as string | undefined;
+      let companyId = (params.companyId as string | undefined) || undefined;
+      let agentId = (params.agentId as string | undefined) || undefined;
 
       if (!companyId) companyId = (await firstCompanyId(ctx)) ?? undefined;
       if (!companyId) return { success: false, error: "No company found" };

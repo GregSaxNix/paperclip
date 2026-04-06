@@ -1,0 +1,243 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Life Admin — Operations Guide</title>
+  <style>
+    * { box-sizing: border-box; }
+    body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif; background: #f8fafc; color: #1e293b; margin: 0; display: flex; min-height: 100vh; }
+
+    /* Sidebar nav */
+    nav { width: 220px; flex-shrink: 0; background: white; border-right: 1px solid #e2e8f0; padding: 24px 16px; position: sticky; top: 0; height: 100vh; overflow-y: auto; }
+    nav h2 { font-size: 0.72em; text-transform: uppercase; letter-spacing: 0.1em; color: #94a3b8; margin: 0 0 12px 0; font-weight: 700; }
+    nav a { display: block; font-size: 0.83em; color: #475569; text-decoration: none; padding: 5px 8px; border-radius: 5px; margin-bottom: 2px; }
+    nav a:hover { background: #f1f5f9; color: #0f172a; }
+    nav .back { font-size: 0.8em; color: #3b82f6; margin-bottom: 20px; display: block; text-decoration: none; }
+    nav .back:hover { text-decoration: underline; }
+
+    /* Main content */
+    main { flex: 1; padding: 32px 40px; max-width: 820px; }
+    h1 { font-size: 1.6em; color: #0f172a; margin-bottom: 4px; }
+    .tagline { color: #64748b; font-size: 0.9em; margin-bottom: 32px; font-style: italic; }
+
+    h2 { font-size: 1.1em; color: #0f172a; margin: 36px 0 12px 0; padding-bottom: 6px; border-bottom: 2px solid #e2e8f0; }
+    h3 { font-size: 0.92em; color: #334155; margin: 20px 0 6px 0; font-weight: 600; }
+    p { font-size: 0.88em; color: #475569; line-height: 1.7; margin: 0 0 10px 0; }
+    ul, ol { font-size: 0.88em; color: #475569; line-height: 1.8; margin: 6px 0 10px 0; padding-left: 20px; }
+
+    code { background: #f1f5f9; border: 1px solid #e2e8f0; padding: 2px 6px; border-radius: 4px; font-size: 0.85em; color: #0f172a; font-family: 'Courier New', monospace; white-space: nowrap; }
+    pre { background: #0f172a; color: #e2e8f0; border-radius: 8px; padding: 14px 18px; font-size: 0.82em; overflow-x: auto; margin: 8px 0 14px 0; line-height: 1.7; }
+    pre code { background: none; border: none; padding: 0; color: inherit; font-size: 1em; white-space: pre; }
+
+    table { width: 100%; border-collapse: collapse; font-size: 0.84em; margin-bottom: 14px; }
+    th { background: #f1f5f9; text-align: left; padding: 8px 12px; color: #64748b; font-weight: 600; border-bottom: 1px solid #e2e8f0; }
+    td { padding: 8px 12px; border-bottom: 1px solid #f1f5f9; color: #475569; vertical-align: top; }
+    tr:last-child td { border-bottom: none; }
+
+    .callout { background: #eff6ff; border-left: 3px solid #3b82f6; border-radius: 0 6px 6px 0; padding: 10px 14px; margin: 10px 0; font-size: 0.85em; color: #1d4ed8; line-height: 1.6; }
+    .callout.warn { background: #fffbeb; border-color: #f59e0b; color: #92400e; }
+    .callout.tip { background: #f0fdf4; border-color: #22c55e; color: #15803d; }
+
+    a { color: #3b82f6; text-decoration: none; }
+    a:hover { text-decoration: underline; }
+
+    .position-list { display: flex; flex-wrap: wrap; gap: 6px; margin: 8px 0; }
+    .pos-chip { background: #f1f5f9; border: 1px solid #e2e8f0; border-radius: 5px; padding: 2px 8px; font-size: 0.78em; color: #334155; font-family: monospace; }
+  </style>
+</head>
+<body>
+
+<nav>
+  <a class="back" href="ops-hub.html">← Ops Hub</a>
+  <h2>Contents</h2>
+  <a href="#quick-ref">Quick Reference</a>
+  <a href="#remote-browser">Paperclip Remotely</a>
+  <a href="#remote-desktop">Remote Desktop</a>
+  <a href="#claude-usage">Claude Usage</a>
+  <a href="#auto-monitor">Auto-Monitor</a>
+  <a href="#agent-subs">Agent Substitution</a>
+  <a href="#agent-matrix">Agent Matrix</a>
+  <a href="#codex">Codex Quota</a>
+  <a href="#server">Paperclip Server</a>
+  <a href="#memory">Memory System</a>
+  <a href="#inbox">Inbox / Failed Runs</a>
+  <a href="#files">File Locations</a>
+</nav>
+
+<main>
+  <h1>📎 Operations Guide</h1>
+  <p class="tagline">Greg, if you can't remember how something works, it's in here.</p>
+
+  <!-- QUICK REF -->
+  <h2 id="quick-ref">Quick Reference</h2>
+  <table>
+    <tr><th>Task</th><th>How</th></tr>
+    <tr><td>Open Paperclip</td><td>Browser → <code>http://localhost:3100</code></td></tr>
+    <tr><td>Open Ops Hub</td><td>Open <code>D:\paperclip\scripts\ops-hub.html</code></td></tr>
+    <tr><td>Check Claude usage</td><td><code>python scripts\check_claude_usage.py</code></td></tr>
+    <tr><td>View agent matrix</td><td>Open <code>D:\paperclip\scripts\lineup_dashboard.html</code></td></tr>
+    <tr><td>View monitor log</td><td><code>python scripts\auto_monitor.py --log</code></td></tr>
+    <tr><td>Sub agent to fallback</td><td><code>python scripts\position_manager.py sub CEO fallback1</code></td></tr>
+    <tr><td>Restore agent to primary</td><td><code>python scripts\position_manager.py restore CEO</code></td></tr>
+    <tr><td>Access Paperclip remotely</td><td>Browser → <code>https://greg-shinedesktop.tail4ef50.ts.net</code></td></tr>
+  </table>
+
+  <!-- REMOTE BROWSER -->
+  <h2 id="remote-browser">Accessing Paperclip from Your Laptop</h2>
+  <p>Tailscale Funnel is already set up. Nothing to install on the laptop.</p>
+  <ol>
+    <li>Make sure the desktop is on and not asleep</li>
+    <li>On your laptop browser, go to:</li>
+  </ol>
+  <pre><code>https://greg-shinedesktop.tail4ef50.ts.net</code></pre>
+  <p>Full Paperclip UI — works anywhere in the world, no VPN needed.</p>
+  <div class="callout warn">If Paperclip won't load, the server may not be running. Use Remote Desktop (below) to restart it, or reboot the desktop — it auto-starts on boot.</div>
+
+  <!-- REMOTE DESKTOP -->
+  <h2 id="remote-desktop">Remote Desktop (to run terminal commands remotely)</h2>
+  <h3>One-time setup on the desktop</h3>
+  <p>Search "Remote Desktop settings" → turn on "Enable Remote Desktop"</p>
+  <h3>Get the Tailscale IP (run once on desktop, save the result)</h3>
+  <pre><code>tailscale ip -4</code></pre>
+  <h3>Connect from laptop</h3>
+  <ul>
+    <li><strong>Windows laptop:</strong> Open "Remote Desktop Connection" → enter the Tailscale IP</li>
+    <li><strong>Mac laptop:</strong> Install "Microsoft Remote Desktop" from App Store → New PC → enter Tailscale IP</li>
+    <li>Log in with your Windows username and password</li>
+  </ul>
+
+  <!-- CLAUDE USAGE -->
+  <h2 id="claude-usage">Claude Usage Monitoring</h2>
+  <p>The <code>check_claude_usage.py</code> script reads your Claude Max plan usage from the Anthropic website.</p>
+  <h3>Check now</h3>
+  <pre><code>python D:\paperclip\scripts\check_claude_usage.py</code></pre>
+  <h3>What the meters mean</h3>
+  <table>
+    <tr><th>Meter</th><th>What it tracks</th><th>Reset schedule</th></tr>
+    <tr><td><strong>Session (5hr window)</strong></td><td>Rate limit within the current 5-hour window</td><td>Every 5 hours</td></tr>
+    <tr><td><strong>All Models (weekly)</strong></td><td>Total weekly usage across all Claude models</td><td>Saturday</td></tr>
+    <tr><td><strong>Sonnet (weekly)</strong></td><td>Separate weekly limit just for Sonnet</td><td>Monday</td></tr>
+  </table>
+  <div class="callout">At <strong>90%</strong> on any meter, the auto-monitor will sub all claude_local agents to fallback models automatically.</div>
+  <h3>Re-run setup (if session expires — needed every few weeks)</h3>
+  <pre><code>python D:\paperclip\scripts\check_claude_usage.py --setup</code></pre>
+  <p>A Chrome window opens — log in with Google — press ENTER when done.</p>
+
+  <!-- AUTO-MONITOR -->
+  <h2 id="auto-monitor">Auto-Monitor (runs while you're away)</h2>
+  <p>Installed as a Windows Task Scheduler job called <strong>LifeAdmin-Monitor</strong>. Runs every 2 hours automatically — no action needed.</p>
+  <h3>What it does</h3>
+  <ol>
+    <li>Checks Claude usage</li>
+    <li>If All Models or Session hits <strong>90%</strong> → subs all claude_local agents to fallback1</li>
+    <li>When usage resets below 90% → restores all agents back to primary</li>
+    <li>Logs all actions to <code>D:\paperclip\monitor.log</code></li>
+  </ol>
+  <h3>Check the log</h3>
+  <pre><code>python D:\paperclip\scripts\auto_monitor.py --log</code></pre>
+  <h3>Run it manually</h3>
+  <pre><code>python D:\paperclip\scripts\auto_monitor.py</code></pre>
+
+  <!-- AGENT SUBS -->
+  <h2 id="agent-subs">Agent Substitution (manual)</h2>
+  <p>Use this when you want to manually switch an agent to a different model — for example if Claude is down or you want to test a fallback.</p>
+  <pre><code>python D:\paperclip\scripts\position_manager.py sub CEO fallback1
+python D:\paperclip\scripts\position_manager.py sub CEO fallback2
+python D:\paperclip\scripts\position_manager.py sub CEO emergency
+
+python D:\paperclip\scripts\position_manager.py restore CEO
+python D:\paperclip\scripts\position_manager.py restore all
+
+python D:\paperclip\scripts\position_manager.py status</code></pre>
+
+  <h3>All position names</h3>
+  <div class="position-list">
+    <span class="pos-chip">CEO</span><span class="pos-chip">CTO</span><span class="pos-chip">COO</span>
+    <span class="pos-chip">SeniorEngineer</span><span class="pos-chip">Engineer</span><span class="pos-chip">QABot</span><span class="pos-chip">Designer</span>
+    <span class="pos-chip">ContentLead</span><span class="pos-chip">Accountant</span><span class="pos-chip">Spielberg</span>
+    <span class="pos-chip">Finance</span><span class="pos-chip">TravelAgent</span><span class="pos-chip">Researcher</span>
+    <span class="pos-chip">Doc</span><span class="pos-chip">Freud</span>
+    <span class="pos-chip">Yoda</span><span class="pos-chip">Contrarian</span><span class="pos-chip">CouncilLocal</span>
+    <span class="pos-chip">CouncilEU</span><span class="pos-chip">CouncilCH</span><span class="pos-chip">CouncilTech</span>
+  </div>
+
+  <!-- AGENT MATRIX -->
+  <h2 id="agent-matrix">Agent Matrix Dashboard</h2>
+  <p>Visual display of all 21 agents, their full fallback chains, and live Claude usage meters.</p>
+  <p>Open: <a href="lineup_dashboard.html">lineup_dashboard.html</a></p>
+  <p>Regenerate after any changes:</p>
+  <pre><code>python D:\paperclip\scripts\position_manager.py dashboard</code></pre>
+
+  <!-- CODEX -->
+  <h2 id="codex">Codex (OpenAI) Quota</h2>
+  <p>Engineer and CouncilTech use OpenAI Codex. They have a separate weekly task quota.</p>
+  <h3>Check quota</h3>
+  <pre><code>python D:\paperclip\scripts\check_codex_quota.py</code></pre>
+  <h3>Setup (first time or session expired)</h3>
+  <pre><code>python D:\paperclip\scripts\check_codex_quota.py --setup</code></pre>
+  <h3>If quota near limit</h3>
+  <pre><code>python D:\paperclip\scripts\position_manager.py sub Engineer fallback1
+python D:\paperclip\scripts\position_manager.py sub CouncilTech fallback1</code></pre>
+
+  <!-- SERVER -->
+  <h2 id="server">Paperclip Server</h2>
+  <p>Auto-starts on boot via Windows Task Scheduler. You normally don't need to touch this.</p>
+  <h3>Check it's running</h3>
+  <pre><code>curl http://localhost:3100/api/health</code></pre>
+  <h3>Start manually</h3>
+  <pre><code>D:\paperclip\start.cmd</code></pre>
+  <div class="callout warn">Always start via <code>start.cmd</code> — not <code>pnpm dev:server</code> directly, or the UI won't be served.</div>
+
+  <!-- MEMORY -->
+  <h2 id="memory">Memory System</h2>
+  <p>Each agent stores memory in markdown files in their instructions directory. Agents with the <code>para-memory-files</code> skill can read and write their own MEMORY.md automatically across sessions.</p>
+  <h3>Agent memory files</h3>
+  <pre><code>C:\Users\Administrator\.paperclip\instances\default\companies\505ab906...\agents\{agent-id}\instructions\MEMORY.md</code></pre>
+  <h3>Claude Code's own memory (this assistant's memory between conversations)</h3>
+  <pre><code>C:\Users\Administrator\.claude\projects\d--paperclip\memory\</code></pre>
+
+  <!-- INBOX -->
+  <h2 id="inbox">Inbox — Dismissing Failed Run Notifications</h2>
+  <p>Failed run notifications appear when an agent heartbeat fails — quota hits, model unavailable, etc. Once the underlying issue is fixed, old failures are just noise. They will recur whenever agents hit limits, especially once heartbeats are enabled.</p>
+  <p><strong>To dismiss:</strong> Open Paperclip in Chrome → <strong>F12 → Console tab</strong> → paste this → press Enter → refresh the page:</p>
+  <pre><code>// Auto-dismiss all current failed runs:
+const key = "paperclip:inbox:dismissed";
+fetch("/api/companies/505ab906-66b5-4400-b131-96b8aee91c5d/heartbeat-runs?limit=50")
+  .then(r => r.json())
+  .then(runs => {
+    const arr = Array.isArray(runs) ? runs : (runs.runs || runs.data || []);
+    const ids = arr
+      .filter(r => r.status === "failed" || r.status === "timed_out")
+      .map(r => "run:" + r.id);
+    const existing = JSON.parse(localStorage.getItem(key) || "[]");
+    localStorage.setItem(key, JSON.stringify([...new Set([...existing, ...ids])]));
+    console.log("Dismissed", ids.length, "failed runs. Refresh the page.");
+  });</code></pre>
+  <div class="callout tip">This script auto-fetches current failed runs — no need to update it. Run it whenever the inbox fills up with old failures.</div>
+
+  <!-- FILES -->
+  <h2 id="files">File Locations Reference</h2>
+  <table>
+    <tr><th>File</th><th>Purpose</th></tr>
+    <tr><td><code>D:\paperclip\scripts\ops-hub.html</code></td><td>Central ops interface — open in browser</td></tr>
+    <tr><td><code>D:\paperclip\scripts\lineup_dashboard.html</code></td><td>Agent matrix with fallback chains</td></tr>
+    <tr><td><code>D:\paperclip\scripts\OPERATIONS.html</code></td><td>This guide</td></tr>
+    <tr><td><code>D:\paperclip\scripts\position_manager.py</code></td><td>CLI for managing agent positions</td></tr>
+    <tr><td><code>D:\paperclip\scripts\check_claude_usage.py</code></td><td>Check Claude Max plan usage</td></tr>
+    <tr><td><code>D:\paperclip\scripts\check_codex_quota.py</code></td><td>Check Codex task quota</td></tr>
+    <tr><td><code>D:\paperclip\scripts\auto_monitor.py</code></td><td>Auto-monitor (runs via Task Scheduler)</td></tr>
+    <tr><td><code>D:\paperclip\monitor.log</code></td><td>Auto-monitor activity log</td></tr>
+    <tr><td><code>D:\paperclip\claude-usage.json</code></td><td>Latest Claude usage data (JSON)</td></tr>
+    <tr><td><code>D:\paperclip\positions\</code></td><td>All 21 position definitions (SOUL, LINEUP, SKILLS)</td></tr>
+    <tr><td><code>D:\paperclip\positions\positions.json</code></td><td>Live state — active model per position</td></tr>
+    <tr><td><code>C:\Users\Administrator\.paperclip\instances\default\GREG.md</code></td><td>Master GREG.md (distributed to all agents)</td></tr>
+  </table>
+
+  <p style="font-size:0.78em;color:#94a3b8;margin-top:32px;padding-top:16px;border-top:1px solid #e2e8f0">
+    Life Admin Operations Guide &bull; Last updated: 2026-04-06
+  </p>
+</main>
+
+</body>
+</html>

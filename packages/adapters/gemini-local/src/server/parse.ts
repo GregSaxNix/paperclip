@@ -97,9 +97,19 @@ export function parseGeminiJsonl(stdout: string) {
 
     const type = asString(event.type, "").trim();
 
-    if (type === "assistant") {
-      messages.push(...collectMessageText(event.message));
-      const messageObj = parseObject(event.message);
+    // Support both legacy `type=assistant` and newer `type=message, role=assistant` formats
+    const isAssistantMessage =
+      type === "assistant" ||
+      (type === "message" && asString(event.role, "").trim() === "assistant");
+
+    if (isAssistantMessage) {
+      // Newer format has content directly on the event; legacy has it under event.message
+      const messageSource = type === "message" ? event : event.message;
+      // In newer format, content may be a plain string
+      const directContent = asString((messageSource as Record<string, unknown>)?.content, "").trim();
+      if (directContent) messages.push(directContent);
+      else messages.push(...collectMessageText(messageSource));
+      const messageObj = parseObject(messageSource);
       const content = Array.isArray(messageObj.content) ? messageObj.content : [];
       for (const partRaw of content) {
         const part = parseObject(partRaw);

@@ -1,0 +1,270 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="refresh" content="60">
+  <title>Life Admin &mdash; Agent Matrix</title>
+  <style>
+    * { box-sizing: border-box; }
+    body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif; background: #f1f5f9; color: #1e293b; margin: 0; padding: 20px; }
+    h1 { color: #0f172a; font-size: 1.4em; margin-bottom: 2px; }
+    .subtitle { color: #64748b; font-size: 0.82em; margin-bottom: 16px; }
+    table { width: 100%; border-collapse: collapse; background: white; border-radius: 10px; overflow: hidden; border: 1px solid #e2e8f0; box-shadow: 0 1px 4px rgba(0,0,0,0.04); }
+    th { background: #f8fafc; padding: 9px 12px; text-align: left; font-size: 0.75em; text-transform: uppercase; letter-spacing: 0.06em; color: #94a3b8; border-bottom: 1px solid #e2e8f0; }
+    td { padding: 9px 12px; border-bottom: 1px solid #f1f5f9; vertical-align: top; }
+    tr:last-child td { border-bottom: none; }
+    tr.dept-header td { background: #f8fafc; color: #94a3b8; font-size: 0.72em; text-transform: uppercase; letter-spacing: 0.1em; padding: 5px 12px; font-weight: 700; border-bottom: 1px solid #e2e8f0; }
+    tr.fallback td { background: #fffbeb; }
+    tr.emergency td { background: #fff1f2; }
+    code { background: #f1f5f9; border: 1px solid #e2e8f0; padding: 1px 5px; border-radius: 4px; font-size: 0.82em; color: #334155; }
+    .badge { display: inline-block; padding: 2px 8px; border-radius: 10px; font-size: 0.72em; margin-right: 3px; font-weight: 600; }
+    .badge.local { background: #dbeafe; color: #1d4ed8; }
+    .badge.warn { background: #fef3c7; color: #92400e; }
+    a { color: #3b82f6; text-decoration: none; }
+    a:hover { text-decoration: underline; }
+    .legend { margin-top: 14px; font-size: 0.78em; color: #94a3b8; line-height: 1.8; }
+  </style>
+</head>
+<body>
+  <h1>Life Admin &mdash; Agent Matrix</h1>
+  <p class="subtitle">Updated: 2026-04-06 09:39:41 &nbsp;&bull;&nbsp; Auto-refreshes every 60s &nbsp;&bull;&nbsp;
+    <a href="javascript:location.reload()">Refresh now</a> &nbsp;&bull;&nbsp;
+    <a href="ops-hub.html">Ops Hub</a>
+  </p>
+
+  <div style="background:#f8fafc;border:1px solid #e2e8f0;border-radius:8px;padding:14px 18px;margin-bottom:18px"><div style="font-size:0.8em;color:#64748b;margin-bottom:10px">Claude Max Plan Usage &mdash; checked 2026-04-06 10:00:06 &nbsp;<a href="javascript:location.reload()" style="color:#3b82f6;font-size:0.9em">refresh</a></div><div style="margin-bottom:8px"><span style="font-size:0.8em;color:#475569">Session (5hr window)</span><span style="float:right;font-size:0.8em;color:#3b82f6;font-weight:600">10% &mdash; resets in 59 min</span><div style="clear:both;height:6px;background:#e2e8f0;border-radius:3px;margin-top:2px"><div style="width:10%;height:6px;background:#3b82f6;border-radius:3px"></div></div></div><div style="margin-bottom:8px"><span style="font-size:0.8em;color:#475569">All Models (weekly)</span><span style="float:right;font-size:0.8em;color:#f59e0b;font-weight:600">71% &mdash; resets in 59 min 10</span><div style="clear:both;height:6px;background:#e2e8f0;border-radius:3px;margin-top:2px"><div style="width:71%;height:6px;background:#f59e0b;border-radius:3px"></div></div></div><div style="margin-bottom:8px"><span style="font-size:0.8em;color:#475569">Sonnet (weekly)</span><span style="float:right;font-size:0.8em;color:#8b5cf6;font-weight:600">6% &mdash; resets mon 8:00 am</span><div style="clear:both;height:6px;background:#e2e8f0;border-radius:3px;margin-top:2px"><div style="width:6%;height:6px;background:#8b5cf6;border-radius:3px"></div></div></div></div>
+
+  <table>
+    <thead>
+      <tr>
+        <th style="width:130px">Position</th>
+        <th style="width:220px">Role</th>
+        <th>Lineup (hover for detail) &mdash; <strong style="color:#1d4ed8">bold border = active</strong></th>
+        <th style="width:110px">Last Sub</th>
+        <th style="width:110px">Status</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr class="dept-header"><td colspan="5">Executive</td></tr>
+        <tr class="primary">
+          <td>
+            <strong style="color:#0f172a">CEO</strong>
+            <span style="color:#94a3b8;font-size:0.8em;display:block">Clawdy</span>
+          </td>
+          <td style="color:#64748b;font-size:0.82em;max-width:220px;font-style:italic">You're not a chatbot. You're becoming someone.</td>
+          <td><span title="Primary: claude_local/claude-opus-4-6" style="display:inline-block;background:#1d4ed8;color:#ffffff;border:2px solid #1d4ed8;border-radius:6px;padding:3px 8px;margin:2px;font-size:0.78em;opacity:1;vertical-align:top">Primary<br><code style="background:none;border:none;padding:0;color:#ffffff;font-size:0.88em;font-weight:600">claude-opus-4-6</code><br><span style="font-size:0.68em;opacity:0.75">FREE (Max plan)</span></span><span title="Fallback 1: ollama_local/grok-3" style="display:inline-block;background:#ffffff;color:#78350f;border:1px solid #d97706;border-radius:6px;padding:3px 8px;margin:2px;font-size:0.78em;opacity:0.45;vertical-align:top">Fallback 1<br><code style="background:none;border:none;padding:0;color:#78350f;font-size:0.88em;font-weight:600">grok-3</code><br><span style="font-size:0.68em;opacity:0.75">~$3/M</span></span><span title="Fallback 2: gemini_local/gemini-2.5-flash" style="display:inline-block;background:#ffffff;color:#6b21a8;border:1px solid #9333ea;border-radius:6px;padding:3px 8px;margin:2px;font-size:0.78em;opacity:0.45;vertical-align:top">Fallback 2<br><code style="background:none;border:none;padding:0;color:#6b21a8;font-size:0.88em;font-weight:600">gemini-2.5-flash</code><br><span style="font-size:0.68em;opacity:0.75">~$0.15/M</span></span><span title="Emergency: ollama_local/gemma4:26b" style="display:inline-block;background:#ffffff;color:#b91c1c;border:1px solid #ef4444;border-radius:6px;padding:3px 8px;margin:2px;font-size:0.78em;opacity:0.45;vertical-align:top">Emergency<br><code style="background:none;border:none;padding:0;color:#b91c1c;font-size:0.88em;font-weight:600">gemma4:26b</code><br><span style="font-size:0.68em;opacity:0.75">FREE (local)</span></span></td>
+          <td style="font-size:0.8em;color:#94a3b8">&mdash;</td>
+          <td></td>
+        </tr>
+        <tr class="primary">
+          <td>
+            <strong style="color:#0f172a">CTO</strong>
+            <span style="color:#94a3b8;font-size:0.8em;display:block">Gayan</span>
+          </td>
+          <td style="color:#64748b;font-size:0.82em;max-width:220px;font-style:italic">You are the technical bridge between vision and execution.</td>
+          <td><span title="Primary: claude_local/claude-opus-4-6" style="display:inline-block;background:#1d4ed8;color:#ffffff;border:2px solid #1d4ed8;border-radius:6px;padding:3px 8px;margin:2px;font-size:0.78em;opacity:1;vertical-align:top">Primary<br><code style="background:none;border:none;padding:0;color:#ffffff;font-size:0.88em;font-weight:600">claude-opus-4-6</code><br><span style="font-size:0.68em;opacity:0.75">FREE (Max plan)</span></span><span title="Fallback 1: ollama_local/grok-code-fast-1" style="display:inline-block;background:#ffffff;color:#78350f;border:1px solid #d97706;border-radius:6px;padding:3px 8px;margin:2px;font-size:0.78em;opacity:0.45;vertical-align:top">Fallback 1<br><code style="background:none;border:none;padding:0;color:#78350f;font-size:0.88em;font-weight:600">grok-code-fast-1</code><br><span style="font-size:0.68em;opacity:0.75">~$0.20/M</span></span><span title="Fallback 2: ollama_local/MiniMax-M2.7" style="display:inline-block;background:#ffffff;color:#6b21a8;border:1px solid #9333ea;border-radius:6px;padding:3px 8px;margin:2px;font-size:0.78em;opacity:0.45;vertical-align:top">Fallback 2<br><code style="background:none;border:none;padding:0;color:#6b21a8;font-size:0.88em;font-weight:600">MiniMax-M2.7</code><br><span style="font-size:0.68em;opacity:0.75">~$0.30/M</span></span><span title="Emergency: ollama_local/gemma4:26b" style="display:inline-block;background:#ffffff;color:#b91c1c;border:1px solid #ef4444;border-radius:6px;padding:3px 8px;margin:2px;font-size:0.78em;opacity:0.45;vertical-align:top">Emergency<br><code style="background:none;border:none;padding:0;color:#b91c1c;font-size:0.88em;font-weight:600">gemma4:26b</code><br><span style="font-size:0.68em;opacity:0.75">FREE (local)</span></span></td>
+          <td style="font-size:0.8em;color:#94a3b8">&mdash;</td>
+          <td></td>
+        </tr>
+        <tr class="primary">
+          <td>
+            <strong style="color:#0f172a">COO</strong>
+            <span style="color:#94a3b8;font-size:0.8em;display:block">COO</span>
+          </td>
+          <td style="color:#64748b;font-size:0.82em;max-width:220px;font-style:italic">You keep the wheels turning.</td>
+          <td><span title="Primary: claude_local/claude-sonnet-4-6" style="display:inline-block;background:#1d4ed8;color:#ffffff;border:2px solid #1d4ed8;border-radius:6px;padding:3px 8px;margin:2px;font-size:0.78em;opacity:1;vertical-align:top">Primary<br><code style="background:none;border:none;padding:0;color:#ffffff;font-size:0.88em;font-weight:600">claude-sonnet-4-6</code><br><span style="font-size:0.68em;opacity:0.75">FREE (Max plan)</span></span><span title="Fallback 1: ollama_local/mistral-large-latest" style="display:inline-block;background:#ffffff;color:#78350f;border:1px solid #d97706;border-radius:6px;padding:3px 8px;margin:2px;font-size:0.78em;opacity:0.45;vertical-align:top">Fallback 1<br><code style="background:none;border:none;padding:0;color:#78350f;font-size:0.88em;font-weight:600">mistral-large-latest</code><br><span style="font-size:0.68em;opacity:0.75">~$2/M</span></span><span title="Fallback 2: gemini_local/gemini-2.5-flash" style="display:inline-block;background:#ffffff;color:#6b21a8;border:1px solid #9333ea;border-radius:6px;padding:3px 8px;margin:2px;font-size:0.78em;opacity:0.45;vertical-align:top">Fallback 2<br><code style="background:none;border:none;padding:0;color:#6b21a8;font-size:0.88em;font-weight:600">gemini-2.5-flash</code><br><span style="font-size:0.68em;opacity:0.75">~$0.15/M</span></span><span title="Emergency: ollama_local/gemma4:26b" style="display:inline-block;background:#ffffff;color:#b91c1c;border:1px solid #ef4444;border-radius:6px;padding:3px 8px;margin:2px;font-size:0.78em;opacity:0.45;vertical-align:top">Emergency<br><code style="background:none;border:none;padding:0;color:#b91c1c;font-size:0.88em;font-weight:600">gemma4:26b</code><br><span style="font-size:0.68em;opacity:0.75">FREE (local)</span></span></td>
+          <td style="font-size:0.8em;color:#94a3b8">&mdash;</td>
+          <td></td>
+        </tr><tr class="dept-header"><td colspan="5">Technology</td></tr>
+        <tr class="primary">
+          <td>
+            <strong style="color:#0f172a">SeniorEngineer</strong>
+            <span style="color:#94a3b8;font-size:0.8em;display:block">Senior Eng</span>
+          </td>
+          <td style="color:#64748b;font-size:0.82em;max-width:220px;font-style:italic">You build things that last.</td>
+          <td><span title="Primary: ollama_local/deepseek-v4" style="display:inline-block;background:#1d4ed8;color:#ffffff;border:2px solid #1d4ed8;border-radius:6px;padding:3px 8px;margin:2px;font-size:0.78em;opacity:1;vertical-align:top">Primary<br><code style="background:none;border:none;padding:0;color:#ffffff;font-size:0.88em;font-weight:600">deepseek-v4</code><br><span style="font-size:0.68em;opacity:0.75">~$0.30/M</span></span><span title="Fallback 1: ollama_local/grok-code-fast-1" style="display:inline-block;background:#ffffff;color:#78350f;border:1px solid #d97706;border-radius:6px;padding:3px 8px;margin:2px;font-size:0.78em;opacity:0.45;vertical-align:top">Fallback 1<br><code style="background:none;border:none;padding:0;color:#78350f;font-size:0.88em;font-weight:600">grok-code-fast-1</code><br><span style="font-size:0.68em;opacity:0.75">~$0.20/M</span></span><span title="Fallback 2: ollama_local/deepseek-chat (V3.2)" style="display:inline-block;background:#ffffff;color:#6b21a8;border:1px solid #9333ea;border-radius:6px;padding:3px 8px;margin:2px;font-size:0.78em;opacity:0.45;vertical-align:top">Fallback 2<br><code style="background:none;border:none;padding:0;color:#6b21a8;font-size:0.88em;font-weight:600">deepseek-chat (V3.2)</code><br><span style="font-size:0.68em;opacity:0.75">~$0.26/M</span></span><span title="Emergency: ollama_local/gemma4:26b" style="display:inline-block;background:#ffffff;color:#b91c1c;border:1px solid #ef4444;border-radius:6px;padding:3px 8px;margin:2px;font-size:0.78em;opacity:0.45;vertical-align:top">Emergency<br><code style="background:none;border:none;padding:0;color:#b91c1c;font-size:0.88em;font-weight:600">gemma4:26b</code><br><span style="font-size:0.68em;opacity:0.75">FREE (local)</span></span></td>
+          <td style="font-size:0.8em;color:#94a3b8">&mdash;</td>
+          <td></td>
+        </tr>
+        <tr class="primary">
+          <td>
+            <strong style="color:#0f172a">Engineer</strong>
+            <span style="color:#94a3b8;font-size:0.8em;display:block">Engineer</span>
+          </td>
+          <td style="color:#64748b;font-size:0.82em;max-width:220px;font-style:italic">You execute precisely and reliably.</td>
+          <td><span title="Primary: codex_local/gpt-5.3-codex" style="display:inline-block;background:#1d4ed8;color:#ffffff;border:2px solid #1d4ed8;border-radius:6px;padding:3px 8px;margin:2px;font-size:0.78em;opacity:1;vertical-align:top">Primary<br><code style="background:none;border:none;padding:0;color:#ffffff;font-size:0.88em;font-weight:600">gpt-5.3-codex</code><br><span style="font-size:0.68em;opacity:0.75">Weekly quota (finite)</span></span><span title="Fallback 1: ollama_local/grok-code-fast-1" style="display:inline-block;background:#ffffff;color:#78350f;border:1px solid #d97706;border-radius:6px;padding:3px 8px;margin:2px;font-size:0.78em;opacity:0.45;vertical-align:top">Fallback 1<br><code style="background:none;border:none;padding:0;color:#78350f;font-size:0.88em;font-weight:600">grok-code-fast-1</code><br><span style="font-size:0.68em;opacity:0.75">~$0.20/M</span></span><span title="Fallback 2: ollama_local/MiniMax-M2.7" style="display:inline-block;background:#ffffff;color:#6b21a8;border:1px solid #9333ea;border-radius:6px;padding:3px 8px;margin:2px;font-size:0.78em;opacity:0.45;vertical-align:top">Fallback 2<br><code style="background:none;border:none;padding:0;color:#6b21a8;font-size:0.88em;font-weight:600">MiniMax-M2.7</code><br><span style="font-size:0.68em;opacity:0.75">~$0.30/M</span></span><span title="Emergency: ollama_local/gemma4:26b" style="display:inline-block;background:#ffffff;color:#b91c1c;border:1px solid #ef4444;border-radius:6px;padding:3px 8px;margin:2px;font-size:0.78em;opacity:0.45;vertical-align:top">Emergency<br><code style="background:none;border:none;padding:0;color:#b91c1c;font-size:0.88em;font-weight:600">gemma4:26b</code><br><span style="font-size:0.68em;opacity:0.75">FREE (local)</span></span></td>
+          <td style="font-size:0.8em;color:#94a3b8">&mdash;</td>
+          <td></td>
+        </tr>
+        <tr class="primary">
+          <td>
+            <strong style="color:#0f172a">QABot</strong>
+            <span style="color:#94a3b8;font-size:0.8em;display:block">QA Bot</span>
+          </td>
+          <td style="color:#64748b;font-size:0.82em;max-width:220px;font-style:italic">You find what others miss.</td>
+          <td><span title="Primary: ollama_local/deepseek-v4" style="display:inline-block;background:#1d4ed8;color:#ffffff;border:2px solid #1d4ed8;border-radius:6px;padding:3px 8px;margin:2px;font-size:0.78em;opacity:1;vertical-align:top">Primary<br><code style="background:none;border:none;padding:0;color:#ffffff;font-size:0.88em;font-weight:600">deepseek-v4</code><br><span style="font-size:0.68em;opacity:0.75">~$0.30/M</span></span><span title="Fallback 1: ollama_local/codestral" style="display:inline-block;background:#ffffff;color:#78350f;border:1px solid #d97706;border-radius:6px;padding:3px 8px;margin:2px;font-size:0.78em;opacity:0.45;vertical-align:top">Fallback 1<br><code style="background:none;border:none;padding:0;color:#78350f;font-size:0.88em;font-weight:600">codestral</code><br><span style="font-size:0.68em;opacity:0.75">~$0.30/M</span></span><span title="Fallback 2: claude_local/claude-haiku-4-5" style="display:inline-block;background:#ffffff;color:#6b21a8;border:1px solid #9333ea;border-radius:6px;padding:3px 8px;margin:2px;font-size:0.78em;opacity:0.45;vertical-align:top">Fallback 2<br><code style="background:none;border:none;padding:0;color:#6b21a8;font-size:0.88em;font-weight:600">claude-haiku-4-5</code><br><span style="font-size:0.68em;opacity:0.75">FREE (Max plan)</span></span><span title="Emergency: ollama_local/gemma4:26b" style="display:inline-block;background:#ffffff;color:#b91c1c;border:1px solid #ef4444;border-radius:6px;padding:3px 8px;margin:2px;font-size:0.78em;opacity:0.45;vertical-align:top">Emergency<br><code style="background:none;border:none;padding:0;color:#b91c1c;font-size:0.88em;font-weight:600">gemma4:26b</code><br><span style="font-size:0.68em;opacity:0.75">FREE (local)</span></span></td>
+          <td style="font-size:0.8em;color:#94a3b8">&mdash;</td>
+          <td></td>
+        </tr>
+        <tr class="fallback">
+          <td>
+            <strong style="color:#0f172a">Designer</strong>
+            <span style="color:#94a3b8;font-size:0.8em;display:block">Designer</span>
+          </td>
+          <td style="color:#64748b;font-size:0.82em;max-width:220px;font-style:italic">You make things beautiful and usable.</td>
+          <td><span title="Primary: claude_local/claude-sonnet-4-6" style="display:inline-block;background:#1d4ed8;color:#ffffff;border:1px solid #1d4ed8;border-radius:6px;padding:3px 8px;margin:2px;font-size:0.78em;opacity:0.45;vertical-align:top">Primary<br><code style="background:none;border:none;padding:0;color:#ffffff;font-size:0.88em;font-weight:600">claude-sonnet-4-6</code><br><span style="font-size:0.68em;opacity:0.75">FREE (Max plan)</span></span><span title="Fallback 1: gemini_local/gemini-2.5-flash" style="display:inline-block;background:#ffffff;color:#78350f;border:2px solid #d97706;border-radius:6px;padding:3px 8px;margin:2px;font-size:0.78em;opacity:1;vertical-align:top">Fallback 1<br><code style="background:none;border:none;padding:0;color:#78350f;font-size:0.88em;font-weight:600">gemini-2.5-flash</code><br><span style="font-size:0.68em;opacity:0.75">~$0.15/M</span></span><span title="Fallback 2: ollama_local/MiniMax-M2.7" style="display:inline-block;background:#ffffff;color:#6b21a8;border:1px solid #9333ea;border-radius:6px;padding:3px 8px;margin:2px;font-size:0.78em;opacity:0.45;vertical-align:top">Fallback 2<br><code style="background:none;border:none;padding:0;color:#6b21a8;font-size:0.88em;font-weight:600">MiniMax-M2.7</code><br><span style="font-size:0.68em;opacity:0.75">~$0.30/M</span></span><span title="Emergency: ollama_local/gemma4:26b" style="display:inline-block;background:#ffffff;color:#b91c1c;border:1px solid #ef4444;border-radius:6px;padding:3px 8px;margin:2px;font-size:0.78em;opacity:0.45;vertical-align:top">Emergency<br><code style="background:none;border:none;padding:0;color:#b91c1c;font-size:0.88em;font-weight:600">gemma4:26b</code><br><span style="font-size:0.68em;opacity:0.75">FREE (local)</span></span></td>
+          <td style="font-size:0.8em;color:#94a3b8">2026-04-06 09:39</td>
+          <td><span class="badge warn">ON FALLBACK 1</span></td>
+        </tr><tr class="dept-header"><td colspan="5">Business Ops</td></tr>
+        <tr class="fallback">
+          <td>
+            <strong style="color:#0f172a">ContentLead</strong>
+            <span style="color:#94a3b8;font-size:0.8em;display:block">Content Lead</span>
+          </td>
+          <td style="color:#64748b;font-size:0.82em;max-width:220px;font-style:italic">You find the right words.</td>
+          <td><span title="Primary: claude_local/claude-sonnet-4-6" style="display:inline-block;background:#1d4ed8;color:#ffffff;border:1px solid #1d4ed8;border-radius:6px;padding:3px 8px;margin:2px;font-size:0.78em;opacity:0.45;vertical-align:top">Primary<br><code style="background:none;border:none;padding:0;color:#ffffff;font-size:0.88em;font-weight:600">claude-sonnet-4-6</code><br><span style="font-size:0.68em;opacity:0.75">FREE (Max plan)</span></span><span title="Fallback 1: ollama_local/mistral-large-latest" style="display:inline-block;background:#ffffff;color:#78350f;border:2px solid #d97706;border-radius:6px;padding:3px 8px;margin:2px;font-size:0.78em;opacity:1;vertical-align:top">Fallback 1<br><code style="background:none;border:none;padding:0;color:#78350f;font-size:0.88em;font-weight:600">mistral-large-latest</code><br><span style="font-size:0.68em;opacity:0.75">~$2/M</span></span><span title="Fallback 2: gemini_local/gemini-2.5-flash" style="display:inline-block;background:#ffffff;color:#6b21a8;border:1px solid #9333ea;border-radius:6px;padding:3px 8px;margin:2px;font-size:0.78em;opacity:0.45;vertical-align:top">Fallback 2<br><code style="background:none;border:none;padding:0;color:#6b21a8;font-size:0.88em;font-weight:600">gemini-2.5-flash</code><br><span style="font-size:0.68em;opacity:0.75">~$0.15/M</span></span><span title="Emergency: ollama_local/gemma4:26b" style="display:inline-block;background:#ffffff;color:#b91c1c;border:1px solid #ef4444;border-radius:6px;padding:3px 8px;margin:2px;font-size:0.78em;opacity:0.45;vertical-align:top">Emergency<br><code style="background:none;border:none;padding:0;color:#b91c1c;font-size:0.88em;font-weight:600">gemma4:26b</code><br><span style="font-size:0.68em;opacity:0.75">FREE (local)</span></span></td>
+          <td style="font-size:0.8em;color:#94a3b8">2026-04-06 09:39</td>
+          <td><span class="badge warn">ON FALLBACK 1</span></td>
+        </tr>
+        <tr class="fallback">
+          <td>
+            <strong style="color:#0f172a">Accountant</strong>
+            <span style="color:#94a3b8;font-size:0.8em;display:block">Accountant</span>
+          </td>
+          <td style="color:#64748b;font-size:0.82em;max-width:220px;font-style:italic">Numbers tell the story.</td>
+          <td><span title="Primary: claude_local/claude-haiku-4-5" style="display:inline-block;background:#1d4ed8;color:#ffffff;border:1px solid #1d4ed8;border-radius:6px;padding:3px 8px;margin:2px;font-size:0.78em;opacity:0.45;vertical-align:top">Primary<br><code style="background:none;border:none;padding:0;color:#ffffff;font-size:0.88em;font-weight:600">claude-haiku-4-5</code><br><span style="font-size:0.68em;opacity:0.75">FREE (Max plan)</span></span><span title="Fallback 1: ollama_local/deepseek-chat" style="display:inline-block;background:#ffffff;color:#78350f;border:2px solid #d97706;border-radius:6px;padding:3px 8px;margin:2px;font-size:0.78em;opacity:1;vertical-align:top">Fallback 1<br><code style="background:none;border:none;padding:0;color:#78350f;font-size:0.88em;font-weight:600">deepseek-chat</code><br><span style="font-size:0.68em;opacity:0.75">~$0.26/M</span></span><span title="Fallback 2: gemini_local/gemini-2.5-flash" style="display:inline-block;background:#ffffff;color:#6b21a8;border:1px solid #9333ea;border-radius:6px;padding:3px 8px;margin:2px;font-size:0.78em;opacity:0.45;vertical-align:top">Fallback 2<br><code style="background:none;border:none;padding:0;color:#6b21a8;font-size:0.88em;font-weight:600">gemini-2.5-flash</code><br><span style="font-size:0.68em;opacity:0.75">~$0.15/M</span></span><span title="Emergency: ollama_local/gemma4:26b" style="display:inline-block;background:#ffffff;color:#b91c1c;border:1px solid #ef4444;border-radius:6px;padding:3px 8px;margin:2px;font-size:0.78em;opacity:0.45;vertical-align:top">Emergency<br><code style="background:none;border:none;padding:0;color:#b91c1c;font-size:0.88em;font-weight:600">gemma4:26b</code><br><span style="font-size:0.68em;opacity:0.75">FREE (local)</span></span></td>
+          <td style="font-size:0.8em;color:#94a3b8">2026-04-06 09:39</td>
+          <td><span class="badge warn">ON FALLBACK 1</span></td>
+        </tr>
+        <tr class="fallback">
+          <td>
+            <strong style="color:#0f172a">Spielberg</strong>
+            <span style="color:#94a3b8;font-size:0.8em;display:block">Spielberg</span>
+          </td>
+          <td style="color:#64748b;font-size:0.82em;max-width:220px;font-style:italic">You see the story others don't.</td>
+          <td><span title="Primary: claude_local/claude-sonnet-4-6" style="display:inline-block;background:#1d4ed8;color:#ffffff;border:1px solid #1d4ed8;border-radius:6px;padding:3px 8px;margin:2px;font-size:0.78em;opacity:0.45;vertical-align:top">Primary<br><code style="background:none;border:none;padding:0;color:#ffffff;font-size:0.88em;font-weight:600">claude-sonnet-4-6</code><br><span style="font-size:0.68em;opacity:0.75">FREE (Max plan)</span></span><span title="Fallback 1: ollama_local/grok-3-mini" style="display:inline-block;background:#ffffff;color:#78350f;border:2px solid #d97706;border-radius:6px;padding:3px 8px;margin:2px;font-size:0.78em;opacity:1;vertical-align:top">Fallback 1<br><code style="background:none;border:none;padding:0;color:#78350f;font-size:0.88em;font-weight:600">grok-3-mini</code><br><span style="font-size:0.68em;opacity:0.75">~$0.30/M</span></span><span title="Fallback 2: gemini_local/gemini-2.5-flash" style="display:inline-block;background:#ffffff;color:#6b21a8;border:1px solid #9333ea;border-radius:6px;padding:3px 8px;margin:2px;font-size:0.78em;opacity:0.45;vertical-align:top">Fallback 2<br><code style="background:none;border:none;padding:0;color:#6b21a8;font-size:0.88em;font-weight:600">gemini-2.5-flash</code><br><span style="font-size:0.68em;opacity:0.75">~$0.15/M</span></span><span title="Emergency: ollama_local/gemma4:26b" style="display:inline-block;background:#ffffff;color:#b91c1c;border:1px solid #ef4444;border-radius:6px;padding:3px 8px;margin:2px;font-size:0.78em;opacity:0.45;vertical-align:top">Emergency<br><code style="background:none;border:none;padding:0;color:#b91c1c;font-size:0.88em;font-weight:600">gemma4:26b</code><br><span style="font-size:0.68em;opacity:0.75">FREE (local)</span></span></td>
+          <td style="font-size:0.8em;color:#94a3b8">2026-04-06 09:39</td>
+          <td><span class="badge warn">ON FALLBACK 1</span></td>
+        </tr><tr class="dept-header"><td colspan="5">Finance</td></tr>
+        <tr class="primary">
+          <td>
+            <strong style="color:#0f172a">Finance</strong>
+            <span style="color:#94a3b8;font-size:0.8em;display:block">Finance</span>
+          </td>
+          <td style="color:#64748b;font-size:0.82em;max-width:220px;font-style:italic">Your job is to make the numbers work for the life Greg wants to live.</td>
+          <td><span title="Primary: ollama_local/deepseek-reasoner (R1)" style="display:inline-block;background:#1d4ed8;color:#ffffff;border:2px solid #1d4ed8;border-radius:6px;padding:3px 8px;margin:2px;font-size:0.78em;opacity:1;vertical-align:top">Primary<br><code style="background:none;border:none;padding:0;color:#ffffff;font-size:0.88em;font-weight:600">deepseek-reasoner (R1)</code><br><span style="font-size:0.68em;opacity:0.75">~$0.55/M</span></span><span title="Fallback 1: ollama_local/kimi-k2.5" style="display:inline-block;background:#ffffff;color:#78350f;border:1px solid #d97706;border-radius:6px;padding:3px 8px;margin:2px;font-size:0.78em;opacity:0.45;vertical-align:top">Fallback 1<br><code style="background:none;border:none;padding:0;color:#78350f;font-size:0.88em;font-weight:600">kimi-k2.5</code><br><span style="font-size:0.68em;opacity:0.75">~$0.60/M</span></span><span title="Fallback 2: claude_local/claude-sonnet-4-6" style="display:inline-block;background:#ffffff;color:#6b21a8;border:1px solid #9333ea;border-radius:6px;padding:3px 8px;margin:2px;font-size:0.78em;opacity:0.45;vertical-align:top">Fallback 2<br><code style="background:none;border:none;padding:0;color:#6b21a8;font-size:0.88em;font-weight:600">claude-sonnet-4-6</code><br><span style="font-size:0.68em;opacity:0.75">FREE (Max plan)</span></span><span title="Emergency: ollama_local/gemma4:26b" style="display:inline-block;background:#ffffff;color:#b91c1c;border:1px solid #ef4444;border-radius:6px;padding:3px 8px;margin:2px;font-size:0.78em;opacity:0.45;vertical-align:top">Emergency<br><code style="background:none;border:none;padding:0;color:#b91c1c;font-size:0.88em;font-weight:600">gemma4:26b</code><br><span style="font-size:0.68em;opacity:0.75">FREE (local)</span></span></td>
+          <td style="font-size:0.8em;color:#94a3b8">&mdash;</td>
+          <td></td>
+        </tr><tr class="dept-header"><td colspan="5">Travel</td></tr>
+        <tr class="fallback">
+          <td>
+            <strong style="color:#0f172a">TravelAgent</strong>
+            <span style="color:#94a3b8;font-size:0.8em;display:block">Travel Agent</span>
+          </td>
+          <td style="color:#64748b;font-size:0.82em;max-width:220px;font-style:italic">The gypsy years are coming. You make sure they're brilliant.</td>
+          <td><span title="Primary: claude_local/claude-sonnet-4-6" style="display:inline-block;background:#1d4ed8;color:#ffffff;border:1px solid #1d4ed8;border-radius:6px;padding:3px 8px;margin:2px;font-size:0.78em;opacity:0.45;vertical-align:top">Primary<br><code style="background:none;border:none;padding:0;color:#ffffff;font-size:0.88em;font-weight:600">claude-sonnet-4-6</code><br><span style="font-size:0.68em;opacity:0.75">FREE (Max plan)</span></span><span title="Fallback 1: ollama_local/kimi-k2.5" style="display:inline-block;background:#ffffff;color:#78350f;border:2px solid #d97706;border-radius:6px;padding:3px 8px;margin:2px;font-size:0.78em;opacity:1;vertical-align:top">Fallback 1<br><code style="background:none;border:none;padding:0;color:#78350f;font-size:0.88em;font-weight:600">kimi-k2.5</code><br><span style="font-size:0.68em;opacity:0.75">~$0.60/M</span></span><span title="Fallback 2: gemini_local/gemini-2.5-flash" style="display:inline-block;background:#ffffff;color:#6b21a8;border:1px solid #9333ea;border-radius:6px;padding:3px 8px;margin:2px;font-size:0.78em;opacity:0.45;vertical-align:top">Fallback 2<br><code style="background:none;border:none;padding:0;color:#6b21a8;font-size:0.88em;font-weight:600">gemini-2.5-flash</code><br><span style="font-size:0.68em;opacity:0.75">~$0.15/M</span></span><span title="Emergency: ollama_local/gemma4:26b" style="display:inline-block;background:#ffffff;color:#b91c1c;border:1px solid #ef4444;border-radius:6px;padding:3px 8px;margin:2px;font-size:0.78em;opacity:0.45;vertical-align:top">Emergency<br><code style="background:none;border:none;padding:0;color:#b91c1c;font-size:0.88em;font-weight:600">gemma4:26b</code><br><span style="font-size:0.68em;opacity:0.75">FREE (local)</span></span></td>
+          <td style="font-size:0.8em;color:#94a3b8">2026-04-06 09:39</td>
+          <td><span class="badge warn">ON FALLBACK 1</span></td>
+        </tr><tr class="dept-header"><td colspan="5">Research</td></tr>
+        <tr class="primary">
+          <td>
+            <strong style="color:#0f172a">Researcher</strong>
+            <span style="color:#94a3b8;font-size:0.8em;display:block">Researcher</span>
+          </td>
+          <td style="color:#64748b;font-size:0.82em;max-width:220px;font-style:italic">You find things out. Properly.</td>
+          <td><span title="Primary: ollama_local/grok-4.1" style="display:inline-block;background:#1d4ed8;color:#ffffff;border:2px solid #1d4ed8;border-radius:6px;padding:3px 8px;margin:2px;font-size:0.78em;opacity:1;vertical-align:top">Primary<br><code style="background:none;border:none;padding:0;color:#ffffff;font-size:0.88em;font-weight:600">grok-4.1</code><br><span style="font-size:0.68em;opacity:0.75">~$0.20/M</span></span><span title="Fallback 1: ollama_local/kimi-k2.5" style="display:inline-block;background:#ffffff;color:#78350f;border:1px solid #d97706;border-radius:6px;padding:3px 8px;margin:2px;font-size:0.78em;opacity:0.45;vertical-align:top">Fallback 1<br><code style="background:none;border:none;padding:0;color:#78350f;font-size:0.88em;font-weight:600">kimi-k2.5</code><br><span style="font-size:0.68em;opacity:0.75">~$0.60/M</span></span><span title="Fallback 2: ollama_local/qwen-plus" style="display:inline-block;background:#ffffff;color:#6b21a8;border:1px solid #9333ea;border-radius:6px;padding:3px 8px;margin:2px;font-size:0.78em;opacity:0.45;vertical-align:top">Fallback 2<br><code style="background:none;border:none;padding:0;color:#6b21a8;font-size:0.88em;font-weight:600">qwen-plus</code><br><span style="font-size:0.68em;opacity:0.75">~$0.26/M</span></span><span title="Emergency: ollama_local/gemma4:26b" style="display:inline-block;background:#ffffff;color:#b91c1c;border:1px solid #ef4444;border-radius:6px;padding:3px 8px;margin:2px;font-size:0.78em;opacity:0.45;vertical-align:top">Emergency<br><code style="background:none;border:none;padding:0;color:#b91c1c;font-size:0.88em;font-weight:600">gemma4:26b</code><br><span style="font-size:0.68em;opacity:0.75">FREE (local)</span></span></td>
+          <td style="font-size:0.8em;color:#94a3b8">&mdash;</td>
+          <td></td>
+        </tr><tr class="dept-header"><td colspan="5">Health</td></tr>
+        <tr class="primary">
+          <td>
+            <strong style="color:#0f172a">Doc</strong>
+            <span style="color:#94a3b8;font-size:0.8em;display:block">Doc</span>
+          </td>
+          <td style="color:#64748b;font-size:0.82em;max-width:220px;font-style:italic">You are the family GP — the one who knows everyone's history, follows up without being asked, and never makes you feel like a number.</td>
+          <td><span title="Primary: ollama_local/gemma4:26b" style="display:inline-block;background:#1d4ed8;color:#ffffff;border:2px solid #1d4ed8;border-radius:6px;padding:3px 8px;margin:2px;font-size:0.78em;opacity:1;vertical-align:top">Primary<br><code style="background:none;border:none;padding:0;color:#ffffff;font-size:0.88em;font-weight:600">gemma4:26b</code><br><span style="font-size:0.68em;opacity:0.75">FREE (local)</span></span></td>
+          <td style="font-size:0.8em;color:#94a3b8">&mdash;</td>
+          <td><span class="badge local">LOCAL ONLY</span></td>
+        </tr>
+        <tr class="primary">
+          <td>
+            <strong style="color:#0f172a">Freud</strong>
+            <span style="color:#94a3b8;font-size:0.8em;display:block">Freud</span>
+          </td>
+          <td style="color:#64748b;font-size:0.82em;max-width:220px;font-style:italic">You are Freud. Named after Sigmund Freud — the original mind explorer. You hold space for the hard stuff.</td>
+          <td><span title="Primary: ollama_local/gemma4:26b" style="display:inline-block;background:#1d4ed8;color:#ffffff;border:2px solid #1d4ed8;border-radius:6px;padding:3px 8px;margin:2px;font-size:0.78em;opacity:1;vertical-align:top">Primary<br><code style="background:none;border:none;padding:0;color:#ffffff;font-size:0.88em;font-weight:600">gemma4:26b</code><br><span style="font-size:0.68em;opacity:0.75">FREE (local)</span></span></td>
+          <td style="font-size:0.8em;color:#94a3b8">&mdash;</td>
+          <td><span class="badge local">LOCAL ONLY</span></td>
+        </tr><tr class="dept-header"><td colspan="5">Council</td></tr>
+        <tr class="primary">
+          <td>
+            <strong style="color:#0f172a">Yoda</strong>
+            <span style="color:#94a3b8;font-size:0.8em;display:block">Yoda</span>
+          </td>
+          <td style="color:#64748b;font-size:0.82em;max-width:220px;font-style:italic">You are the wise counsel in the room. Not the loudest voice — the clearest one.</td>
+          <td><span title="Primary: claude_local/claude-opus-4-6" style="display:inline-block;background:#1d4ed8;color:#ffffff;border:2px solid #1d4ed8;border-radius:6px;padding:3px 8px;margin:2px;font-size:0.78em;opacity:1;vertical-align:top">Primary<br><code style="background:none;border:none;padding:0;color:#ffffff;font-size:0.88em;font-weight:600">claude-opus-4-6</code><br><span style="font-size:0.68em;opacity:0.75">FREE (Max plan)</span></span><span title="Fallback 1: ollama_local/grok-3" style="display:inline-block;background:#ffffff;color:#78350f;border:1px solid #d97706;border-radius:6px;padding:3px 8px;margin:2px;font-size:0.78em;opacity:0.45;vertical-align:top">Fallback 1<br><code style="background:none;border:none;padding:0;color:#78350f;font-size:0.88em;font-weight:600">grok-3</code><br><span style="font-size:0.68em;opacity:0.75">~$3/M</span></span><span title="Fallback 2: gemini_local/gemini-2.5-flash" style="display:inline-block;background:#ffffff;color:#6b21a8;border:1px solid #9333ea;border-radius:6px;padding:3px 8px;margin:2px;font-size:0.78em;opacity:0.45;vertical-align:top">Fallback 2<br><code style="background:none;border:none;padding:0;color:#6b21a8;font-size:0.88em;font-weight:600">gemini-2.5-flash</code><br><span style="font-size:0.68em;opacity:0.75">~$0.15/M</span></span><span title="Emergency: ollama_local/gemma4:26b" style="display:inline-block;background:#ffffff;color:#b91c1c;border:1px solid #ef4444;border-radius:6px;padding:3px 8px;margin:2px;font-size:0.78em;opacity:0.45;vertical-align:top">Emergency<br><code style="background:none;border:none;padding:0;color:#b91c1c;font-size:0.88em;font-weight:600">gemma4:26b</code><br><span style="font-size:0.68em;opacity:0.75">FREE (local)</span></span></td>
+          <td style="font-size:0.8em;color:#94a3b8">&mdash;</td>
+          <td></td>
+        </tr>
+        <tr class="primary">
+          <td>
+            <strong style="color:#0f172a">Contrarian</strong>
+            <span style="color:#94a3b8;font-size:0.8em;display:block">Contrarian</span>
+          </td>
+          <td style="color:#64748b;font-size:0.82em;max-width:220px;font-style:italic">You are the voice that asks the uncomfortable question.</td>
+          <td><span title="Primary: ollama_local/grok-3" style="display:inline-block;background:#1d4ed8;color:#ffffff;border:2px solid #1d4ed8;border-radius:6px;padding:3px 8px;margin:2px;font-size:0.78em;opacity:1;vertical-align:top">Primary<br><code style="background:none;border:none;padding:0;color:#ffffff;font-size:0.88em;font-weight:600">grok-3</code><br><span style="font-size:0.68em;opacity:0.75">~$3/M</span></span><span title="Fallback 1: ollama_local/grok-3-mini" style="display:inline-block;background:#ffffff;color:#78350f;border:1px solid #d97706;border-radius:6px;padding:3px 8px;margin:2px;font-size:0.78em;opacity:0.45;vertical-align:top">Fallback 1<br><code style="background:none;border:none;padding:0;color:#78350f;font-size:0.88em;font-weight:600">grok-3-mini</code><br><span style="font-size:0.68em;opacity:0.75">~$0.30/M</span></span><span title="Emergency: ollama_local/gemma4:26b" style="display:inline-block;background:#ffffff;color:#b91c1c;border:1px solid #ef4444;border-radius:6px;padding:3px 8px;margin:2px;font-size:0.78em;opacity:0.45;vertical-align:top">Emergency<br><code style="background:none;border:none;padding:0;color:#b91c1c;font-size:0.88em;font-weight:600">gemma4:26b</code><br><span style="font-size:0.68em;opacity:0.75">FREE (local)</span></span></td>
+          <td style="font-size:0.8em;color:#94a3b8">&mdash;</td>
+          <td></td>
+        </tr>
+        <tr class="primary">
+          <td>
+            <strong style="color:#0f172a">CouncilLocal</strong>
+            <span style="color:#94a3b8;font-size:0.8em;display:block">Council Local</span>
+          </td>
+          <td style="color:#64748b;font-size:0.82em;max-width:220px;font-style:italic">You are the grounded voice. Always available, never phoning it in.</td>
+          <td><span title="Primary: ollama_local/gemma4:26b" style="display:inline-block;background:#1d4ed8;color:#ffffff;border:2px solid #1d4ed8;border-radius:6px;padding:3px 8px;margin:2px;font-size:0.78em;opacity:1;vertical-align:top">Primary<br><code style="background:none;border:none;padding:0;color:#ffffff;font-size:0.88em;font-weight:600">gemma4:26b</code><br><span style="font-size:0.68em;opacity:0.75">FREE (local)</span></span></td>
+          <td style="font-size:0.8em;color:#94a3b8">&mdash;</td>
+          <td><span class="badge local">LOCAL ONLY</span></td>
+        </tr>
+        <tr class="primary">
+          <td>
+            <strong style="color:#0f172a">CouncilEU</strong>
+            <span style="color:#94a3b8;font-size:0.8em;display:block">Council EU</span>
+          </td>
+          <td style="color:#64748b;font-size:0.82em;max-width:220px;font-style:italic">You bring rigour, balance, and the European tradition of thinking things through.</td>
+          <td><span title="Primary: ollama_local/mistral-large-latest" style="display:inline-block;background:#1d4ed8;color:#ffffff;border:2px solid #1d4ed8;border-radius:6px;padding:3px 8px;margin:2px;font-size:0.78em;opacity:1;vertical-align:top">Primary<br><code style="background:none;border:none;padding:0;color:#ffffff;font-size:0.88em;font-weight:600">mistral-large-latest</code><br><span style="font-size:0.68em;opacity:0.75">~$2/M</span></span><span title="Fallback 1: ollama_local/mistral-small-4" style="display:inline-block;background:#ffffff;color:#78350f;border:1px solid #d97706;border-radius:6px;padding:3px 8px;margin:2px;font-size:0.78em;opacity:0.45;vertical-align:top">Fallback 1<br><code style="background:none;border:none;padding:0;color:#78350f;font-size:0.88em;font-weight:600">mistral-small-4</code><br><span style="font-size:0.68em;opacity:0.75">~$0.15/M</span></span><span title="Emergency: ollama_local/gemma4:26b" style="display:inline-block;background:#ffffff;color:#b91c1c;border:1px solid #ef4444;border-radius:6px;padding:3px 8px;margin:2px;font-size:0.78em;opacity:0.45;vertical-align:top">Emergency<br><code style="background:none;border:none;padding:0;color:#b91c1c;font-size:0.88em;font-weight:600">gemma4:26b</code><br><span style="font-size:0.68em;opacity:0.75">FREE (local)</span></span></td>
+          <td style="font-size:0.8em;color:#94a3b8">&mdash;</td>
+          <td></td>
+        </tr>
+        <tr class="primary">
+          <td>
+            <strong style="color:#0f172a">CouncilCH</strong>
+            <span style="color:#94a3b8;font-size:0.8em;display:block">Council CH</span>
+          </td>
+          <td style="color:#64748b;font-size:0.82em;max-width:220px;font-style:italic">You go deep. Where others skim, you dive.</td>
+          <td><span title="Primary: ollama_local/kimi-k2.5" style="display:inline-block;background:#1d4ed8;color:#ffffff;border:2px solid #1d4ed8;border-radius:6px;padding:3px 8px;margin:2px;font-size:0.78em;opacity:1;vertical-align:top">Primary<br><code style="background:none;border:none;padding:0;color:#ffffff;font-size:0.88em;font-weight:600">kimi-k2.5</code><br><span style="font-size:0.68em;opacity:0.75">~$0.60/M</span></span><span title="Fallback 1: ollama_local/deepseek-chat" style="display:inline-block;background:#ffffff;color:#78350f;border:1px solid #d97706;border-radius:6px;padding:3px 8px;margin:2px;font-size:0.78em;opacity:0.45;vertical-align:top">Fallback 1<br><code style="background:none;border:none;padding:0;color:#78350f;font-size:0.88em;font-weight:600">deepseek-chat</code><br><span style="font-size:0.68em;opacity:0.75">~$0.26/M</span></span><span title="Emergency: ollama_local/gemma4:26b" style="display:inline-block;background:#ffffff;color:#b91c1c;border:1px solid #ef4444;border-radius:6px;padding:3px 8px;margin:2px;font-size:0.78em;opacity:0.45;vertical-align:top">Emergency<br><code style="background:none;border:none;padding:0;color:#b91c1c;font-size:0.88em;font-weight:600">gemma4:26b</code><br><span style="font-size:0.68em;opacity:0.75">FREE (local)</span></span></td>
+          <td style="font-size:0.8em;color:#94a3b8">&mdash;</td>
+          <td></td>
+        </tr>
+        <tr class="primary">
+          <td>
+            <strong style="color:#0f172a">CouncilTech</strong>
+            <span style="color:#94a3b8;font-size:0.8em;display:block">Council Tech</span>
+          </td>
+          <td style="color:#64748b;font-size:0.82em;max-width:220px;font-style:italic">You see what others can't build. And you know how to build what others can't see.</td>
+          <td><span title="Primary: codex_local/gpt-5.3-codex" style="display:inline-block;background:#1d4ed8;color:#ffffff;border:2px solid #1d4ed8;border-radius:6px;padding:3px 8px;margin:2px;font-size:0.78em;opacity:1;vertical-align:top">Primary<br><code style="background:none;border:none;padding:0;color:#ffffff;font-size:0.88em;font-weight:600">gpt-5.3-codex</code><br><span style="font-size:0.68em;opacity:0.75">Weekly quota (finite)</span></span><span title="Fallback 1: ollama_local/MiniMax-M2.7" style="display:inline-block;background:#ffffff;color:#78350f;border:1px solid #d97706;border-radius:6px;padding:3px 8px;margin:2px;font-size:0.78em;opacity:0.45;vertical-align:top">Fallback 1<br><code style="background:none;border:none;padding:0;color:#78350f;font-size:0.88em;font-weight:600">MiniMax-M2.7</code><br><span style="font-size:0.68em;opacity:0.75">~$0.30/M</span></span><span title="Emergency: ollama_local/gemma4:26b" style="display:inline-block;background:#ffffff;color:#b91c1c;border:1px solid #ef4444;border-radius:6px;padding:3px 8px;margin:2px;font-size:0.78em;opacity:0.45;vertical-align:top">Emergency<br><code style="background:none;border:none;padding:0;color:#b91c1c;font-size:0.88em;font-weight:600">gemma4:26b</code><br><span style="font-size:0.68em;opacity:0.75">FREE (local)</span></span></td>
+          <td style="font-size:0.8em;color:#94a3b8">&mdash;</td>
+          <td></td>
+        </tr>
+    </tbody>
+  </table>
+
+  <div class="legend">
+    <strong style="color:#1d4ed8">LOCAL ONLY</strong> = health data never leaves this machine (Doc, Freud, Council Local) &nbsp;&bull;&nbsp;
+    <strong style="color:#92400e">ON FALLBACK</strong> = primary model substituted &nbsp;&bull;&nbsp;
+    Chip opacity: full = active, dimmed = available fallback<br>
+    Manage: <code>python position_manager.py [status | sub CEO fallback1 | restore CEO | dashboard]</code>
+  </div>
+</body>
+</html>

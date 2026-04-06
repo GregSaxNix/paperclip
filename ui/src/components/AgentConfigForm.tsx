@@ -1330,7 +1330,7 @@ function EnvVarEditor({
   );
 }
 
-function ModelDropdown({
+export function ModelDropdown({
   models,
   value,
   onChange,

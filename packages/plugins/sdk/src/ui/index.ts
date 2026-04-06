@@ -53,6 +53,20 @@ export {
   usePluginToast,
 } from "./hooks.js";
 
+export {
+  MetricCard,
+  StatusBadge,
+  MarkdownBlock,
+  KeyValueList,
+  ActionBar,
+  DataTable,
+  Spinner,
+  LogView,
+  JsonTree,
+  TimeseriesChart,
+  ErrorBoundary,
+} from "./components.js";
+
 // Bridge error and host context types
 export type {
   PluginBridgeError,

@@ -10,7 +10,7 @@ import {
 } from "@/components/ui/popover";
 import { Input } from "@/components/ui/input";
 import { cn } from "@/lib/utils";
-import { AGENT_ICONS, getAgentIcon } from "../lib/agent-icons";
+import { AGENT_ICONS, getAgentIcon, isAssetIcon } from "../lib/agent-icons";
 
 const DEFAULT_ICON: AgentIconName = "bot";
 
@@ -20,6 +20,9 @@ interface AgentIconProps {
 }
 
 export function AgentIcon({ icon, className }: AgentIconProps) {
+  if (isAssetIcon(icon)) {
+    return <img src={icon!} alt="Agent" className={cn("rounded-full object-cover", className)} />;
+  }
   const Icon = getAgentIcon(icon);
   return <Icon className={className} />;
 }

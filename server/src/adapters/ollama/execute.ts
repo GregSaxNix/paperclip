@@ -27,7 +27,10 @@ export async function execute(ctx: AdapterExecutionContext): Promise<AdapterExec
   const baseUrl = asString(config.url, "http://localhost:11434");
   const model = asString(config.model, "qwen2.5:32b");
   const timeoutMs = asNumber(config.timeoutMs, 120_000);
+  const apiKey = asString(config.apiKey, "").trim();
   const instructionsFilePath = asString(config.instructionsFilePath, "").trim();
+  const inputTokenPriceUsd = asNumber(config.inputTokenPriceUsd, 0);
+  const outputTokenPriceUsd = asNumber(config.outputTokenPriceUsd, 0);
 
   const endpoint = `${baseUrl.replace(/\/+$/, "")}/v1/chat/completions`;
 
@@ -96,7 +99,7 @@ export async function execute(ctx: AdapterExecutionContext): Promise<AdapterExec
 
     const res = await fetch(endpoint, {
       method: "POST",
-      headers: { "content-type": "application/json" },
+      headers: { "content-type": "application/json", ...(apiKey ? { authorization: `Bearer ${apiKey}` } : {}) },
       body: JSON.stringify({
         model,
         messages,
@@ -140,7 +143,9 @@ export async function execute(ctx: AdapterExecutionContext): Promise<AdapterExec
             outputTokens: usage.completion_tokens,
           }
         : undefined,
-      costUsd: 0, // Local model — zero cost
+      costUsd: usage
+        ? (usage.prompt_tokens * inputTokenPriceUsd) + (usage.completion_tokens * outputTokenPriceUsd)
+        : 0,
     };
   } catch (err) {
     const timedOut = err instanceof DOMException && err.name === "AbortError";

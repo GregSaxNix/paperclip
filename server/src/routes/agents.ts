@@ -427,6 +427,23 @@ export function agentRoutes(db: Db) {
     }
   }
 
+  async function assertAdapterEndpointRequired(
+    companyId: string,
+    adapterType: string | null | undefined,
+    adapterConfig: Record<string, unknown>,
+  ) {
+    if (adapterType !== "http" && adapterType !== "openclaw_gateway") return;
+    const { config: runtime } = await secretsSvc.resolveAdapterConfigForRuntime(companyId, adapterConfig);
+    const url = typeof runtime.url === "string" ? runtime.url.trim() : "";
+    if (!url) {
+      throw unprocessable(
+        adapterType === "http"
+          ? "http adapter requires adapterConfig.url (absolute http(s) webhook endpoint)."
+          : "openclaw_gateway adapter requires adapterConfig.url (ws(s) gateway endpoint).",
+      );
+    }
+  }
+
   function resolveInstructionsFilePath(candidatePath: string, adapterConfig: Record<string, unknown>) {
     const trimmed = candidatePath.trim();
     if (path.isAbsolute(trimmed)) return trimmed;
@@ -1192,6 +1209,7 @@ export function agentRoutes(db: Db) {
       hireInput.adapterType,
       normalizedAdapterConfig,
     );
+    await assertAdapterEndpointRequired(companyId, hireInput.adapterType, normalizedAdapterConfig);
     const normalizedHireInput = {
       ...hireInput,
       adapterConfig: normalizedAdapterConfig,
@@ -1352,6 +1370,7 @@ export function agentRoutes(db: Db) {
       createInput.adapterType,
       normalizedAdapterConfig,
     );
+    await assertAdapterEndpointRequired(companyId, createInput.adapterType, normalizedAdapterConfig);
 
     const createdAgent = await svc.create(companyId, {
       ...createInput,
@@ -1777,6 +1796,13 @@ export function agentRoutes(db: Db) {
         existing.companyId,
         requestedAdapterType,
         effectiveAdapterConfig,
+      );
+    }
+    if (touchesAdapterConfiguration) {
+      await assertAdapterEndpointRequired(
+        existing.companyId,
+        requestedAdapterType,
+        asRecord(patchData.adapterConfig) ?? {},
       );
     }
 

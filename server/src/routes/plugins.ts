@@ -635,7 +635,7 @@ export function pluginRoutes(
 
     try {
       const installOptions = isLocalPath
-        ? { localPath: trimmedPackage }
+        ? { localPath: path.resolve(REPO_ROOT, trimmedPackage) }
         : { packageName: trimmedPackage, version: version?.trim() };
 
       const discovered = await loader.installPlugin(installOptions);
@@ -831,12 +831,19 @@ export function pluginRoutes(
     }
 
     try {
+      // Merge top-level companyId into params so plugin data handlers can
+      // access it — the bridge sends companyId as a sibling of params.
+      const mergedParams = { ...(body.params ?? {}) };
+      if (body.companyId && !mergedParams.companyId) {
+        mergedParams.companyId = body.companyId;
+      }
+
       const result = await bridgeDeps.workerManager.call(
         plugin.id,
         "getData",
         {
           key: body.key,
-          params: body.params ?? {},
+          params: mergedParams,
           renderEnvironment: body.renderEnvironment ?? null,
         },
       );
@@ -914,12 +921,17 @@ export function pluginRoutes(
     }
 
     try {
+      const mergedParams = { ...(body.params ?? {}) };
+      if (body.companyId && !mergedParams.companyId) {
+        mergedParams.companyId = body.companyId;
+      }
+
       const result = await bridgeDeps.workerManager.call(
         plugin.id,
         "performAction",
         {
           key: body.key,
-          params: body.params ?? {},
+          params: mergedParams,
           renderEnvironment: body.renderEnvironment ?? null,
         },
       );
@@ -997,12 +1009,20 @@ export function pluginRoutes(
     }
 
     try {
+      // Merge top-level companyId into params so plugin data handlers can
+      // access it — the bridge sends companyId as a sibling of params, but
+      // workers expect it inside the params object.
+      const mergedParams = { ...(body?.params ?? {}) };
+      if (body?.companyId && !mergedParams.companyId) {
+        mergedParams.companyId = body.companyId;
+      }
+
       const result = await bridgeDeps.workerManager.call(
         plugin.id,
         "getData",
         {
           key,
-          params: body?.params ?? {},
+          params: mergedParams,
           renderEnvironment: body?.renderEnvironment ?? null,
         },
       );
@@ -1076,12 +1096,17 @@ export function pluginRoutes(
     }
 
     try {
+      const mergedParams = { ...(body?.params ?? {}) };
+      if (body?.companyId && !mergedParams.companyId) {
+        mergedParams.companyId = body.companyId;
+      }
+
       const result = await bridgeDeps.workerManager.call(
         plugin.id,
         "performAction",
         {
           key,
-          params: body?.params ?? {},
+          params: mergedParams,
           renderEnvironment: body?.renderEnvironment ?? null,
         },
       );

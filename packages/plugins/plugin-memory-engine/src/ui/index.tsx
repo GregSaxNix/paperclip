@@ -78,7 +78,7 @@ export function MemoryDashboardWidget({ context }: PluginWidgetProps) {
             opacity: flushing ? 0.6 : 1,
           }}
         >
-          {flushing ? "Flushing..." : "Flush to MEMORY.md"}
+          {flushing ? "Saving..." : "Save to MEMORY.md"}
         </button>
       </div>
 

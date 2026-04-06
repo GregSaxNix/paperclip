@@ -1,4 +1,5 @@
 import { Command } from "commander";
+import pc from "picocolors";
 import type { Agent } from "@paperclipai/shared";
 import {
   removeMaintainerOnlySkillSymlinks,
@@ -8,6 +9,7 @@ import fs from "node:fs/promises";
 import os from "node:os";
 import path from "node:path";
 import { fileURLToPath } from "node:url";
+import type { AdapterEnvironmentTestResult } from "@paperclipai/adapter-utils";
 import {
   addCommonClientOptions,
   formatInlineRecord,
@@ -19,6 +21,22 @@ import {
 
 interface AgentListOptions extends BaseClientOptions {
   companyId?: string;
+}
+
+interface AgentCheckAdaptersOptions extends BaseClientOptions {
+  companyId?: string;
+  skipTest?: boolean;
+}
+
+function collectStaticAdapterHints(adapterType: string, adapterConfig: Record<string, unknown>): string[] {
+  const hints: string[] = [];
+  if (adapterType === "http" || adapterType === "openclaw_gateway") {
+    const url = typeof adapterConfig.url === "string" ? adapterConfig.url.trim() : "";
+    if (!url) {
+      hints.push("adapterConfig.url is missing — runs will fail until set.");
+    }
+  }
+  return hints;
 }
 
 interface AgentLocalCliOptions extends BaseClientOptions {
@@ -191,6 +209,90 @@ export function registerAgentCommands(program: Command): void {
                 spentMonthlyCents: row.spentMonthlyCents,
               }),
             );
+          }
+        } catch (err) {
+          handleCommandError(err);
+        }
+      }),
+    { includeCompany: false },
+  );
+
+  addCommonClientOptions(
+    agent
+      .command("check-adapters")
+      .description("List agents with adapter types, static hints, and optional environment checks")
+      .requiredOption("-C, --company-id <id>", "Company ID")
+      .option("--skip-test", "Skip POST /adapters/:type/test-environment for each agent")
+      .action(async (opts: AgentCheckAdaptersOptions) => {
+        try {
+          const ctx = resolveCommandContext(opts, { requireCompany: true });
+          const companyId = ctx.companyId!;
+          const rows =
+            (await ctx.api.get<Agent[]>(`/api/companies/${companyId}/agents`)) ?? [];
+
+          if (ctx.json) {
+            const withTests: Array<{
+              agent: Agent;
+              staticHints: string[];
+              test?: AdapterEnvironmentTestResult | { error: string };
+            }> = [];
+            for (const agentRow of rows) {
+              const ac = (agentRow.adapterConfig ?? {}) as Record<string, unknown>;
+              const entry: (typeof withTests)[number] = {
+                agent: agentRow,
+                staticHints: collectStaticAdapterHints(agentRow.adapterType, ac),
+              };
+              if (!opts.skipTest) {
+                const testPath = `/api/companies/${companyId}/adapters/${encodeURIComponent(agentRow.adapterType)}/test-environment`;
+                const testBody = await ctx.api.post<AdapterEnvironmentTestResult>(testPath, {
+                  adapterConfig: ac,
+                });
+                entry.test = testBody ?? { error: "empty response" };
+              }
+              withTests.push(entry);
+            }
+            printOutput(withTests, { json: true });
+            return;
+          }
+
+          if (rows.length === 0) {
+            console.log("No agents in this company.");
+            return;
+          }
+
+          for (const agentRow of rows) {
+            const ac = (agentRow.adapterConfig ?? {}) as Record<string, unknown>;
+            const hints = collectStaticAdapterHints(agentRow.adapterType, ac);
+            console.log("");
+            console.log(`${agentRow.name}  (${agentRow.id})`);
+            console.log(`  adapter: ${agentRow.adapterType}  status: ${agentRow.status}`);
+            if (hints.length > 0) {
+              for (const h of hints) {
+                console.log(pc.yellow(`  hint: ${h}`));
+              }
+            }
+            if (!opts.skipTest) {
+              const testPath = `/api/companies/${companyId}/adapters/${encodeURIComponent(agentRow.adapterType)}/test-environment`;
+              try {
+                const testBody = await ctx.api.post<AdapterEnvironmentTestResult>(testPath, {
+                  adapterConfig: ac,
+                });
+                const status = testBody?.status ?? "unknown";
+                const icon =
+                  status === "pass" ? pc.green("✓") : status === "warn" ? pc.yellow("!") : pc.red("✗");
+                console.log(`  env test: ${icon} ${status}`);
+                const checks = testBody?.checks ?? [];
+                for (const c of checks) {
+                  if (c.level === "error" || c.level === "warn") {
+                    const prefix = c.level === "error" ? pc.red("error") : pc.yellow("warn");
+                    console.log(`    [${prefix}] ${c.message}`);
+                    if (c.hint) console.log(`      ${c.hint}`);
+                  }
+                }
+              } catch (e) {
+                console.log(pc.red(`  env test failed: ${e instanceof Error ? e.message : String(e)}`));
+              }
+            }
           }
         } catch (err) {
           handleCommandError(err);

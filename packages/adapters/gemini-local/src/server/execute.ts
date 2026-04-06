@@ -78,6 +78,27 @@ function geminiSkillsHome(): string {
   return path.join(os.homedir(), ".gemini", "skills");
 }
 
+function stripLegacyPromptArgs(extraArgs: string[]): { args: string[]; stripped: boolean } {
+  if (extraArgs.length === 0) return { args: extraArgs, stripped: false };
+
+  const sanitized: string[] = [];
+  let stripped = false;
+  for (let i = 0; i < extraArgs.length; i += 1) {
+    const arg = extraArgs[i];
+    if (arg === "--prompt" || arg === "-p") {
+      stripped = true;
+      i += 1;
+      continue;
+    }
+    if (arg.startsWith("--prompt=")) {
+      stripped = true;
+      continue;
+    }
+    sanitized.push(arg);
+  }
+  return { args: sanitized, stripped };
+}
+
 /**
  * Inject Paperclip skills directly into `~/.gemini/skills/` via symlinks.
  * This avoids needing GEMINI_CLI_HOME overrides, so the CLI naturally finds
@@ -228,6 +249,7 @@ export async function execute(ctx: AdapterExecutionContext): Promise<AdapterExec
     if (fromExtraArgs.length > 0) return fromExtraArgs;
     return asStringArray(config.args);
   })();
+  const { args: sanitizedExtraArgs, stripped: strippedLegacyPromptArgsFromConfig } = stripLegacyPromptArgs(extraArgs);
 
   const runtimeSessionParams = parseObject(runtime.sessionParams);
   const runtimeSessionId = asString(runtimeSessionParams.sessionId, runtime.sessionId ?? "");
@@ -262,7 +284,10 @@ export async function execute(ctx: AdapterExecutionContext): Promise<AdapterExec
     }
   }
   const commandNotes = (() => {
-    const notes: string[] = ["Prompt is passed to Gemini via --prompt for non-interactive execution."];
+    const notes: string[] = ["Prompt is passed to Gemini as a positional argument for non-interactive execution."];
+    if (strippedLegacyPromptArgsFromConfig) {
+      notes.push("Removed legacy --prompt/-p extraArgs to avoid Gemini positional+flag prompt conflicts.");
+    }
     notes.push("Added --approval-mode yolo for unattended execution.");
     if (!instructionsFilePath) return notes;
     if (instructionsPrefix.length > 0) {
@@ -323,8 +348,8 @@ export async function execute(ctx: AdapterExecutionContext): Promise<AdapterExec
     } else {
       args.push("--sandbox=none");
     }
-    if (extraArgs.length > 0) args.push(...extraArgs);
-    args.push("--prompt", prompt);
+    if (sanitizedExtraArgs.length > 0) args.push(...sanitizedExtraArgs);
+    args.push(prompt);
     return args;
   };
 

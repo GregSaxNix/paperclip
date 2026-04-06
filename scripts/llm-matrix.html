@@ -1,0 +1,857 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>LLM Matrix — Life Admin</title>
+  <style>
+    * { box-sizing: border-box; }
+    body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif; background: #f1f5f9; color: #1e293b; margin: 0; padding: 24px; }
+    h1 { font-size: 1.4em; color: #0f172a; margin-bottom: 2px; }
+    .sub { color: #64748b; font-size: 0.85em; margin-bottom: 20px; }
+
+    /* Tabs */
+    .tabs { display: flex; gap: 4px; margin-bottom: 20px; border-bottom: 2px solid #e2e8f0; }
+    .tab { padding: 8px 20px; cursor: pointer; border-radius: 6px 6px 0 0; font-weight: 600; font-size: 0.9em; color: #64748b; border: 1px solid transparent; border-bottom: none; transition: all 0.15s; }
+    .tab.active { background: white; color: #0f172a; border-color: #e2e8f0; margin-bottom: -2px; }
+    .tab:hover:not(.active) { background: #e2e8f0; color: #334155; }
+    .tab-panel { display: none; }
+    .tab-panel.active { display: block; }
+
+    /* Cards / sections */
+    .card { background: white; border: 1px solid #e2e8f0; border-radius: 10px; padding: 18px; margin-bottom: 20px; overflow-x: auto; }
+    .section-title { font-size: 0.72em; text-transform: uppercase; letter-spacing: 0.1em; color: #94a3b8; font-weight: 600; margin-bottom: 12px; }
+
+    /* Tables */
+    table { border-collapse: collapse; width: 100%; font-size: 0.85em; }
+    th { background: #f8fafc; color: #475569; font-weight: 600; padding: 8px 10px; text-align: left; border-bottom: 2px solid #e2e8f0; white-space: nowrap; font-size: 0.8em; }
+    td { padding: 7px 10px; border-bottom: 1px solid #f1f5f9; vertical-align: middle; }
+    tr:hover td { background: #f8fafc; }
+    tr.deprecated td { opacity: 0.45; }
+    code { background: #f1f5f9; padding: 1px 5px; border-radius: 4px; font-size: 0.85em; }
+
+    /* Badges */
+    .badge { display: inline-block; padding: 2px 8px; border-radius: 8px; font-size: 0.72em; font-weight: 600; white-space: nowrap; }
+    .badge.ok { background: #dcfce7; color: #15803d; }
+    .badge.warn { background: #fef9c3; color: #854d0e; }
+    .badge.local { background: #dbeafe; color: #1d4ed8; }
+
+    /* Skill chips */
+    .skill-chip { display: inline-block; padding: 1px 7px; border-radius: 8px; font-size: 0.75em; margin: 1px; font-weight: 500; }
+    .skill-chip.installed { background: #dcfce7; color: #15803d; }
+    .skill-chip.pending { background: #fef9c3; color: #854d0e; }
+    .skill-chip.mcp { background: #ede9fe; color: #6d28d9; }
+
+    /* Slot chips (hiring) */
+    .slot-chip { display: inline-block; background: #e2e8f0; color: #334155; padding: 2px 8px; border-radius: 6px; font-size: 0.75em; margin: 1px; }
+
+    /* Filter buttons */
+    .filters { display: flex; gap: 6px; flex-wrap: wrap; margin-bottom: 14px; }
+    .filter-btn { padding: 4px 12px; border: 1px solid #e2e8f0; border-radius: 20px; background: white; cursor: pointer; font-size: 0.8em; color: #475569; transition: all 0.15s; }
+    .filter-btn:hover, .filter-btn.active { background: #1d4ed8; color: white; border-color: #1d4ed8; }
+
+    /* Research notes */
+    .note-entry { padding: 8px 12px; border-left: 3px solid #e2e8f0; margin-bottom: 8px; font-size: 0.85em; color: #475569; }
+    details summary { cursor: pointer; font-size: 0.85em; font-weight: 600; color: #475569; padding: 6px 0; }
+
+    /* Hiring last-run bar */
+    .hire-bar { background: #f8fafc; border: 1px solid #e2e8f0; border-radius: 8px; padding: 10px 16px; margin-bottom: 16px; display: flex; align-items: center; gap: 12px; font-size: 0.85em; color: #475569; }
+    .hire-bar strong { color: #0f172a; }
+  </style>
+</head>
+<body>
+  <h1>🧠 LLM Matrix — Life Admin</h1>
+  <p class="sub">
+    Last data update: <strong>2026-04-06</strong> &bull;
+    Dashboard generated: 2026-04-06 19:39 &bull;
+    <a href="lineup_dashboard.html">Agent Matrix</a> &bull;
+    <a href="ops-hub.html">Ops Hub</a>
+  </p>
+
+  <div class="tabs">
+    <div class="tab active" onclick="switchTab('models')">📊 Models</div>
+    <div class="tab" onclick="switchTab('skills')">🛠 Skills</div>
+    <div class="tab" onclick="switchTab('hiring')">👔 Hiring</div>
+  </div>
+
+  <!-- ═══ MODELS TAB ═══ -->
+  <div id="tab-models" class="tab-panel active">
+
+    <div class="card">
+      <div class="section-title">Model Comparison — Task Scores &amp; Pricing</div>
+      <div class="filters" id="provider-filters">
+        <button class="filter-btn active" onclick="filterProvider('all')">All</button>
+<button class="filter-btn" onclick="filterProvider('Alibaba')">Alibaba</button>
+<button class="filter-btn" onclick="filterProvider('Anthropic')">Anthropic</button>
+<button class="filter-btn" onclick="filterProvider('DeepSeek')">DeepSeek</button>
+<button class="filter-btn" onclick="filterProvider('Google')">Google</button>
+<button class="filter-btn" onclick="filterProvider('Google (Local)')">Google (Local)</button>
+<button class="filter-btn" onclick="filterProvider('MiniMax')">MiniMax</button>
+<button class="filter-btn" onclick="filterProvider('Mistral')">Mistral</button>
+<button class="filter-btn" onclick="filterProvider('Moonshot AI')">Moonshot AI</button>
+<button class="filter-btn" onclick="filterProvider('OpenAI')">OpenAI</button>
+<button class="filter-btn" onclick="filterProvider('xAI')">xAI</button>
+
+      </div>
+      <table id="models-table">
+        <thead>
+          <tr>
+            <th>Model</th><th>Provider</th><th>Adapter</th>
+            <th>$/1M in</th><th>$/1M out</th>
+            <th>Coding</th><th>Reasoning</th><th>Writing</th><th>Research</th><th>Creative</th><th>Speed</th><th>Cost Eff</th>
+            <th>Notes</th>
+          </tr>
+        </thead>
+        <tbody id="models-body">
+          
+        <tr  data-provider="Anthropic">
+          <td><strong>Claude Opus 4.6</strong></td>
+          <td>Anthropic</td>
+          <td><code>claude_local</code></td>
+          <td style="text-align:right">—</td>
+          <td style="text-align:right">—</td>
+          <td style="background:#bbf7d0;color:#14532d;font-weight:600;text-align:center">9</td><td style="background:#bbf7d0;color:#14532d;font-weight:600;text-align:center">10</td><td style="background:#bbf7d0;color:#14532d;font-weight:600;text-align:center">9</td><td style="background:#bbf7d0;color:#14532d;font-weight:600;text-align:center">9</td><td style="background:#d9f99d;color:#14532d;font-weight:600;text-align:center">8</td><td style="background:#fef9c3;color:#78350f;font-weight:600;text-align:center">5</td><td style="background:#bbf7d0;color:#14532d;font-weight:600;text-align:center">10</td>
+          <td style="color:#64748b;font-size:0.8em">Best overall reasoning and writing. Free on Max plan. Slower than Sonnet.</td>
+        </tr>
+        <tr  data-provider="Anthropic">
+          <td><strong>Claude Sonnet 4.6</strong></td>
+          <td>Anthropic</td>
+          <td><code>claude_local</code></td>
+          <td style="text-align:right">—</td>
+          <td style="text-align:right">—</td>
+          <td style="background:#d9f99d;color:#14532d;font-weight:600;text-align:center">8</td><td style="background:#d9f99d;color:#14532d;font-weight:600;text-align:center">8</td><td style="background:#bbf7d0;color:#14532d;font-weight:600;text-align:center">9</td><td style="background:#d9f99d;color:#14532d;font-weight:600;text-align:center">8</td><td style="background:#d9f99d;color:#14532d;font-weight:600;text-align:center">8</td><td style="background:#d9f99d;color:#14532d;font-weight:600;text-align:center">7</td><td style="background:#bbf7d0;color:#14532d;font-weight:600;text-align:center">10</td>
+          <td style="color:#64748b;font-size:0.8em">Excellent balance of quality and speed. Free on Max plan. Best for writing-heavy roles.</td>
+        </tr>
+        <tr  data-provider="Anthropic">
+          <td><strong>Claude Haiku 4.5</strong></td>
+          <td>Anthropic</td>
+          <td><code>claude_local</code></td>
+          <td style="text-align:right">—</td>
+          <td style="text-align:right">—</td>
+          <td style="background:#fef9c3;color:#78350f;font-weight:600;text-align:center">6</td><td style="background:#fef9c3;color:#78350f;font-weight:600;text-align:center">6</td><td style="background:#d9f99d;color:#14532d;font-weight:600;text-align:center">7</td><td style="background:#fef9c3;color:#78350f;font-weight:600;text-align:center">6</td><td style="background:#fef9c3;color:#78350f;font-weight:600;text-align:center">6</td><td style="background:#bbf7d0;color:#14532d;font-weight:600;text-align:center">9</td><td style="background:#bbf7d0;color:#14532d;font-weight:600;text-align:center">10</td>
+          <td style="color:#64748b;font-size:0.8em">Fastest Claude. Best for structured, repetitive tasks. Limited on complex reasoning.</td>
+        </tr>
+        <tr  data-provider="xAI">
+          <td><strong>Grok-3</strong></td>
+          <td>xAI</td>
+          <td><code>ollama_local</code></td>
+          <td style="text-align:right">$3</td>
+          <td style="text-align:right">$15</td>
+          <td style="background:#d9f99d;color:#14532d;font-weight:600;text-align:center">8</td><td style="background:#bbf7d0;color:#14532d;font-weight:600;text-align:center">9</td><td style="background:#d9f99d;color:#14532d;font-weight:600;text-align:center">8</td><td style="background:#d9f99d;color:#14532d;font-weight:600;text-align:center">8</td><td style="background:#d9f99d;color:#14532d;font-weight:600;text-align:center">7</td><td style="background:#d9f99d;color:#14532d;font-weight:600;text-align:center">7</td><td style="background:#fed7aa;color:#7f1d1d;font-weight:600;text-align:center">3</td>
+          <td style="color:#64748b;font-size:0.8em">Strong reasoning, fully separate from Anthropic infrastructure. High output price — watch costs.</td>
+        </tr>
+        <tr  data-provider="xAI">
+          <td><strong>Grok-4.1</strong></td>
+          <td>xAI</td>
+          <td><code>ollama_local</code></td>
+          <td style="text-align:right">$3</td>
+          <td style="text-align:right">$15</td>
+          <td style="background:#d9f99d;color:#14532d;font-weight:600;text-align:center">7</td><td style="background:#d9f99d;color:#14532d;font-weight:600;text-align:center">8</td><td style="background:#d9f99d;color:#14532d;font-weight:600;text-align:center">8</td><td style="background:#bbf7d0;color:#14532d;font-weight:600;text-align:center">9</td><td style="background:#d9f99d;color:#14532d;font-weight:600;text-align:center">7</td><td style="background:#d9f99d;color:#14532d;font-weight:600;text-align:center">7</td><td style="background:#fed7aa;color:#7f1d1d;font-weight:600;text-align:center">3</td>
+          <td style="color:#64748b;font-size:0.8em">Research-tuned Grok variant. Excellent for deep topic analysis. Same cost as Grok-3.</td>
+        </tr>
+        <tr  data-provider="xAI">
+          <td><strong>Grok Code Fast 1</strong></td>
+          <td>xAI</td>
+          <td><code>ollama_local</code></td>
+          <td style="text-align:right">$0.50</td>
+          <td style="text-align:right">$2</td>
+          <td style="background:#bbf7d0;color:#14532d;font-weight:600;text-align:center">9</td><td style="background:#d9f99d;color:#14532d;font-weight:600;text-align:center">7</td><td style="background:#fef9c3;color:#78350f;font-weight:600;text-align:center">5</td><td style="background:#fef9c3;color:#78350f;font-weight:600;text-align:center">6</td><td style="background:#fed7aa;color:#7f1d1d;font-weight:600;text-align:center">4</td><td style="background:#bbf7d0;color:#14532d;font-weight:600;text-align:center">9</td><td style="background:#bbf7d0;color:#14532d;font-weight:600;text-align:center">9</td>
+          <td style="color:#64748b;font-size:0.8em">Coding specialist. Very fast, cheap. Weak for prose/research. Good fallback for tech roles.</td>
+        </tr>
+        <tr  data-provider="xAI">
+          <td><strong>Grok-3 Mini</strong></td>
+          <td>xAI</td>
+          <td><code>ollama_local</code></td>
+          <td style="text-align:right">$0.30</td>
+          <td style="text-align:right">$0.50</td>
+          <td style="background:#fef9c3;color:#78350f;font-weight:600;text-align:center">6</td><td style="background:#d9f99d;color:#14532d;font-weight:600;text-align:center">7</td><td style="background:#d9f99d;color:#14532d;font-weight:600;text-align:center">7</td><td style="background:#d9f99d;color:#14532d;font-weight:600;text-align:center">7</td><td style="background:#fef9c3;color:#78350f;font-weight:600;text-align:center">6</td><td style="background:#d9f99d;color:#14532d;font-weight:600;text-align:center">8</td><td style="background:#bbf7d0;color:#14532d;font-weight:600;text-align:center">9</td>
+          <td style="color:#64748b;font-size:0.8em">Lightweight Grok. Good value for mid-tier reasoning tasks.</td>
+        </tr>
+        <tr  data-provider="Google (Local)">
+          <td><strong>Gemma 4 26B</strong></td>
+          <td>Google (Local)</td>
+          <td><code>ollama_local</code></td>
+          <td style="text-align:right">—</td>
+          <td style="text-align:right">—</td>
+          <td style="background:#d9f99d;color:#14532d;font-weight:600;text-align:center">7</td><td style="background:#d9f99d;color:#14532d;font-weight:600;text-align:center">7</td><td style="background:#fef9c3;color:#78350f;font-weight:600;text-align:center">6</td><td style="background:#fef9c3;color:#78350f;font-weight:600;text-align:center">6</td><td style="background:#fef9c3;color:#78350f;font-weight:600;text-align:center">5</td><td style="background:#fef9c3;color:#78350f;font-weight:600;text-align:center">6</td><td style="background:#bbf7d0;color:#14532d;font-weight:600;text-align:center">10</td>
+          <td style="color:#64748b;font-size:0.8em">Runs on RTX 4090. Emergency fallback for all agents. Only option for local_only positions. FREE.</td>
+        </tr>
+        <tr  data-provider="DeepSeek">
+          <td><strong>DeepSeek V4</strong></td>
+          <td>DeepSeek</td>
+          <td><code>ollama_local</code></td>
+          <td style="text-align:right">$0.27</td>
+          <td style="text-align:right">$1</td>
+          <td style="background:#bbf7d0;color:#14532d;font-weight:600;text-align:center">9</td><td style="background:#d9f99d;color:#14532d;font-weight:600;text-align:center">8</td><td style="background:#d9f99d;color:#14532d;font-weight:600;text-align:center">7</td><td style="background:#d9f99d;color:#14532d;font-weight:600;text-align:center">7</td><td style="background:#fef9c3;color:#78350f;font-weight:600;text-align:center">5</td><td style="background:#d9f99d;color:#14532d;font-weight:600;text-align:center">7</td><td style="background:#bbf7d0;color:#14532d;font-weight:600;text-align:center">9</td>
+          <td style="color:#64748b;font-size:0.8em">Excellent coder at very low cost. Weak on creative tasks. Chinese infrastructure.</td>
+        </tr>
+        <tr  data-provider="DeepSeek">
+          <td><strong>DeepSeek R1</strong></td>
+          <td>DeepSeek</td>
+          <td><code>ollama_local</code></td>
+          <td style="text-align:right">$0.55</td>
+          <td style="text-align:right">$2</td>
+          <td style="background:#d9f99d;color:#14532d;font-weight:600;text-align:center">8</td><td style="background:#bbf7d0;color:#14532d;font-weight:600;text-align:center">10</td><td style="background:#fef9c3;color:#78350f;font-weight:600;text-align:center">6</td><td style="background:#d9f99d;color:#14532d;font-weight:600;text-align:center">8</td><td style="background:#fed7aa;color:#7f1d1d;font-weight:600;text-align:center">4</td><td style="background:#fef9c3;color:#78350f;font-weight:600;text-align:center">5</td><td style="background:#d9f99d;color:#14532d;font-weight:600;text-align:center">8</td>
+          <td style="color:#64748b;font-size:0.8em">Chain-of-thought reasoner. Exceptional at math and structured analysis. Slow. Ideal for Finance.</td>
+        </tr>
+        <tr  data-provider="Mistral">
+          <td><strong>Mistral Large 3</strong></td>
+          <td>Mistral</td>
+          <td><code>ollama_local</code></td>
+          <td style="text-align:right">$2</td>
+          <td style="text-align:right">$6</td>
+          <td style="background:#d9f99d;color:#14532d;font-weight:600;text-align:center">7</td><td style="background:#d9f99d;color:#14532d;font-weight:600;text-align:center">8</td><td style="background:#d9f99d;color:#14532d;font-weight:600;text-align:center">8</td><td style="background:#d9f99d;color:#14532d;font-weight:600;text-align:center">8</td><td style="background:#d9f99d;color:#14532d;font-weight:600;text-align:center">7</td><td style="background:#d9f99d;color:#14532d;font-weight:600;text-align:center">7</td><td style="background:#fef9c3;color:#78350f;font-weight:600;text-align:center">5</td>
+          <td style="color:#64748b;font-size:0.8em">Strong European model. Excellent for Council EU — geographic/regulatory diversity. Multilingual.</td>
+        </tr>
+        <tr  data-provider="Mistral">
+          <td><strong>Mistral Small 4</strong></td>
+          <td>Mistral</td>
+          <td><code>ollama_local</code></td>
+          <td style="text-align:right">$0.10</td>
+          <td style="text-align:right">$0.30</td>
+          <td style="background:#fef9c3;color:#78350f;font-weight:600;text-align:center">6</td><td style="background:#fef9c3;color:#78350f;font-weight:600;text-align:center">6</td><td style="background:#d9f99d;color:#14532d;font-weight:600;text-align:center">7</td><td style="background:#fef9c3;color:#78350f;font-weight:600;text-align:center">6</td><td style="background:#fef9c3;color:#78350f;font-weight:600;text-align:center">6</td><td style="background:#bbf7d0;color:#14532d;font-weight:600;text-align:center">9</td><td style="background:#bbf7d0;color:#14532d;font-weight:600;text-align:center">10</td>
+          <td style="color:#64748b;font-size:0.8em">Fast and very cheap. Good for structured tasks where cost matters. Limited reasoning depth.</td>
+        </tr>
+        <tr  data-provider="Moonshot AI">
+          <td><strong>Kimi K2.5</strong></td>
+          <td>Moonshot AI</td>
+          <td><code>ollama_local</code></td>
+          <td style="text-align:right">$0.14</td>
+          <td style="text-align:right">$0.60</td>
+          <td style="background:#d9f99d;color:#14532d;font-weight:600;text-align:center">7</td><td style="background:#d9f99d;color:#14532d;font-weight:600;text-align:center">8</td><td style="background:#d9f99d;color:#14532d;font-weight:600;text-align:center">8</td><td style="background:#bbf7d0;color:#14532d;font-weight:600;text-align:center">9</td><td style="background:#fef9c3;color:#78350f;font-weight:600;text-align:center">6</td><td style="background:#d9f99d;color:#14532d;font-weight:600;text-align:center">7</td><td style="background:#bbf7d0;color:#14532d;font-weight:600;text-align:center">9</td>
+          <td style="color:#64748b;font-size:0.8em">Excellent at research and analysis at very low cost. Good geographic diversity (China). Council CH.</td>
+        </tr>
+        <tr  data-provider="Google">
+          <td><strong>Gemini 2.5 Flash</strong></td>
+          <td>Google</td>
+          <td><code>gemini_local</code></td>
+          <td style="text-align:right">$0.15</td>
+          <td style="text-align:right">$0.60</td>
+          <td style="background:#d9f99d;color:#14532d;font-weight:600;text-align:center">8</td><td style="background:#d9f99d;color:#14532d;font-weight:600;text-align:center">8</td><td style="background:#d9f99d;color:#14532d;font-weight:600;text-align:center">8</td><td style="background:#d9f99d;color:#14532d;font-weight:600;text-align:center">8</td><td style="background:#d9f99d;color:#14532d;font-weight:600;text-align:center">7</td><td style="background:#d9f99d;color:#14532d;font-weight:600;text-align:center">8</td><td style="background:#bbf7d0;color:#14532d;font-weight:600;text-align:center">9</td>
+          <td style="color:#64748b;font-size:0.8em">Excellent all-rounder, massive context window (1M tokens), very cheap. Third-provider diversity.</td>
+        </tr>
+        <tr  data-provider="OpenAI">
+          <td><strong>GPT-5.3 Codex</strong></td>
+          <td>OpenAI</td>
+          <td><code>codex_local</code></td>
+          <td style="text-align:right">—</td>
+          <td style="text-align:right">—</td>
+          <td style="background:#bbf7d0;color:#14532d;font-weight:600;text-align:center">10</td><td style="background:#d9f99d;color:#14532d;font-weight:600;text-align:center">8</td><td style="background:#fef9c3;color:#78350f;font-weight:600;text-align:center">6</td><td style="background:#fef9c3;color:#78350f;font-weight:600;text-align:center">6</td><td style="background:#fef9c3;color:#78350f;font-weight:600;text-align:center">5</td><td style="background:#fef9c3;color:#78350f;font-weight:600;text-align:center">6</td><td style="background:#d9f99d;color:#14532d;font-weight:600;text-align:center">8</td>
+          <td style="color:#64748b;font-size:0.8em">Best coding model. Task-limited plan. Ideal for Engineer and CouncilTech coding work.</td>
+        </tr>
+        <tr  data-provider="MiniMax">
+          <td><strong>MiniMax M2.7</strong></td>
+          <td>MiniMax</td>
+          <td><code>ollama_local</code></td>
+          <td style="text-align:right">$0.20</td>
+          <td style="text-align:right">$1</td>
+          <td style="background:#fef9c3;color:#78350f;font-weight:600;text-align:center">6</td><td style="background:#d9f99d;color:#14532d;font-weight:600;text-align:center">7</td><td style="background:#d9f99d;color:#14532d;font-weight:600;text-align:center">7</td><td style="background:#d9f99d;color:#14532d;font-weight:600;text-align:center">7</td><td style="background:#fef9c3;color:#78350f;font-weight:600;text-align:center">6</td><td style="background:#d9f99d;color:#14532d;font-weight:600;text-align:center">7</td><td style="background:#bbf7d0;color:#14532d;font-weight:600;text-align:center">9</td>
+          <td style="color:#64748b;font-size:0.8em">Capable mid-tier model. Good value. Useful as Fallback 2 for several roles.</td>
+        </tr>
+        <tr  data-provider="Alibaba">
+          <td><strong>Qwen Plus</strong></td>
+          <td>Alibaba</td>
+          <td><code>ollama_local</code></td>
+          <td style="text-align:right">$0.40</td>
+          <td style="text-align:right">$1</td>
+          <td style="background:#d9f99d;color:#14532d;font-weight:600;text-align:center">7</td><td style="background:#d9f99d;color:#14532d;font-weight:600;text-align:center">7</td><td style="background:#d9f99d;color:#14532d;font-weight:600;text-align:center">7</td><td style="background:#d9f99d;color:#14532d;font-weight:600;text-align:center">7</td><td style="background:#fef9c3;color:#78350f;font-weight:600;text-align:center">6</td><td style="background:#d9f99d;color:#14532d;font-weight:600;text-align:center">7</td><td style="background:#d9f99d;color:#14532d;font-weight:600;text-align:center">8</td>
+          <td style="color:#64748b;font-size:0.8em">Solid all-rounder from Alibaba. Good research fallback. Geographic diversity.</td>
+        </tr>
+        <tr  data-provider="Mistral">
+          <td><strong>Codestral</strong></td>
+          <td>Mistral</td>
+          <td><code>ollama_local</code></td>
+          <td style="text-align:right">$0.30</td>
+          <td style="text-align:right">$0.90</td>
+          <td style="background:#bbf7d0;color:#14532d;font-weight:600;text-align:center">9</td><td style="background:#fef9c3;color:#78350f;font-weight:600;text-align:center">6</td><td style="background:#fef9c3;color:#78350f;font-weight:600;text-align:center">5</td><td style="background:#fef9c3;color:#78350f;font-weight:600;text-align:center">5</td><td style="background:#fed7aa;color:#7f1d1d;font-weight:600;text-align:center">4</td><td style="background:#d9f99d;color:#14532d;font-weight:600;text-align:center">8</td><td style="background:#bbf7d0;color:#14532d;font-weight:600;text-align:center">9</td>
+          <td style="color:#64748b;font-size:0.8em">Mistral's code-specialist model. Fast, cheap, strong on code generation. Weak elsewhere.</td>
+        </tr>
+        </tbody>
+      </table>
+      <p style="font-size:0.75em;color:#94a3b8;margin-top:10px">
+        Score legend: <span style="background:#bbf7d0;padding:1px 6px;border-radius:4px">9–10 excellent</span>
+        <span style="background:#d9f99d;padding:1px 6px;border-radius:4px">7–8 good</span>
+        <span style="background:#fef9c3;padding:1px 6px;border-radius:4px">5–6 adequate</span>
+        <span style="background:#fed7aa;padding:1px 6px;border-radius:4px">3–4 limited</span>
+        <span style="background:#fecaca;padding:1px 6px;border-radius:4px">1–2 poor</span>
+      </p>
+    </div>
+
+    <div class="card">
+      <div class="section-title">Position Recommendations — Best-fit Model per Role</div>
+      <table>
+        <thead>
+          <tr><th>Position</th><th>Current Model</th><th>Top 5 Candidates (score-coloured — green=excellent, yellow=good, orange=adequate)</th><th>Status</th></tr>
+        </thead>
+        <tbody>
+          
+        <tr>
+          <td><strong>CEO (Clawdy)</strong></td>
+          <td><code style="font-size:0.8em">claude-opus-4-6</code></td>
+          <td><span class="slot-chip" title="Claude Opus 4.6 - score 9.05" style="background:#bbf7d0;color:#14532d;font-weight:700">#1 Opus 4.6</span><span class="slot-chip" title="Claude Sonnet 4.6 - score 8.40" style="background:#d9f99d;color:#14532d;font-weight:500">Sonnet 4.6</span><span class="slot-chip" title="Kimi K2.5 - score 8.30" style="background:#d9f99d;color:#14532d;font-weight:500">Kimi K2.5</span><span class="slot-chip" title="Gemini 2.5 Flash - score 8.15" style="background:#d9f99d;color:#14532d;font-weight:500">Gem. Flash</span><span class="slot-chip" title="DeepSeek R1 - score 7.90" style="background:#d9f99d;color:#14532d;font-weight:500">DS R1</span></td>
+          <td><span class="badge warn">⚠️ Claude Opus 4.6 better fit</span></td>
+        </tr>
+        <tr>
+          <td><strong>CTO (Gayan)</strong></td>
+          <td><code style="font-size:0.8em">claude-opus-4-6</code></td>
+          <td><span class="slot-chip" title="Claude Opus 4.6 - score 9.00" style="background:#bbf7d0;color:#14532d;font-weight:700">#1 Opus 4.6</span><span class="slot-chip" title="DeepSeek R1 - score 8.30" style="background:#d9f99d;color:#14532d;font-weight:500">DS R1</span><span class="slot-chip" title="Claude Sonnet 4.6 - score 8.10" style="background:#d9f99d;color:#14532d;font-weight:500">Sonnet 4.6</span><span class="slot-chip" title="Gemini 2.5 Flash - score 8.10" style="background:#d9f99d;color:#14532d;font-weight:500">Gem. Flash</span><span class="slot-chip" title="DeepSeek V4 - score 8.00" style="background:#d9f99d;color:#14532d;font-weight:500">DS Chat</span></td>
+          <td><span class="badge warn">⚠️ Claude Opus 4.6 better fit</span></td>
+        </tr>
+        <tr>
+          <td><strong>COO</strong></td>
+          <td><code style="font-size:0.8em">claude-sonnet-4-6</code></td>
+          <td><span class="slot-chip" title="Claude Opus 4.6 - score 9.00" style="background:#bbf7d0;color:#14532d;font-weight:700">#1 Opus 4.6</span><span class="slot-chip" title="Claude Sonnet 4.6 - score 8.30" style="background:#d9f99d;color:#14532d;font-weight:500">Sonnet 4.6</span><span class="slot-chip" title="Kimi K2.5 - score 8.15" style="background:#d9f99d;color:#14532d;font-weight:500">Kimi K2.5</span><span class="slot-chip" title="Gemini 2.5 Flash - score 8.05" style="background:#d9f99d;color:#14532d;font-weight:500">Gem. Flash</span><span class="slot-chip" title="Grok-3 - score 8.00" style="background:#d9f99d;color:#14532d;font-weight:500">Grok-3</span></td>
+          <td><span class="badge warn">⚠️ Claude Opus 4.6 better fit</span></td>
+        </tr>
+        <tr>
+          <td><strong>Senior Engineer</strong></td>
+          <td><code style="font-size:0.8em">deepseek-v4</code></td>
+          <td><span class="slot-chip" title="GPT-5.3 Codex - score 8.50" style="background:#d9f99d;color:#14532d;font-weight:700">#1 Codex</span><span class="slot-chip" title="DeepSeek V4 - score 8.35" style="background:#d9f99d;color:#14532d;font-weight:500">DS Chat</span><span class="slot-chip" title="Grok Code Fast 1 - score 8.30" style="background:#d9f99d;color:#14532d;font-weight:500">Grok Fast</span><span class="slot-chip" title="DeepSeek R1 - score 8.25" style="background:#d9f99d;color:#14532d;font-weight:500">DS R1</span><span class="slot-chip" title="Gemini 2.5 Flash - score 8.10" style="background:#d9f99d;color:#14532d;font-weight:500">Gem. Flash</span></td>
+          <td><span class="badge warn">⚠️ GPT-5.3 Codex better fit</span></td>
+        </tr>
+        <tr>
+          <td><strong>Engineer</strong></td>
+          <td><code style="font-size:0.8em">gpt-5.3-codex</code></td>
+          <td><span class="slot-chip" title="GPT-5.3 Codex - score 9.20" style="background:#bbf7d0;color:#14532d;font-weight:700">#1 Codex</span><span class="slot-chip" title="Grok Code Fast 1 - score 8.60" style="background:#d9f99d;color:#14532d;font-weight:500">Grok Fast</span><span class="slot-chip" title="DeepSeek V4 - score 8.60" style="background:#d9f99d;color:#14532d;font-weight:500">DS Chat</span><span class="slot-chip" title="Codestral - score 8.30" style="background:#d9f99d;color:#14532d;font-weight:500">Codestral</span><span class="slot-chip" title="Grok-3 - score 8.10" style="background:#d9f99d;color:#14532d;font-weight:500">Grok-3</span></td>
+          <td><span class="badge warn">⚠️ GPT-5.3 Codex better fit</span></td>
+        </tr>
+        <tr>
+          <td><strong>QA Bot</strong></td>
+          <td><code style="font-size:0.8em">deepseek-v4</code></td>
+          <td><span class="slot-chip" title="GPT-5.3 Codex - score 8.60" style="background:#d9f99d;color:#14532d;font-weight:700">#1 Codex</span><span class="slot-chip" title="Grok Code Fast 1 - score 8.40" style="background:#d9f99d;color:#14532d;font-weight:500">Grok Fast</span><span class="slot-chip" title="DeepSeek V4 - score 8.40" style="background:#d9f99d;color:#14532d;font-weight:500">DS Chat</span><span class="slot-chip" title="DeepSeek R1 - score 8.15" style="background:#d9f99d;color:#14532d;font-weight:500">DS R1</span><span class="slot-chip" title="Gemini 2.5 Flash - score 8.10" style="background:#d9f99d;color:#14532d;font-weight:500">Gem. Flash</span></td>
+          <td><span class="badge warn">⚠️ GPT-5.3 Codex better fit</span></td>
+        </tr>
+        <tr>
+          <td><strong>Designer</strong></td>
+          <td><code style="font-size:0.8em">gemini-2.5-flash</code></td>
+          <td><span class="slot-chip" title="Gemini 2.5 Flash - score 7.75" style="background:#d9f99d;color:#14532d;font-weight:700">#1 Gem. Flash</span><span class="slot-chip" title="Kimi K2.5 - score 7.35" style="background:#d9f99d;color:#14532d;font-weight:500">Kimi K2.5</span><span class="slot-chip" title="Mistral Large 3 - score 7.15" style="background:#d9f99d;color:#14532d;font-weight:500">Mistral L</span><span class="slot-chip" title="Grok-3 - score 7.00" style="background:#d9f99d;color:#14532d;font-weight:500">Grok-3</span><span class="slot-chip" title="Grok-3 Mini - score 6.90" style="background:#fef9c3;color:#78350f;font-weight:500">Grok Mini</span></td>
+          <td><span class="badge warn">⚠️ Gemini 2.5 Flash better fit</span></td>
+        </tr>
+        <tr>
+          <td><strong>Content Lead</strong></td>
+          <td><code style="font-size:0.8em">mistral-large-latest</code></td>
+          <td><span class="slot-chip" title="Gemini 2.5 Flash - score 7.85" style="background:#d9f99d;color:#14532d;font-weight:700">#1 Gem. Flash</span><span class="slot-chip" title="Kimi K2.5 - score 7.80" style="background:#d9f99d;color:#14532d;font-weight:500">Kimi K2.5</span><span class="slot-chip" title="Grok-4.1 - score 7.45" style="background:#d9f99d;color:#14532d;font-weight:500">Grok-4.1</span><span class="slot-chip" title="Mistral Large 3 - score 7.45" style="background:#d9f99d;color:#14532d;font-weight:500">Mistral L</span><span class="slot-chip" title="Grok-3 - score 7.25" style="background:#d9f99d;color:#14532d;font-weight:500">Grok-3</span></td>
+          <td><span class="badge warn">⚠️ Gemini 2.5 Flash better fit</span></td>
+        </tr>
+        <tr>
+          <td><strong>Accountant</strong></td>
+          <td><code style="font-size:0.8em">deepseek-chat</code></td>
+          <td><span class="slot-chip" title="DeepSeek R1 - score 8.20" style="background:#d9f99d;color:#14532d;font-weight:700">#1 DS R1</span><span class="slot-chip" title="Kimi K2.5 - score 8.20" style="background:#d9f99d;color:#14532d;font-weight:500">Kimi K2.5</span><span class="slot-chip" title="Gemini 2.5 Flash - score 8.15" style="background:#d9f99d;color:#14532d;font-weight:500">Gem. Flash</span><span class="slot-chip" title="DeepSeek V4 - score 7.70" style="background:#d9f99d;color:#14532d;font-weight:500">DS Chat</span><span class="slot-chip" title="Grok-3 Mini - score 7.50" style="background:#d9f99d;color:#14532d;font-weight:500">Grok Mini</span></td>
+          <td><span class="badge warn">⚠️ DeepSeek R1 better fit</span></td>
+        </tr>
+        <tr>
+          <td><strong>Spielberg</strong></td>
+          <td><code style="font-size:0.8em">grok-3-mini</code></td>
+          <td><span class="slot-chip" title="Gemini 2.5 Flash - score 7.65" style="background:#d9f99d;color:#14532d;font-weight:700">#1 Gem. Flash</span><span class="slot-chip" title="Mistral Large 3 - score 7.25" style="background:#d9f99d;color:#14532d;font-weight:500">Mistral L</span><span class="slot-chip" title="Kimi K2.5 - score 7.20" style="background:#d9f99d;color:#14532d;font-weight:500">Kimi K2.5</span><span class="slot-chip" title="Grok-3 - score 7.15" style="background:#d9f99d;color:#14532d;font-weight:500">Grok-3</span><span class="slot-chip" title="Grok-4.1 - score 7.05" style="background:#d9f99d;color:#14532d;font-weight:500">Grok-4.1</span></td>
+          <td><span class="badge warn">⚠️ Gemini 2.5 Flash better fit</span></td>
+        </tr>
+        <tr>
+          <td><strong>Finance</strong></td>
+          <td><code style="font-size:0.8em">deepseek-reasoner (R1)</code></td>
+          <td><span class="slot-chip" title="DeepSeek R1 - score 8.50" style="background:#d9f99d;color:#14532d;font-weight:700">#1 DS R1</span><span class="slot-chip" title="Kimi K2.5 - score 8.45" style="background:#d9f99d;color:#14532d;font-weight:500">Kimi K2.5</span><span class="slot-chip" title="Gemini 2.5 Flash - score 8.15" style="background:#d9f99d;color:#14532d;font-weight:500">Gem. Flash</span><span class="slot-chip" title="DeepSeek V4 - score 7.70" style="background:#d9f99d;color:#14532d;font-weight:500">DS Chat</span><span class="slot-chip" title="Grok-3 - score 7.65" style="background:#d9f99d;color:#14532d;font-weight:500">Grok-3</span></td>
+          <td><span class="badge warn">⚠️ DeepSeek R1 better fit</span></td>
+        </tr>
+        <tr>
+          <td><strong>Travel Agent</strong></td>
+          <td><code style="font-size:0.8em">kimi-k2.5</code></td>
+          <td><span class="slot-chip" title="Kimi K2.5 - score 8.50" style="background:#d9f99d;color:#14532d;font-weight:700">#1 Kimi K2.5</span><span class="slot-chip" title="Gemini 2.5 Flash - score 8.10" style="background:#d9f99d;color:#14532d;font-weight:500">Gem. Flash</span><span class="slot-chip" title="Grok-4.1 - score 7.90" style="background:#d9f99d;color:#14532d;font-weight:500">Grok-4.1</span><span class="slot-chip" title="DeepSeek R1 - score 7.80" style="background:#d9f99d;color:#14532d;font-weight:500">DS R1</span><span class="slot-chip" title="Grok-3 - score 7.70" style="background:#d9f99d;color:#14532d;font-weight:500">Grok-3</span></td>
+          <td><span class="badge warn">⚠️ Kimi K2.5 better fit</span></td>
+        </tr>
+        <tr>
+          <td><strong>Researcher</strong></td>
+          <td><code style="font-size:0.8em">grok-4.1</code></td>
+          <td><span class="slot-chip" title="Kimi K2.5 - score 8.50" style="background:#d9f99d;color:#14532d;font-weight:700">#1 Kimi K2.5</span><span class="slot-chip" title="DeepSeek R1 - score 8.20" style="background:#d9f99d;color:#14532d;font-weight:500">DS R1</span><span class="slot-chip" title="Gemini 2.5 Flash - score 8.10" style="background:#d9f99d;color:#14532d;font-weight:500">Gem. Flash</span><span class="slot-chip" title="Grok-4.1 - score 7.90" style="background:#d9f99d;color:#14532d;font-weight:500">Grok-4.1</span><span class="slot-chip" title="Grok-3 - score 7.80" style="background:#d9f99d;color:#14532d;font-weight:500">Grok-3</span></td>
+          <td><span class="badge warn">⚠️ Kimi K2.5 better fit</span></td>
+        </tr>
+        <tr>
+          <td><strong>Doc</strong> <span class="badge local">LOCAL ONLY</span></td>
+          <td><code style="font-size:0.8em">gemma4:26b</code></td>
+          <td><span class="slot-chip" title="Gemma 4 26B - score 6.40" style="background:#fef9c3;color:#78350f;font-weight:700">#1 Gemma4:26b</span></td>
+          <td><span class="badge warn">⚠️ Gemma 4 26B better fit</span></td>
+        </tr>
+        <tr>
+          <td><strong>Freud</strong> <span class="badge local">LOCAL ONLY</span></td>
+          <td><code style="font-size:0.8em">gemma4:26b</code></td>
+          <td><span class="slot-chip" title="Gemma 4 26B - score 6.40" style="background:#fef9c3;color:#78350f;font-weight:700">#1 Gemma4:26b</span></td>
+          <td><span class="badge warn">⚠️ Gemma 4 26B better fit</span></td>
+        </tr>
+        <tr>
+          <td><strong>Yoda</strong></td>
+          <td><code style="font-size:0.8em">claude-opus-4-6</code></td>
+          <td><span class="slot-chip" title="Claude Opus 4.6 - score 9.50" style="background:#bbf7d0;color:#14532d;font-weight:700">#1 Opus 4.6</span><span class="slot-chip" title="Claude Sonnet 4.6 - score 8.40" style="background:#d9f99d;color:#14532d;font-weight:500">Sonnet 4.6</span><span class="slot-chip" title="DeepSeek R1 - score 8.40" style="background:#d9f99d;color:#14532d;font-weight:500">DS R1</span><span class="slot-chip" title="Kimi K2.5 - score 8.40" style="background:#d9f99d;color:#14532d;font-weight:500">Kimi K2.5</span><span class="slot-chip" title="Gemini 2.5 Flash - score 8.10" style="background:#d9f99d;color:#14532d;font-weight:500">Gem. Flash</span></td>
+          <td><span class="badge warn">⚠️ Claude Opus 4.6 better fit</span></td>
+        </tr>
+        <tr>
+          <td><strong>Council Contrarian</strong></td>
+          <td><code style="font-size:0.8em">grok-3</code></td>
+          <td><span class="slot-chip" title="Grok-3 - score 8.20" style="background:#d9f99d;color:#14532d;font-weight:700">#1 Grok-3</span><span class="slot-chip" title="Grok-4.1 - score 7.70" style="background:#d9f99d;color:#14532d;font-weight:500">Grok-4.1</span><span class="slot-chip" title="Mistral Large 3 - score 7.70" style="background:#d9f99d;color:#14532d;font-weight:500">Mistral L</span><span class="slot-chip" title="Gemini 2.5 Flash - score 7.70" style="background:#d9f99d;color:#14532d;font-weight:500">Gem. Flash</span><span class="slot-chip" title="DeepSeek R1 - score 7.40" style="background:#d9f99d;color:#14532d;font-weight:500">DS R1</span></td>
+          <td><span class="badge ok">✅ Best fit</span></td>
+        </tr>
+        <tr>
+          <td><strong>Council Local</strong> <span class="badge local">LOCAL ONLY</span></td>
+          <td><code style="font-size:0.8em">gemma4:26b</code></td>
+          <td><span class="slot-chip" title="Gemma 4 26B - score 6.60" style="background:#fef9c3;color:#78350f;font-weight:700">#1 Gemma4:26b</span></td>
+          <td><span class="badge warn">⚠️ Gemma 4 26B better fit</span></td>
+        </tr>
+        <tr>
+          <td><strong>Council EU</strong></td>
+          <td><code style="font-size:0.8em">mistral-large-latest</code></td>
+          <td><span class="slot-chip" title="Grok-3 - score 8.50" style="background:#d9f99d;color:#14532d;font-weight:700">#1 Grok-3</span><span class="slot-chip" title="DeepSeek R1 - score 8.40" style="background:#d9f99d;color:#14532d;font-weight:500">DS R1</span><span class="slot-chip" title="Grok-4.1 - score 8.20" style="background:#d9f99d;color:#14532d;font-weight:500">Grok-4.1</span><span class="slot-chip" title="Kimi K2.5 - score 8.20" style="background:#d9f99d;color:#14532d;font-weight:500">Kimi K2.5</span><span class="slot-chip" title="Mistral Large 3 - score 8.00" style="background:#d9f99d;color:#14532d;font-weight:500">Mistral L</span></td>
+          <td><span class="badge warn">⚠️ Grok-3 better fit</span></td>
+        </tr>
+        <tr>
+          <td><strong>Council CH</strong></td>
+          <td><code style="font-size:0.8em">kimi-k2.5</code></td>
+          <td><span class="slot-chip" title="DeepSeek R1 - score 8.60" style="background:#d9f99d;color:#14532d;font-weight:700">#1 DS R1</span><span class="slot-chip" title="Grok-3 - score 8.50" style="background:#d9f99d;color:#14532d;font-weight:500">Grok-3</span><span class="slot-chip" title="Grok-4.1 - score 8.30" style="background:#d9f99d;color:#14532d;font-weight:500">Grok-4.1</span><span class="slot-chip" title="Kimi K2.5 - score 8.30" style="background:#d9f99d;color:#14532d;font-weight:500">Kimi K2.5</span><span class="slot-chip" title="Mistral Large 3 - score 8.00" style="background:#d9f99d;color:#14532d;font-weight:500">Mistral L</span></td>
+          <td><span class="badge warn">⚠️ DeepSeek R1 better fit</span></td>
+        </tr>
+        <tr>
+          <td><strong>Council Tech</strong></td>
+          <td><code style="font-size:0.8em">gpt-5.3-codex</code></td>
+          <td><span class="slot-chip" title="GPT-5.3 Codex - score 9.00" style="background:#bbf7d0;color:#14532d;font-weight:700">#1 Codex</span><span class="slot-chip" title="DeepSeek V4 - score 8.50" style="background:#d9f99d;color:#14532d;font-weight:500">DS Chat</span><span class="slot-chip" title="Grok Code Fast 1 - score 8.40" style="background:#d9f99d;color:#14532d;font-weight:500">Grok Fast</span><span class="slot-chip" title="DeepSeek R1 - score 8.30" style="background:#d9f99d;color:#14532d;font-weight:500">DS R1</span><span class="slot-chip" title="Grok-3 - score 8.20" style="background:#d9f99d;color:#14532d;font-weight:500">Grok-3</span></td>
+          <td><span class="badge warn">⚠️ GPT-5.3 Codex better fit</span></td>
+        </tr>
+        </tbody>
+      </table>
+    </div>
+
+    <details style="background:white;border:1px solid #e2e8f0;border-radius:8px;padding:12px 18px;margin-bottom:20px">
+      <summary>Research Notes</summary>
+      <div style="margin-top:10px"><div class="note-entry"><strong>2026-04-06</strong> — Initial matrix built. Pricing sourced from provider pages. Scores based on published benchmarks and observed performance. All 17 models currently active in the Life Admin lineup.</div></div>
+    </details>
+  </div>
+
+  <!-- ═══ SKILLS TAB ═══ -->
+  <div id="tab-skills" class="tab-panel">
+    <div class="card">
+      <div class="section-title">Skills Gap Analysis — All 21 Positions</div>
+      <p style="font-size:0.82em;color:#64748b;margin-bottom:12px">
+        <span class="skill-chip installed">●</span> Installed &nbsp;
+        <span class="skill-chip pending">●</span> Pending vet/install &nbsp;
+        <span class="skill-chip mcp">●</span> MCP tools &nbsp;
+        Gap % = installed ÷ total required
+      </p>
+      <table>
+        <thead>
+          <tr><th>Position</th><th>Installed Skills</th><th>Pending / Custom Build</th><th>MCP Tools</th><th>Gap %</th></tr>
+        </thead>
+        <tbody>
+          
+        <tr>
+          <td><strong>CEO (Clawdy)</strong></td>
+          <td style="font-size:0.8em"><span class="skill-chip installed">paperclip</span><span class="skill-chip installed">paperclip-create-agent</span><span class="skill-chip installed">paperclip-create-plugin</span><span class="skill-chip installed">para-memory-files</span><span class="skill-chip installed">council-debate</span><span class="skill-chip installed">skill-discovery</span></td>
+          <td style="font-size:0.8em"><span class="skill-chip pending">[ ] `pdf`</span><span class="skill-chip pending">[ ] `pptx`</span><span class="skill-chip pending">[ ] `c-level-advisory (alirezarezvani/claude-skills)`</span><span class="skill-chip pending">[ ] `strategic-planning-framework (alirezarezvani/claude-skills)`</span></td>
+          <td style="font-size:0.8em"><span class="skill-chip mcp">[ ] **Sequential Thinking (claude_local only)**</span></td>
+          <td><div style="background:#fef9c3;padding:2px 8px;border-radius:10px;text-align:center;font-size:0.8em;font-weight:600">50%</div></td>
+        </tr>
+        <tr>
+          <td><strong>CTO (Gayan)</strong></td>
+          <td style="font-size:0.8em"><span class="skill-chip installed">paperclip</span><span class="skill-chip installed">para-memory-files</span><span class="skill-chip installed">skill-discovery</span><span class="skill-chip installed">paperclip-create-agent</span></td>
+          <td style="font-size:0.8em"><span class="skill-chip pending">[ ] `pdf`</span><span class="skill-chip pending">[ ] `pptx`</span><span class="skill-chip pending">[ ] `software-engineering (wshobson/agents)`</span><span class="skill-chip pending">[ ] `llm-development (wshobson/agents)`</span></td>
+          <td style="font-size:0.8em"><span class="skill-chip mcp">[ ] **GitHub (claude_local only)**</span><span class="skill-chip mcp">[ ] **Sequential Thinking (claude_local only)**</span><span class="skill-chip mcp">[ ] **Tavily (claude_local only)**</span></td>
+          <td><div style="background:#fecaca;padding:2px 8px;border-radius:10px;text-align:center;font-size:0.8em;font-weight:600">44%</div></td>
+        </tr>
+        <tr>
+          <td><strong>COO</strong></td>
+          <td style="font-size:0.8em"><span class="skill-chip installed">paperclip</span><span class="skill-chip installed">para-memory-files</span></td>
+          <td style="font-size:0.8em"><span class="skill-chip pending">[ ] `pdf`</span><span class="skill-chip pending">[ ] `pptx`</span><span class="skill-chip pending">[ ] `docx`</span><span class="skill-chip pending">[ ] `c-level-advisory (alirezarezvani/claude-skills)`</span></td>
+          <td style="font-size:0.8em"><span class="skill-chip mcp">[ ] **Google Workspace (claude_local only)**</span><span class="skill-chip mcp">[ ] **Sequential Thinking (claude_local only)**</span></td>
+          <td><div style="background:#fecaca;padding:2px 8px;border-radius:10px;text-align:center;font-size:0.8em;font-weight:600">28%</div></td>
+        </tr>
+        <tr>
+          <td><strong>Senior Engineer</strong></td>
+          <td style="font-size:0.8em"><span class="skill-chip installed">paperclip</span><span class="skill-chip installed">skill-discovery</span></td>
+          <td style="font-size:0.8em"><span class="skill-chip pending">[ ] `pdf`</span><span class="skill-chip pending">[ ] `software-engineering (wshobson/agents)`</span><span class="skill-chip pending">[ ] `ci-cd-engineering (wshobson/agents)`</span><span class="skill-chip pending">[ ] `code-review (wshobson/agents)`</span></td>
+          <td style="font-size:0.8em"><span class="skill-chip mcp">[ ] **GitHub (claude_local only)**</span><span class="skill-chip mcp">[ ] **Sequential Thinking (claude_local only)**</span></td>
+          <td><div style="background:#fecaca;padding:2px 8px;border-radius:10px;text-align:center;font-size:0.8em;font-weight:600">33%</div></td>
+        </tr>
+        <tr>
+          <td><strong>Engineer</strong></td>
+          <td style="font-size:0.8em"><span class="skill-chip installed">paperclip</span><span class="skill-chip installed">skill-discovery</span></td>
+          <td style="font-size:0.8em"><span class="skill-chip pending">[ ] `software-engineering (wshobson/agents)`</span><span class="skill-chip pending">[ ] `backend-engineering (wshobson/agents)`</span></td>
+          <td style="font-size:0.8em"><span class="skill-chip mcp">[ ] **GitHub (claude_local only)**</span></td>
+          <td><div style="background:#fef9c3;padding:2px 8px;border-radius:10px;text-align:center;font-size:0.8em;font-weight:600">50%</div></td>
+        </tr>
+        <tr>
+          <td><strong>QA Bot</strong></td>
+          <td style="font-size:0.8em"><span class="skill-chip installed">paperclip</span><span class="skill-chip installed">skill-discovery</span></td>
+          <td style="font-size:0.8em"><span class="skill-chip pending">[ ] `webapp-testing`</span><span class="skill-chip pending">[ ] `software-engineering (wshobson/agents)`</span></td>
+          <td style="font-size:0.8em"><span class="skill-chip mcp">[ ] **GitHub (claude_local only)**</span></td>
+          <td><div style="background:#fef9c3;padding:2px 8px;border-radius:10px;text-align:center;font-size:0.8em;font-weight:600">50%</div></td>
+        </tr>
+        <tr>
+          <td><strong>Designer</strong></td>
+          <td style="font-size:0.8em"><span class="skill-chip installed">paperclip</span><span class="skill-chip installed">skill-discovery</span></td>
+          <td style="font-size:0.8em"><span class="skill-chip pending">[ ] `pptx`</span><span class="skill-chip pending">[ ] `brand-guidelines (alirezarezvani/claude-skills)`</span><span class="skill-chip pending">[ ] `dark-slate-design-system`</span></td>
+          <td style="font-size:0.8em"><span style="color:#94a3b8">none</span></td>
+          <td><div style="background:#fecaca;padding:2px 8px;border-radius:10px;text-align:center;font-size:0.8em;font-weight:600">40%</div></td>
+        </tr>
+        <tr>
+          <td><strong>Content Lead</strong></td>
+          <td style="font-size:0.8em"><span class="skill-chip installed">paperclip</span><span class="skill-chip installed">para-memory-files</span></td>
+          <td style="font-size:0.8em"><span class="skill-chip pending">[ ] `docx`</span><span class="skill-chip pending">[ ] `pptx`</span><span class="skill-chip pending">[ ] `marketing-content (alirezarezvani/claude-skills)`</span><span class="skill-chip pending">[ ] `brand-guidelines (alirezarezvani/claude-skills)`</span></td>
+          <td style="font-size:0.8em"><span class="skill-chip mcp">[ ] **Google Workspace (claude_local only)**</span></td>
+          <td><div style="background:#fecaca;padding:2px 8px;border-radius:10px;text-align:center;font-size:0.8em;font-weight:600">28%</div></td>
+        </tr>
+        <tr>
+          <td><strong>Accountant</strong></td>
+          <td style="font-size:0.8em"><span class="skill-chip installed">paperclip</span></td>
+          <td style="font-size:0.8em"><span class="skill-chip pending">[ ] `xlsx`</span><span class="skill-chip pending">[ ] `pdf`</span><span class="skill-chip pending">[ ] `finance-accounting (alirezarezvani/claude-skills)`</span><span class="skill-chip pending">[ ] `australian-tax-rules`</span></td>
+          <td style="font-size:0.8em"><span class="skill-chip mcp">[ ] **SQLite (claude_local only)**</span></td>
+          <td><div style="background:#fecaca;padding:2px 8px;border-radius:10px;text-align:center;font-size:0.8em;font-weight:600">20%</div></td>
+        </tr>
+        <tr>
+          <td><strong>Spielberg</strong></td>
+          <td style="font-size:0.8em"><span class="skill-chip installed">paperclip</span></td>
+          <td style="font-size:0.8em"><span class="skill-chip pending">[ ] `pptx`</span><span class="skill-chip pending">[ ] `pdf`</span><span class="skill-chip pending">[ ] `video-production-framework`</span><span class="skill-chip pending">[ ] `creative-brief-templates`</span></td>
+          <td style="font-size:0.8em"><span style="color:#94a3b8">none</span></td>
+          <td><div style="background:#fecaca;padding:2px 8px;border-radius:10px;text-align:center;font-size:0.8em;font-weight:600">20%</div></td>
+        </tr>
+        <tr>
+          <td><strong>Finance</strong></td>
+          <td style="font-size:0.8em"><span class="skill-chip installed">paperclip</span><span class="skill-chip installed">para-memory-files</span></td>
+          <td style="font-size:0.8em"><span class="skill-chip pending">[ ] `xlsx`</span><span class="skill-chip pending">[ ] `pdf`</span><span class="skill-chip pending">[ ] `finance-accounting (alirezarezvani/claude-skills)`</span><span class="skill-chip pending">[ ] `c-level-advisory (alirezarezvani/claude-skills)`</span></td>
+          <td style="font-size:0.8em"><span class="skill-chip mcp">[ ] **SQLite (claude_local only)**</span></td>
+          <td><div style="background:#fecaca;padding:2px 8px;border-radius:10px;text-align:center;font-size:0.8em;font-weight:600">28%</div></td>
+        </tr>
+        <tr>
+          <td><strong>Doc</strong> <span class="badge local">🔒</span></td>
+          <td style="font-size:0.8em"><span class="skill-chip installed">paperclip</span><span class="skill-chip installed">para-memory-files</span></td>
+          <td style="font-size:0.8em"><span class="skill-chip pending">[ ] `pdf`</span><span class="skill-chip pending">[ ] `health-biometrics-tracker`</span><span class="skill-chip pending">[ ] `blood-test-analyzer`</span><span class="skill-chip pending">[ ] `dna-health-analysis`</span></td>
+          <td style="font-size:0.8em"><span style="color:#94a3b8">none</span></td>
+          <td><div style="background:#fecaca;padding:2px 8px;border-radius:10px;text-align:center;font-size:0.8em;font-weight:600">22%</div></td>
+        </tr>
+        <tr>
+          <td><strong>Freud</strong> <span class="badge local">🔒</span></td>
+          <td style="font-size:0.8em"><span class="skill-chip installed">paperclip</span></td>
+          <td style="font-size:0.8em"><span class="skill-chip pending">[ ] `cbt-act-framework`</span><span class="skill-chip pending">[ ] `adhd-support-toolkit`</span><span class="skill-chip pending">[ ] `autism-communication-guide`</span><span class="skill-chip pending">[ ] `mood-journal-facilitator`</span></td>
+          <td style="font-size:0.8em"><span style="color:#94a3b8">none</span></td>
+          <td><div style="background:#fecaca;padding:2px 8px;border-radius:10px;text-align:center;font-size:0.8em;font-weight:600">12%</div></td>
+        </tr>
+        <tr>
+          <td><strong>Travel Agent</strong></td>
+          <td style="font-size:0.8em"><span class="skill-chip installed">paperclip</span><span class="skill-chip installed">para-memory-files</span></td>
+          <td style="font-size:0.8em"><span class="skill-chip pending">[ ] `pdf`</span><span class="skill-chip pending">[ ] `slow-travel-planner`</span></td>
+          <td style="font-size:0.8em"><span class="skill-chip mcp">[ ] **Google Workspace (claude_local only)**</span><span class="skill-chip mcp">[ ] **Brave Search (claude_local only)**</span></td>
+          <td><div style="background:#fef9c3;padding:2px 8px;border-radius:10px;text-align:center;font-size:0.8em;font-weight:600">50%</div></td>
+        </tr>
+        <tr>
+          <td><strong>Researcher</strong></td>
+          <td style="font-size:0.8em"><span class="skill-chip installed">paperclip</span><span class="skill-chip installed">para-memory-files</span><span class="skill-chip installed">council-debate</span><span class="skill-chip installed">skill-discovery</span></td>
+          <td style="font-size:0.8em"><span class="skill-chip pending">[ ] `pdf`</span><span class="skill-chip pending">[ ] `docx`</span><span class="skill-chip pending">[ ] `llm-matrix-updater`</span></td>
+          <td style="font-size:0.8em"><span class="skill-chip mcp">[ ] **Tavily (claude_local only)**</span><span class="skill-chip mcp">[ ] **Exa (claude_local only)**</span><span class="skill-chip mcp">[ ] **Sequential Thinking (claude_local only)**</span></td>
+          <td><div style="background:#fef9c3;padding:2px 8px;border-radius:10px;text-align:center;font-size:0.8em;font-weight:600">57%</div></td>
+        </tr>
+        <tr>
+          <td><strong>Yoda</strong></td>
+          <td style="font-size:0.8em"><span class="skill-chip installed">paperclip</span><span class="skill-chip installed">council-debate</span></td>
+          <td style="font-size:0.8em"><span style="color:#94a3b8">none</span></td>
+          <td style="font-size:0.8em"><span class="skill-chip mcp">[ ] **Sequential Thinking (claude_local only)**</span></td>
+          <td><div style="background:#bbf7d0;padding:2px 8px;border-radius:10px;text-align:center;font-size:0.8em;font-weight:600">100%</div></td>
+        </tr>
+        <tr>
+          <td><strong>Council Contrarian</strong></td>
+          <td style="font-size:0.8em"><span class="skill-chip installed">paperclip</span><span class="skill-chip installed">council-debate</span></td>
+          <td style="font-size:0.8em"><span style="color:#94a3b8">none</span></td>
+          <td style="font-size:0.8em"><span style="color:#94a3b8">none</span></td>
+          <td><div style="background:#bbf7d0;padding:2px 8px;border-radius:10px;text-align:center;font-size:0.8em;font-weight:600">100%</div></td>
+        </tr>
+        <tr>
+          <td><strong>Council Local</strong> <span class="badge local">🔒</span></td>
+          <td style="font-size:0.8em"><span class="skill-chip installed">paperclip</span><span class="skill-chip installed">council-debate</span></td>
+          <td style="font-size:0.8em"><span style="color:#94a3b8">none</span></td>
+          <td style="font-size:0.8em"><span style="color:#94a3b8">none</span></td>
+          <td><div style="background:#bbf7d0;padding:2px 8px;border-radius:10px;text-align:center;font-size:0.8em;font-weight:600">100%</div></td>
+        </tr>
+        <tr>
+          <td><strong>Council EU</strong></td>
+          <td style="font-size:0.8em"><span class="skill-chip installed">paperclip</span><span class="skill-chip installed">council-debate</span></td>
+          <td style="font-size:0.8em"><span style="color:#94a3b8">none</span></td>
+          <td style="font-size:0.8em"><span style="color:#94a3b8">none</span></td>
+          <td><div style="background:#bbf7d0;padding:2px 8px;border-radius:10px;text-align:center;font-size:0.8em;font-weight:600">100%</div></td>
+        </tr>
+        <tr>
+          <td><strong>Council CH</strong></td>
+          <td style="font-size:0.8em"><span class="skill-chip installed">paperclip</span><span class="skill-chip installed">council-debate</span></td>
+          <td style="font-size:0.8em"><span style="color:#94a3b8">none</span></td>
+          <td style="font-size:0.8em"><span style="color:#94a3b8">none</span></td>
+          <td><div style="background:#bbf7d0;padding:2px 8px;border-radius:10px;text-align:center;font-size:0.8em;font-weight:600">100%</div></td>
+        </tr>
+        <tr>
+          <td><strong>Council Tech</strong></td>
+          <td style="font-size:0.8em"><span class="skill-chip installed">paperclip</span><span class="skill-chip installed">council-debate</span></td>
+          <td style="font-size:0.8em"><span class="skill-chip pending">[ ] `software-engineering (wshobson/agents)`</span></td>
+          <td style="font-size:0.8em"><span class="skill-chip mcp">[ ] **GitHub (claude_local only)**</span></td>
+          <td><div style="background:#fef9c3;padding:2px 8px;border-radius:10px;text-align:center;font-size:0.8em;font-weight:600">66%</div></td>
+        </tr>
+        </tbody>
+      </table>
+    </div>
+
+    <div class="card">
+      <div class="section-title">Skill Sources</div>
+      <table>
+        <thead><tr><th>Source</th><th>URL</th><th>Best for</th></tr></thead>
+        <tbody>
+          <tr><td>Official Anthropic skills</td><td><code>github.com/anthropics/skills</code></td><td>pdf, xlsx, pptx, docx, webapp-testing — all agents</td></tr>
+          <tr><td>C-Level Advisory (34 skills)</td><td><code>github.com/alirezarezvani/claude-skills</code></td><td>CEO, COO, CTO — executive frameworks</td></tr>
+          <tr><td>Marketing (45 skills)</td><td><code>github.com/alirezarezvani/claude-skills</code></td><td>Content Lead — copy, SEO, campaigns</td></tr>
+          <tr><td>Engineering (129 skills)</td><td><code>github.com/wshobson/agents</code></td><td>CTO, Senior Engineer, Engineer, QA Bot</td></tr>
+          <tr><td>MCP servers</td><td><code>github.com/modelcontextprotocol/servers</code></td><td>GitHub, Google Workspace, Sequential Thinking</td></tr>
+          <tr><td>Google Workspace MCP</td><td><code>workspacemcp.com</code></td><td>CEO, COO, Content Lead, TravelAgent — Gmail+Calendar</td></tr>
+          <tr><td>agentskills.io specification</td><td><code>agentskills.io/specification</code></td><td>SKILL.md format reference</td></tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+  <!-- ═══ HIRING TAB ═══ -->
+  <div id="tab-hiring" class="tab-panel">
+    <div class="hire-bar">
+      <span>Last hiring round: <strong>run <code>python update_llm_matrix.py --hire</code> to see full report</strong></span>
+      <span style="margin-left:auto;color:#94a3b8;font-size:0.8em">Emergency slot is always gemma4:26b (availability guarantee, not merit)</span>
+    </div>
+
+    <div class="card">
+      <div class="section-title">Current Rankings — Primary, Fallback 1, Fallback 2 by Position</div>
+      <table>
+        <thead>
+          <tr><th>Position</th><th>Current</th><th>Primary (best)</th><th>Fallback 1</th><th>Fallback 2</th><th>Flags</th><th>Status</th></tr>
+        </thead>
+        <tbody>
+          
+        <tr>
+          <td><strong>CEO (Clawdy)</strong></td>
+          <td><code style="font-size:0.8em">claude-opus-4-6</code></td>
+          <td><strong>Claude Opus 4.6</strong><br><span style="font-size:0.75em;color:#64748b">9.05 · FREE (Max plan)</span></td>
+          <td><strong>Claude Sonnet 4.6</strong><br><span style="font-size:0.75em;color:#64748b">8.40 · FREE (Max plan)</span></td>
+          <td><strong>Kimi K2.5</strong><br><span style="font-size:0.75em;color:#64748b">8.30 · $0.14/M in, $0.60/M out</span></td>
+          <td></td>
+          <td><span class="badge warn">⚠️ Change available</span></td>
+        </tr>
+        <tr>
+          <td><strong>CTO (Gayan)</strong></td>
+          <td><code style="font-size:0.8em">claude-opus-4-6</code></td>
+          <td><strong>Claude Opus 4.6</strong><br><span style="font-size:0.75em;color:#64748b">9.00 · FREE (Max plan)</span></td>
+          <td><strong>DeepSeek R1</strong><br><span style="font-size:0.75em;color:#64748b">8.30 · $0.55/M in, $2.19/M out</span></td>
+          <td><strong>Claude Sonnet 4.6</strong><br><span style="font-size:0.75em;color:#64748b">8.10 · FREE (Max plan)</span></td>
+          <td></td>
+          <td><span class="badge warn">⚠️ Change available</span></td>
+        </tr>
+        <tr>
+          <td><strong>COO</strong></td>
+          <td><code style="font-size:0.8em">claude-sonnet-4-6</code></td>
+          <td><strong>Claude Opus 4.6</strong><br><span style="font-size:0.75em;color:#64748b">9.00 · FREE (Max plan)</span></td>
+          <td><strong>Claude Sonnet 4.6</strong><br><span style="font-size:0.75em;color:#64748b">8.30 · FREE (Max plan)</span></td>
+          <td><strong>Kimi K2.5</strong><br><span style="font-size:0.75em;color:#64748b">8.15 · $0.14/M in, $0.60/M out</span></td>
+          <td></td>
+          <td><span class="badge warn">⚠️ Change available</span></td>
+        </tr>
+        <tr>
+          <td><strong>Senior Engineer</strong></td>
+          <td><code style="font-size:0.8em">deepseek-v4</code></td>
+          <td><strong>GPT-5.3 Codex</strong><br><span style="font-size:0.75em;color:#64748b">8.50 · Task-limited (Codex plan)</span></td>
+          <td><strong>DeepSeek V4</strong><br><span style="font-size:0.75em;color:#64748b">8.35 · $0.27/M in, $1.10/M out</span></td>
+          <td><strong>Grok Code Fast 1</strong><br><span style="font-size:0.75em;color:#64748b">8.30 · $0.50/M in, $1.50/M out</span></td>
+          <td></td>
+          <td><span class="badge warn">⚠️ Change available</span></td>
+        </tr>
+        <tr>
+          <td><strong>Engineer</strong></td>
+          <td><code style="font-size:0.8em">gpt-5.3-codex</code></td>
+          <td><strong>GPT-5.3 Codex</strong><br><span style="font-size:0.75em;color:#64748b">9.20 · Task-limited (Codex plan)</span></td>
+          <td><strong>Grok Code Fast 1</strong><br><span style="font-size:0.75em;color:#64748b">8.60 · $0.50/M in, $1.50/M out</span></td>
+          <td><strong>DeepSeek V4</strong><br><span style="font-size:0.75em;color:#64748b">8.60 · $0.27/M in, $1.10/M out</span></td>
+          <td></td>
+          <td><span class="badge warn">⚠️ Change available</span></td>
+        </tr>
+        <tr>
+          <td><strong>QA Bot</strong></td>
+          <td><code style="font-size:0.8em">deepseek-v4</code></td>
+          <td><strong>GPT-5.3 Codex</strong><br><span style="font-size:0.75em;color:#64748b">8.60 · Task-limited (Codex plan)</span></td>
+          <td><strong>Grok Code Fast 1</strong><br><span style="font-size:0.75em;color:#64748b">8.40 · $0.50/M in, $1.50/M out</span></td>
+          <td><strong>DeepSeek V4</strong><br><span style="font-size:0.75em;color:#64748b">8.40 · $0.27/M in, $1.10/M out</span></td>
+          <td></td>
+          <td><span class="badge warn">⚠️ Change available</span></td>
+        </tr>
+        <tr>
+          <td><strong>Designer</strong></td>
+          <td><code style="font-size:0.8em">gemini-2.5-flash</code></td>
+          <td><strong>Gemini 2.5 Flash</strong><br><span style="font-size:0.75em;color:#64748b">7.75 · $0.15/M in, $0.60/M out</span></td>
+          <td><strong>Kimi K2.5</strong><br><span style="font-size:0.75em;color:#64748b">7.35 · $0.14/M in, $0.60/M out</span></td>
+          <td><strong>Mistral Large 3</strong><br><span style="font-size:0.75em;color:#64748b">7.15 · $2/M in, $6/M out</span></td>
+          <td></td>
+          <td><span class="badge warn">⚠️ Change available</span></td>
+        </tr>
+        <tr>
+          <td><strong>Content Lead</strong></td>
+          <td><code style="font-size:0.8em">mistral-large-latest</code></td>
+          <td><strong>Gemini 2.5 Flash</strong><br><span style="font-size:0.75em;color:#64748b">7.85 · $0.15/M in, $0.60/M out</span></td>
+          <td><strong>Kimi K2.5</strong><br><span style="font-size:0.75em;color:#64748b">7.80 · $0.14/M in, $0.60/M out</span></td>
+          <td><strong>Grok-4.1</strong><br><span style="font-size:0.75em;color:#64748b">7.45 · $3/M in, $15/M out</span></td>
+          <td></td>
+          <td><span class="badge warn">⚠️ Change available</span></td>
+        </tr>
+        <tr>
+          <td><strong>Accountant</strong></td>
+          <td><code style="font-size:0.8em">deepseek-chat</code></td>
+          <td><strong>DeepSeek R1</strong><br><span style="font-size:0.75em;color:#64748b">8.20 · $0.55/M in, $2.19/M out</span></td>
+          <td><strong>Kimi K2.5</strong><br><span style="font-size:0.75em;color:#64748b">8.20 · $0.14/M in, $0.60/M out</span></td>
+          <td><strong>Gemini 2.5 Flash</strong><br><span style="font-size:0.75em;color:#64748b">8.15 · $0.15/M in, $0.60/M out</span></td>
+          <td></td>
+          <td><span class="badge warn">⚠️ Change available</span></td>
+        </tr>
+        <tr>
+          <td><strong>Spielberg</strong></td>
+          <td><code style="font-size:0.8em">grok-3-mini</code></td>
+          <td><strong>Gemini 2.5 Flash</strong><br><span style="font-size:0.75em;color:#64748b">7.65 · $0.15/M in, $0.60/M out</span></td>
+          <td><strong>Mistral Large 3</strong><br><span style="font-size:0.75em;color:#64748b">7.25 · $2/M in, $6/M out</span></td>
+          <td><strong>Kimi K2.5</strong><br><span style="font-size:0.75em;color:#64748b">7.20 · $0.14/M in, $0.60/M out</span></td>
+          <td></td>
+          <td><span class="badge warn">⚠️ Change available</span></td>
+        </tr>
+        <tr>
+          <td><strong>Finance</strong></td>
+          <td><code style="font-size:0.8em">deepseek-reasoner (R1)</code></td>
+          <td><strong>DeepSeek R1</strong><br><span style="font-size:0.75em;color:#64748b">8.50 · $0.55/M in, $2.19/M out</span></td>
+          <td><strong>Kimi K2.5</strong><br><span style="font-size:0.75em;color:#64748b">8.45 · $0.14/M in, $0.60/M out</span></td>
+          <td><strong>Gemini 2.5 Flash</strong><br><span style="font-size:0.75em;color:#64748b">8.15 · $0.15/M in, $0.60/M out</span></td>
+          <td></td>
+          <td><span class="badge warn">⚠️ Change available</span></td>
+        </tr>
+        <tr>
+          <td><strong>Travel Agent</strong></td>
+          <td><code style="font-size:0.8em">kimi-k2.5</code></td>
+          <td><strong>Kimi K2.5</strong><br><span style="font-size:0.75em;color:#64748b">8.50 · $0.14/M in, $0.60/M out</span></td>
+          <td><strong>Gemini 2.5 Flash</strong><br><span style="font-size:0.75em;color:#64748b">8.10 · $0.15/M in, $0.60/M out</span></td>
+          <td><strong>Grok-4.1</strong><br><span style="font-size:0.75em;color:#64748b">7.90 · $3/M in, $15/M out</span></td>
+          <td></td>
+          <td><span class="badge warn">⚠️ Change available</span></td>
+        </tr>
+        <tr>
+          <td><strong>Researcher</strong></td>
+          <td><code style="font-size:0.8em">grok-4.1</code></td>
+          <td><strong>Kimi K2.5</strong><br><span style="font-size:0.75em;color:#64748b">8.50 · $0.14/M in, $0.60/M out</span></td>
+          <td><strong>DeepSeek R1</strong><br><span style="font-size:0.75em;color:#64748b">8.20 · $0.55/M in, $2.19/M out</span></td>
+          <td><strong>Gemini 2.5 Flash</strong><br><span style="font-size:0.75em;color:#64748b">8.10 · $0.15/M in, $0.60/M out</span></td>
+          <td></td>
+          <td><span class="badge warn">⚠️ Change available</span></td>
+        </tr>
+        <tr>
+          <td><strong>Doc</strong></td>
+          <td><code style="font-size:0.8em">gemma4:26b</code></td>
+          <td><strong>Gemma 4 26B</strong><br><span style="font-size:0.75em;color:#64748b">6.40 · FREE (local GPU)</span></td>
+          <td>—</td>
+          <td>—</td>
+          <td><span class="badge local">local</span></td>
+          <td><span class="badge warn">⚠️ Change available</span></td>
+        </tr>
+        <tr>
+          <td><strong>Freud</strong></td>
+          <td><code style="font-size:0.8em">gemma4:26b</code></td>
+          <td><strong>Gemma 4 26B</strong><br><span style="font-size:0.75em;color:#64748b">6.40 · FREE (local GPU)</span></td>
+          <td>—</td>
+          <td>—</td>
+          <td><span class="badge local">local</span></td>
+          <td><span class="badge warn">⚠️ Change available</span></td>
+        </tr>
+        <tr>
+          <td><strong>Yoda</strong></td>
+          <td><code style="font-size:0.8em">claude-opus-4-6</code></td>
+          <td><strong>Claude Opus 4.6</strong><br><span style="font-size:0.75em;color:#64748b">9.50 · FREE (Max plan)</span></td>
+          <td><strong>Claude Sonnet 4.6</strong><br><span style="font-size:0.75em;color:#64748b">8.40 · FREE (Max plan)</span></td>
+          <td><strong>DeepSeek R1</strong><br><span style="font-size:0.75em;color:#64748b">8.40 · $0.55/M in, $2.19/M out</span></td>
+          <td></td>
+          <td><span class="badge warn">⚠️ Change available</span></td>
+        </tr>
+        <tr>
+          <td><strong>Council Contrarian</strong></td>
+          <td><code style="font-size:0.8em">grok-3</code></td>
+          <td><strong>Grok-3</strong><br><span style="font-size:0.75em;color:#64748b">8.20 · $3/M in, $15/M out</span></td>
+          <td><strong>Grok-4.1</strong><br><span style="font-size:0.75em;color:#64748b">7.70 · $3/M in, $15/M out</span></td>
+          <td><strong>Mistral Large 3</strong><br><span style="font-size:0.75em;color:#64748b">7.70 · $2/M in, $6/M out</span></td>
+          <td></td>
+          <td><span class="badge ok">✅ Best fit</span></td>
+        </tr>
+        <tr>
+          <td><strong>Council Local</strong></td>
+          <td><code style="font-size:0.8em">gemma4:26b</code></td>
+          <td><strong>Gemma 4 26B</strong><br><span style="font-size:0.75em;color:#64748b">6.60 · FREE (local GPU)</span></td>
+          <td>—</td>
+          <td>—</td>
+          <td><span class="badge local">local</span></td>
+          <td><span class="badge warn">⚠️ Change available</span></td>
+        </tr>
+        <tr>
+          <td><strong>Council EU</strong></td>
+          <td><code style="font-size:0.8em">mistral-large-latest</code></td>
+          <td><strong>Grok-3</strong><br><span style="font-size:0.75em;color:#64748b">8.50 · $3/M in, $15/M out</span></td>
+          <td><strong>DeepSeek R1</strong><br><span style="font-size:0.75em;color:#64748b">8.40 · $0.55/M in, $2.19/M out</span></td>
+          <td><strong>Grok-4.1</strong><br><span style="font-size:0.75em;color:#64748b">8.20 · $3/M in, $15/M out</span></td>
+          <td></td>
+          <td><span class="badge warn">⚠️ Change available</span></td>
+        </tr>
+        <tr>
+          <td><strong>Council CH</strong></td>
+          <td><code style="font-size:0.8em">kimi-k2.5</code></td>
+          <td><strong>DeepSeek R1</strong><br><span style="font-size:0.75em;color:#64748b">8.60 · $0.55/M in, $2.19/M out</span></td>
+          <td><strong>Grok-3</strong><br><span style="font-size:0.75em;color:#64748b">8.50 · $3/M in, $15/M out</span></td>
+          <td><strong>Grok-4.1</strong><br><span style="font-size:0.75em;color:#64748b">8.30 · $3/M in, $15/M out</span></td>
+          <td></td>
+          <td><span class="badge warn">⚠️ Change available</span></td>
+        </tr>
+        <tr>
+          <td><strong>Council Tech</strong></td>
+          <td><code style="font-size:0.8em">gpt-5.3-codex</code></td>
+          <td><strong>GPT-5.3 Codex</strong><br><span style="font-size:0.75em;color:#64748b">9.00 · Task-limited (Codex plan)</span></td>
+          <td><strong>DeepSeek V4</strong><br><span style="font-size:0.75em;color:#64748b">8.50 · $0.27/M in, $1.10/M out</span></td>
+          <td><strong>Grok Code Fast 1</strong><br><span style="font-size:0.75em;color:#64748b">8.40 · $0.50/M in, $1.50/M out</span></td>
+          <td></td>
+          <td><span class="badge warn">⚠️ Change available</span></td>
+        </tr>
+        </tbody>
+      </table>
+    </div>
+
+    <div class="card">
+      <div class="section-title">How the Hiring Algorithm Works</div>
+      <p style="font-size:0.85em;color:#475569;line-height:1.6">
+        Each position has a <strong>task weight profile</strong> in <code>llm-matrix-data.json</code> (e.g. CEO = 30% reasoning, 25% research, 20% writing...).
+        The algorithm scores every model by computing <em>sum(task_score × weight)</em> across all task dimensions.
+        The highest-scoring model becomes the recommended Primary; next two become Fallback 1 and Fallback 2.
+        Emergency is always <strong>gemma4:26b</strong> — it is the always-available local fallback regardless of score.
+        <br><br>
+        Local-only positions (Doc, Freud, Council Local) only consider models where <code>local_only: true</code>.
+        If a better model is released or pricing drops significantly, re-run <code>--hire</code> to see if lineup changes are warranted.
+        <br><br>
+        <strong>Greg approves all changes</strong> — the algorithm recommends, Greg decides, <code>position_manager.py sub</code> applies.
+      </p>
+    </div>
+  </div>
+
+  <p style="font-size:0.75em;color:#94a3b8;margin-top:24px">
+    LLM Matrix &bull; Life Admin &bull; Generated 2026-04-06 19:39
+  </p>
+
+  <script>
+    function switchTab(name) {
+      document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
+      document.querySelectorAll('.tab-panel').forEach(p => p.classList.remove('active'));
+      document.getElementById('tab-' + name).classList.add('active');
+      event.target.classList.add('active');
+    }
+
+    function filterProvider(provider) {
+      document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
+      event.target.classList.add('active');
+      document.querySelectorAll('#models-body tr').forEach(row => {
+        if (provider === 'all' || row.dataset.provider === provider) {
+          row.style.display = '';
+        } else {
+          row.style.display = 'none';
+        }
+      });
+    }
+  </script>
+</body>
+</html>

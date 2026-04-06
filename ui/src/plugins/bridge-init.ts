@@ -19,6 +19,21 @@ import {
   usePluginStream,
   usePluginToast,
 } from "./bridge.js";
+import { createElement } from "react";
+import { MarkdownBody } from "../components/MarkdownBody.js";
+
+function SdkMarkdownBlock({ content }: { content: string }) {
+  return createElement(MarkdownBody, null, content);
+}
+
+function SdkMetricCard({ label, value, unit }: { label: string; value: number | string; unit?: string }) {
+  return createElement(
+    "div",
+    { style: { padding: "0.5rem", borderRadius: "4px", border: "1px solid var(--border)", background: "var(--card)" } },
+    createElement("div", { style: { fontSize: "0.7rem", color: "var(--muted-foreground)", marginBottom: "0.25rem" } }, label),
+    createElement("div", { style: { fontSize: "1.1rem", fontWeight: 600 } }, String(value), unit ? createElement("span", { style: { fontSize: "0.75rem", marginLeft: "0.2rem" } }, unit) : null),
+  );
+}
 
 // ---------------------------------------------------------------------------
 // Global bridge registry
@@ -64,6 +79,8 @@ export function initPluginBridge(
       useHostContext,
       usePluginStream,
       usePluginToast,
+      MarkdownBlock: SdkMarkdownBlock,
+      MetricCard: SdkMetricCard,
     },
   };
 }

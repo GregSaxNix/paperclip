@@ -47,7 +47,7 @@ export const createAgentSchema = z.object({
   name: z.string().min(1),
   role: z.enum(AGENT_ROLES).optional().default("general"),
   title: z.string().optional().nullable(),
-  icon: z.enum(AGENT_ICON_NAMES).optional().nullable(),
+  icon: z.union([z.enum(AGENT_ICON_NAMES), z.string().regex(/^\/api\/(assets|attachments)\/[a-f0-9-]+\/content$/)]).optional().nullable(),
   reportsTo: z.string().uuid().optional().nullable(),
   capabilities: z.string().optional().nullable(),
   desiredSkills: z.array(z.string().min(1)).optional(),

@@ -96,3 +96,7 @@ export function getAgentIcon(iconName: string | null | undefined): LucideIcon {
   }
   return AGENT_ICONS[DEFAULT_ICON];
 }
+
+export function isAssetIcon(icon: string | null | undefined): boolean {
+  return !!icon && icon.startsWith("/api/");
+}

@@ -333,6 +333,15 @@ export function IssueDetail() {
     return map;
   }, [agents]);
 
+  const userMap = useMemo(() => {
+    const map = new Map<string, { name?: string | null; avatarUrl?: string | null }>();
+    const sessionUser = session?.user;
+    if (sessionUser?.id) {
+      map.set(sessionUser.id, { name: sessionUser.name ?? "You", avatarUrl: null });
+    }
+    return map;
+  }, [session?.user]);
+
   const mentionOptions = useMemo<MentionOption[]>(() => {
     const options: MentionOption[] = [];
     const activeAgents = [...(agents ?? [])]
@@ -1031,6 +1040,7 @@ export function IssueDetail() {
             projectId={issue.projectId}
             issueStatus={issue.status}
             agentMap={agentMap}
+            userMap={userMap}
             draftKey={`paperclip:issue-comment-draft:${issue.id}`}
             enableReassign
             reassignOptions={commentReassignOptions}

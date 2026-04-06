@@ -1,0 +1,534 @@
+{
+  "last_updated": "2026-04-06",
+  "research_notes": [
+    {
+      "date": "2026-04-06",
+      "note": "Initial matrix built. Pricing sourced from provider pages. Scores based on published benchmarks and observed performance. All 17 models currently active in the Life Admin lineup."
+    }
+  ],
+
+  "position_profiles": {
+    "CEO": {
+      "display_name": "CEO (Clawdy)",
+      "tasks": { "reasoning": 0.30, "writing": 0.20, "research": 0.25, "speed": 0.10, "cost_eff": 0.15 },
+      "constraints": { "local_only": false, "cross_provider_fallback": true }
+    },
+    "CTO": {
+      "display_name": "CTO (Gayan)",
+      "tasks": { "coding": 0.25, "reasoning": 0.30, "research": 0.25, "speed": 0.10, "cost_eff": 0.10 },
+      "constraints": { "local_only": false, "cross_provider_fallback": true }
+    },
+    "COO": {
+      "display_name": "COO",
+      "tasks": { "reasoning": 0.35, "writing": 0.30, "research": 0.20, "speed": 0.10, "cost_eff": 0.05 },
+      "constraints": { "local_only": false, "cross_provider_fallback": true }
+    },
+    "SeniorEngineer": {
+      "display_name": "Senior Engineer",
+      "tasks": { "coding": 0.40, "reasoning": 0.35, "speed": 0.15, "cost_eff": 0.10 },
+      "constraints": { "local_only": false, "allow_claude": false, "cross_provider_fallback": false }
+    },
+    "Engineer": {
+      "display_name": "Engineer",
+      "tasks": { "coding": 0.70, "reasoning": 0.20, "speed": 0.10 },
+      "constraints": { "local_only": false, "allow_claude": false, "cross_provider_fallback": false }
+    },
+    "QABot": {
+      "display_name": "QA Bot",
+      "tasks": { "coding": 0.45, "reasoning": 0.30, "speed": 0.15, "cost_eff": 0.10 },
+      "constraints": { "local_only": false, "allow_claude": false, "cross_provider_fallback": false }
+    },
+    "Designer": {
+      "display_name": "Designer",
+      "tasks": { "creative": 0.40, "writing": 0.30, "reasoning": 0.15, "cost_eff": 0.15 },
+      "constraints": { "local_only": false, "allow_claude": false, "cross_provider_fallback": false }
+    },
+    "ContentLead": {
+      "display_name": "Content Lead",
+      "tasks": { "writing": 0.45, "creative": 0.25, "research": 0.20, "cost_eff": 0.10 },
+      "constraints": { "local_only": false, "allow_claude": false, "cross_provider_fallback": false }
+    },
+    "Accountant": {
+      "display_name": "Accountant",
+      "tasks": { "reasoning": 0.40, "research": 0.25, "speed": 0.20, "cost_eff": 0.15 },
+      "constraints": { "local_only": false, "allow_claude": false, "cross_provider_fallback": false }
+    },
+    "Spielberg": {
+      "display_name": "Spielberg",
+      "tasks": { "creative": 0.45, "writing": 0.35, "reasoning": 0.10, "cost_eff": 0.10 },
+      "constraints": { "local_only": false, "allow_claude": false, "cross_provider_fallback": false }
+    },
+    "Finance": {
+      "display_name": "Finance",
+      "tasks": { "reasoning": 0.40, "research": 0.30, "writing": 0.15, "cost_eff": 0.15 },
+      "constraints": { "local_only": false, "allow_claude": false, "cross_provider_fallback": false }
+    },
+    "TravelAgent": {
+      "display_name": "Travel Agent",
+      "tasks": { "research": 0.40, "writing": 0.30, "reasoning": 0.20, "cost_eff": 0.10 },
+      "constraints": { "local_only": false, "allow_claude": false, "cross_provider_fallback": false }
+    },
+    "Researcher": {
+      "display_name": "Researcher",
+      "tasks": { "research": 0.40, "reasoning": 0.30, "writing": 0.20, "cost_eff": 0.10 },
+      "constraints": { "local_only": false, "allow_claude": false, "cross_provider_fallback": true }
+    },
+    "Doc": {
+      "display_name": "Doc",
+      "tasks": { "research": 0.45, "reasoning": 0.40, "writing": 0.15 },
+      "constraints": { "local_only": true, "cross_provider_fallback": false }
+    },
+    "Freud": {
+      "display_name": "Freud",
+      "tasks": { "research": 0.40, "reasoning": 0.40, "writing": 0.20 },
+      "constraints": { "local_only": true, "cross_provider_fallback": false }
+    },
+    "Yoda": {
+      "display_name": "Yoda",
+      "tasks": { "reasoning": 0.40, "research": 0.30, "writing": 0.20, "cost_eff": 0.10 },
+      "constraints": { "local_only": false, "cross_provider_fallback": true }
+    },
+    "Contrarian": {
+      "display_name": "Council Contrarian",
+      "tasks": { "reasoning": 0.50, "creative": 0.30, "writing": 0.20 },
+      "constraints": { "local_only": false, "allow_claude": false, "cross_provider_fallback": false }
+    },
+    "CouncilLocal": {
+      "display_name": "Council Local",
+      "tasks": { "reasoning": 0.60, "writing": 0.40 },
+      "constraints": { "local_only": true, "allow_claude": false, "cross_provider_fallback": false }
+    },
+    "CouncilEU": {
+      "display_name": "Council EU",
+      "tasks": { "reasoning": 0.50, "writing": 0.30, "research": 0.20 },
+      "constraints": { "local_only": false, "allow_claude": false, "preferred_provider": "Mistral", "cross_provider_fallback": false }
+    },
+    "CouncilCH": {
+      "display_name": "Council CH",
+      "tasks": { "reasoning": 0.50, "research": 0.30, "writing": 0.20 },
+      "constraints": { "local_only": false, "allow_claude": false, "preferred_provider": "Kimi", "cross_provider_fallback": false }
+    },
+    "CouncilTech": {
+      "display_name": "Council Tech",
+      "tasks": { "coding": 0.60, "reasoning": 0.30, "speed": 0.10 },
+      "constraints": { "local_only": false, "allow_claude": false, "cross_provider_fallback": false }
+    }
+  },
+
+  "models": [
+    {
+      "id": "claude-opus-4-6",
+      "name": "Claude Opus 4.6",
+      "provider": "Anthropic",
+      "adapter": "claude_local",
+      "input_per_1m": 0,
+      "output_per_1m": 0,
+      "pricing_note": "FREE (Max plan)",
+      "context_window_k": 200,
+      "local_only": false,
+      "status": "active",
+      "last_checked": "2026-04-06",
+      "scores": {
+        "coding": 9,
+        "reasoning": 10,
+        "writing": 9,
+        "research": 9,
+        "creative": 8,
+        "speed": 5,
+        "cost_eff": 10
+      },
+      "notes": "Best overall reasoning and writing. Free on Max plan. Slower than Sonnet."
+    },
+    {
+      "id": "claude-sonnet-4-6",
+      "name": "Claude Sonnet 4.6",
+      "provider": "Anthropic",
+      "adapter": "claude_local",
+      "input_per_1m": 0,
+      "output_per_1m": 0,
+      "pricing_note": "FREE (Max plan)",
+      "context_window_k": 200,
+      "local_only": false,
+      "status": "active",
+      "last_checked": "2026-04-06",
+      "scores": {
+        "coding": 8,
+        "reasoning": 8,
+        "writing": 9,
+        "research": 8,
+        "creative": 8,
+        "speed": 7,
+        "cost_eff": 10
+      },
+      "notes": "Excellent balance of quality and speed. Free on Max plan. Best for writing-heavy roles."
+    },
+    {
+      "id": "claude-haiku-4-5",
+      "name": "Claude Haiku 4.5",
+      "provider": "Anthropic",
+      "adapter": "claude_local",
+      "input_per_1m": 0,
+      "output_per_1m": 0,
+      "pricing_note": "FREE (Max plan)",
+      "context_window_k": 200,
+      "local_only": false,
+      "status": "active",
+      "last_checked": "2026-04-06",
+      "scores": {
+        "coding": 6,
+        "reasoning": 6,
+        "writing": 7,
+        "research": 6,
+        "creative": 6,
+        "speed": 9,
+        "cost_eff": 10
+      },
+      "notes": "Fastest Claude. Best for structured, repetitive tasks. Limited on complex reasoning."
+    },
+    {
+      "id": "grok-3",
+      "name": "Grok-3",
+      "provider": "xAI",
+      "adapter": "ollama_local",
+      "input_per_1m": 3.0,
+      "output_per_1m": 15.0,
+      "pricing_note": "$3/M in, $15/M out",
+      "context_window_k": 131,
+      "local_only": false,
+      "status": "active",
+      "last_checked": "2026-04-06",
+      "scores": {
+        "coding": 8,
+        "reasoning": 9,
+        "writing": 8,
+        "research": 8,
+        "creative": 7,
+        "speed": 7,
+        "cost_eff": 3
+      },
+      "notes": "Strong reasoning, fully separate from Anthropic infrastructure. High output price — watch costs."
+    },
+    {
+      "id": "grok-4.1",
+      "name": "Grok-4.1",
+      "provider": "xAI",
+      "adapter": "ollama_local",
+      "input_per_1m": 3.0,
+      "output_per_1m": 15.0,
+      "pricing_note": "$3/M in, $15/M out",
+      "context_window_k": 131,
+      "local_only": false,
+      "status": "active",
+      "last_checked": "2026-04-06",
+      "scores": {
+        "coding": 7,
+        "reasoning": 8,
+        "writing": 8,
+        "research": 9,
+        "creative": 7,
+        "speed": 7,
+        "cost_eff": 3
+      },
+      "notes": "Research-tuned Grok variant. Excellent for deep topic analysis. Same cost as Grok-3."
+    },
+    {
+      "id": "grok-code-fast-1",
+      "name": "Grok Code Fast 1",
+      "provider": "xAI",
+      "adapter": "ollama_local",
+      "input_per_1m": 0.5,
+      "output_per_1m": 1.5,
+      "pricing_note": "$0.50/M in, $1.50/M out",
+      "context_window_k": 131,
+      "local_only": false,
+      "status": "active",
+      "last_checked": "2026-04-06",
+      "scores": {
+        "coding": 9,
+        "reasoning": 7,
+        "writing": 5,
+        "research": 6,
+        "creative": 4,
+        "speed": 9,
+        "cost_eff": 9
+      },
+      "notes": "Coding specialist. Very fast, cheap. Weak for prose/research. Good fallback for tech roles."
+    },
+    {
+      "id": "grok-3-mini",
+      "name": "Grok-3 Mini",
+      "provider": "xAI",
+      "adapter": "ollama_local",
+      "input_per_1m": 0.3,
+      "output_per_1m": 0.5,
+      "pricing_note": "$0.30/M in, $0.50/M out",
+      "context_window_k": 131,
+      "local_only": false,
+      "status": "active",
+      "last_checked": "2026-04-06",
+      "scores": {
+        "coding": 6,
+        "reasoning": 7,
+        "writing": 7,
+        "research": 7,
+        "creative": 6,
+        "speed": 8,
+        "cost_eff": 9
+      },
+      "notes": "Lightweight Grok. Good value for mid-tier reasoning tasks."
+    },
+    {
+      "id": "gemma4:26b",
+      "name": "Gemma 4 26B",
+      "provider": "Google (Local)",
+      "adapter": "ollama_local",
+      "input_per_1m": 0,
+      "output_per_1m": 0,
+      "pricing_note": "FREE (local GPU)",
+      "context_window_k": 128,
+      "local_only": true,
+      "status": "active",
+      "last_checked": "2026-04-06",
+      "scores": {
+        "coding": 7,
+        "reasoning": 7,
+        "writing": 6,
+        "research": 6,
+        "creative": 5,
+        "speed": 6,
+        "cost_eff": 10
+      },
+      "notes": "Runs on RTX 4090. Emergency fallback for all agents. Only option for local_only positions. FREE."
+    },
+    {
+      "id": "deepseek-chat",
+      "name": "DeepSeek V4",
+      "provider": "DeepSeek",
+      "adapter": "ollama_local",
+      "input_per_1m": 0.27,
+      "output_per_1m": 1.1,
+      "pricing_note": "$0.27/M in, $1.10/M out",
+      "context_window_k": 128,
+      "local_only": false,
+      "status": "active",
+      "last_checked": "2026-04-06",
+      "scores": {
+        "coding": 9,
+        "reasoning": 8,
+        "writing": 7,
+        "research": 7,
+        "creative": 5,
+        "speed": 7,
+        "cost_eff": 9
+      },
+      "notes": "Excellent coder at very low cost. Weak on creative tasks. Chinese infrastructure."
+    },
+    {
+      "id": "deepseek-reasoner",
+      "name": "DeepSeek R1",
+      "provider": "DeepSeek",
+      "adapter": "ollama_local",
+      "input_per_1m": 0.55,
+      "output_per_1m": 2.19,
+      "pricing_note": "$0.55/M in, $2.19/M out",
+      "context_window_k": 128,
+      "local_only": false,
+      "status": "active",
+      "last_checked": "2026-04-06",
+      "scores": {
+        "coding": 8,
+        "reasoning": 10,
+        "writing": 6,
+        "research": 8,
+        "creative": 4,
+        "speed": 5,
+        "cost_eff": 8
+      },
+      "notes": "Chain-of-thought reasoner. Exceptional at math and structured analysis. Slow. Ideal for Finance."
+    },
+    {
+      "id": "mistral-large-latest",
+      "name": "Mistral Large 3",
+      "provider": "Mistral",
+      "adapter": "ollama_local",
+      "input_per_1m": 2.0,
+      "output_per_1m": 6.0,
+      "pricing_note": "$2/M in, $6/M out",
+      "context_window_k": 128,
+      "local_only": false,
+      "status": "active",
+      "last_checked": "2026-04-06",
+      "scores": {
+        "coding": 7,
+        "reasoning": 8,
+        "writing": 8,
+        "research": 8,
+        "creative": 7,
+        "speed": 7,
+        "cost_eff": 5
+      },
+      "notes": "Strong European model. Excellent for Council EU — geographic/regulatory diversity. Multilingual."
+    },
+    {
+      "id": "mistral-small-4",
+      "name": "Mistral Small 4",
+      "provider": "Mistral",
+      "adapter": "ollama_local",
+      "input_per_1m": 0.1,
+      "output_per_1m": 0.3,
+      "pricing_note": "$0.10/M in, $0.30/M out",
+      "context_window_k": 128,
+      "local_only": false,
+      "status": "active",
+      "last_checked": "2026-04-06",
+      "scores": {
+        "coding": 6,
+        "reasoning": 6,
+        "writing": 7,
+        "research": 6,
+        "creative": 6,
+        "speed": 9,
+        "cost_eff": 10
+      },
+      "notes": "Fast and very cheap. Good for structured tasks where cost matters. Limited reasoning depth."
+    },
+    {
+      "id": "kimi-k2.5",
+      "name": "Kimi K2.5",
+      "provider": "Moonshot AI",
+      "adapter": "ollama_local",
+      "input_per_1m": 0.14,
+      "output_per_1m": 0.6,
+      "pricing_note": "$0.14/M in, $0.60/M out",
+      "context_window_k": 128,
+      "local_only": false,
+      "status": "active",
+      "last_checked": "2026-04-06",
+      "scores": {
+        "coding": 7,
+        "reasoning": 8,
+        "writing": 8,
+        "research": 9,
+        "creative": 6,
+        "speed": 7,
+        "cost_eff": 9
+      },
+      "notes": "Excellent at research and analysis at very low cost. Good geographic diversity (China). Council CH."
+    },
+    {
+      "id": "gemini-2.5-flash",
+      "name": "Gemini 2.5 Flash",
+      "provider": "Google",
+      "adapter": "gemini_local",
+      "input_per_1m": 0.15,
+      "output_per_1m": 0.6,
+      "pricing_note": "$0.15/M in, $0.60/M out",
+      "context_window_k": 1000,
+      "local_only": false,
+      "status": "active",
+      "last_checked": "2026-04-06",
+      "scores": {
+        "coding": 8,
+        "reasoning": 8,
+        "writing": 8,
+        "research": 8,
+        "creative": 7,
+        "speed": 8,
+        "cost_eff": 9
+      },
+      "notes": "Excellent all-rounder, massive context window (1M tokens), very cheap. Third-provider diversity."
+    },
+    {
+      "id": "gpt-5.3-codex",
+      "name": "GPT-5.3 Codex",
+      "provider": "OpenAI",
+      "adapter": "codex_local",
+      "input_per_1m": 0,
+      "output_per_1m": 0,
+      "pricing_note": "Task-limited (Codex plan)",
+      "context_window_k": 200,
+      "local_only": false,
+      "status": "active",
+      "last_checked": "2026-04-06",
+      "scores": {
+        "coding": 10,
+        "reasoning": 8,
+        "writing": 6,
+        "research": 6,
+        "creative": 5,
+        "speed": 6,
+        "cost_eff": 8
+      },
+      "notes": "Best coding model. Task-limited plan. Ideal for Engineer and CouncilTech coding work."
+    },
+    {
+      "id": "minimax-m2.7",
+      "name": "MiniMax M2.7",
+      "provider": "MiniMax",
+      "adapter": "ollama_local",
+      "input_per_1m": 0.2,
+      "output_per_1m": 1.1,
+      "pricing_note": "$0.20/M in, $1.10/M out",
+      "context_window_k": 128,
+      "local_only": false,
+      "status": "active",
+      "last_checked": "2026-04-06",
+      "scores": {
+        "coding": 6,
+        "reasoning": 7,
+        "writing": 7,
+        "research": 7,
+        "creative": 6,
+        "speed": 7,
+        "cost_eff": 9
+      },
+      "notes": "Capable mid-tier model. Good value. Useful as Fallback 2 for several roles."
+    },
+    {
+      "id": "qwen-plus",
+      "name": "Qwen Plus",
+      "provider": "Alibaba",
+      "adapter": "ollama_local",
+      "input_per_1m": 0.4,
+      "output_per_1m": 1.2,
+      "pricing_note": "$0.40/M in, $1.20/M out",
+      "context_window_k": 131,
+      "local_only": false,
+      "status": "active",
+      "last_checked": "2026-04-06",
+      "scores": {
+        "coding": 7,
+        "reasoning": 7,
+        "writing": 7,
+        "research": 7,
+        "creative": 6,
+        "speed": 7,
+        "cost_eff": 8
+      },
+      "notes": "Solid all-rounder from Alibaba. Good research fallback. Geographic diversity."
+    },
+    {
+      "id": "codestral",
+      "name": "Codestral",
+      "provider": "Mistral",
+      "adapter": "ollama_local",
+      "input_per_1m": 0.3,
+      "output_per_1m": 0.9,
+      "pricing_note": "$0.30/M in, $0.90/M out",
+      "context_window_k": 256,
+      "local_only": false,
+      "status": "active",
+      "last_checked": "2026-04-06",
+      "scores": {
+        "coding": 9,
+        "reasoning": 6,
+        "writing": 5,
+        "research": 5,
+        "creative": 4,
+        "speed": 8,
+        "cost_eff": 9
+      },
+      "notes": "Mistral's code-specialist model. Fast, cheap, strong on code generation. Weak elsewhere."
+    }
+  ]
+}

@@ -15,6 +15,8 @@ import { PluginSlotOutlet } from "@/plugins/slots";
 interface CommentWithRunMeta extends IssueComment {
   runId?: string | null;
   runAgentId?: string | null;
+  authorUserName?: string | null;
+  authorUserAvatarUrl?: string | null;
 }
 
 interface LinkedRunItem {
@@ -38,6 +40,7 @@ interface CommentThreadProps {
   onAdd: (body: string, reopen?: boolean, reassignment?: CommentReassignment) => Promise<void>;
   issueStatus?: string;
   agentMap?: Map<string, Agent>;
+  userMap?: Map<string, { name?: string | null; avatarUrl?: string | null }>;
   imageUploadHandler?: (file: File) => Promise<string>;
   /** Callback to attach an image file to the parent issue (not inline in a comment). */
   onAttachImage?: (file: File) => Promise<void>;
@@ -121,12 +124,14 @@ type TimelineItem =
 const TimelineList = memo(function TimelineList({
   timeline,
   agentMap,
+  userMap,
   companyId,
   projectId,
   highlightCommentId,
 }: {
   timeline: TimelineItem[];
   agentMap?: Map<string, Agent>;
+  userMap?: Map<string, { name?: string | null; avatarUrl?: string | null }>;
   companyId?: string | null;
   projectId?: string | null;
   highlightCommentId?: string | null;
@@ -180,11 +185,23 @@ const TimelineList = memo(function TimelineList({
                 <Link to={`/agents/${comment.authorAgentId}`} className="hover:underline">
                   <Identity
                     name={agentMap?.get(comment.authorAgentId)?.name ?? comment.authorAgentId.slice(0, 8)}
+                    icon={agentMap?.get(comment.authorAgentId)?.icon ?? null}
                     size="sm"
                   />
                 </Link>
               ) : (
-                <Identity name="You" size="sm" />
+                <Identity
+                  name={
+                    comment.authorUserName
+                    ?? (comment.authorUserId ? userMap?.get(comment.authorUserId)?.name : null)
+                    ?? "You"
+                  }
+                  avatarUrl={
+                    comment.authorUserAvatarUrl
+                    ?? (comment.authorUserId ? userMap?.get(comment.authorUserId)?.avatarUrl ?? null : null)
+                  }
+                  size="sm"
+                />
               )}
               <span className="flex items-center gap-1.5">
                 {companyId ? (
@@ -261,6 +278,7 @@ export function CommentThread({
   projectId,
   onAdd,
   agentMap,
+  userMap,
   imageUploadHandler,
   onAttachImage,
   draftKey,
@@ -406,6 +424,7 @@ export function CommentThread({
       <TimelineList
         timeline={timeline}
         agentMap={agentMap}
+        userMap={userMap}
         companyId={companyId}
         projectId={projectId}
         highlightCommentId={highlightCommentId}

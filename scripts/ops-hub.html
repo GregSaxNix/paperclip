@@ -1,0 +1,195 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Life Admin — Ops Hub</title>
+  <style>
+    * { box-sizing: border-box; }
+    body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif; background: #f1f5f9; color: #1e293b; margin: 0; padding: 24px; }
+    h1 { font-size: 1.4em; color: #0f172a; margin-bottom: 2px; }
+    .sub { color: #64748b; font-size: 0.85em; margin-bottom: 28px; }
+
+    .section { margin-bottom: 28px; }
+    .section-title { font-size: 0.72em; text-transform: uppercase; letter-spacing: 0.1em; color: #94a3b8; font-weight: 600; margin-bottom: 10px; }
+
+    .grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(220px, 1fr)); gap: 12px; }
+
+    .card {
+      background: white; border-radius: 10px; padding: 16px 18px;
+      border: 1px solid #e2e8f0; cursor: pointer;
+      transition: box-shadow 0.15s, border-color 0.15s;
+      text-decoration: none; color: inherit; display: block;
+    }
+    .card:hover { box-shadow: 0 4px 16px rgba(0,0,0,0.08); border-color: #cbd5e1; }
+    .card-icon { font-size: 1.5em; margin-bottom: 8px; line-height: 1; }
+    .card-title { font-weight: 600; font-size: 0.95em; color: #0f172a; margin-bottom: 3px; }
+    .card-desc { font-size: 0.8em; color: #64748b; line-height: 1.4; }
+    .card-tag { display: inline-block; font-size: 0.7em; padding: 1px 7px; border-radius: 8px; margin-top: 6px; font-weight: 500; }
+    .tag-local { background: #dbeafe; color: #1d4ed8; }
+    .tag-browser { background: #dcfce7; color: #15803d; }
+    .tag-terminal { background: #fef9c3; color: #854d0e; }
+
+    .cmd-block { background: white; border: 1px solid #e2e8f0; border-radius: 8px; padding: 14px 18px; margin-bottom: 10px; }
+    .cmd-block h3 { font-size: 0.88em; color: #334155; margin: 0 0 6px 0; font-weight: 600; }
+    .cmd-block p { font-size: 0.8em; color: #64748b; margin: 0 0 8px 0; line-height: 1.5; }
+    code { background: #f1f5f9; border: 1px solid #e2e8f0; padding: 2px 7px; border-radius: 4px; font-size: 0.85em; color: #0f172a; font-family: 'Courier New', monospace; }
+    pre { background: #0f172a; color: #e2e8f0; border-radius: 8px; padding: 12px 16px; font-size: 0.82em; overflow-x: auto; margin: 8px 0 0 0; line-height: 1.6; white-space: pre-wrap; word-break: break-all; }
+    pre code { background: none; border: none; padding: 0; color: inherit; font-size: 1em; }
+
+    details { background: white; border: 1px solid #e2e8f0; border-radius: 8px; margin-bottom: 10px; overflow: hidden; }
+    summary { padding: 12px 18px; font-size: 0.88em; font-weight: 600; color: #334155; cursor: pointer; list-style: none; display: flex; align-items: center; gap: 8px; }
+    summary::-webkit-details-marker { display: none; }
+    summary::before { content: '▶'; font-size: 0.7em; color: #94a3b8; transition: transform 0.15s; }
+    details[open] summary::before { transform: rotate(90deg); }
+    .details-body { padding: 0 18px 14px 18px; }
+
+    .info-row { font-size: 0.82em; color: #475569; margin-bottom: 5px; }
+    .info-row strong { color: #0f172a; }
+  </style>
+</head>
+<body>
+  <h1>📎 Life Admin — Ops Hub</h1>
+  <p class="sub">Your central control panel. Bookmark: <code>D:\paperclip\scripts\ops-hub.html</code></p>
+
+  <!-- INTERFACES -->
+  <div class="section">
+    <div class="section-title">Interfaces &amp; Tools</div>
+    <div class="grid">
+
+      <a class="card" href="http://localhost:3100" target="_blank">
+        <div class="card-icon">📎</div>
+        <div class="card-title">Paperclip</div>
+        <div class="card-desc">Main agent platform — chat with agents, manage issues, inbox</div>
+        <span class="card-tag tag-browser">Browser</span>
+      </a>
+
+      <a class="card" href="lineup_dashboard.html" target="_blank">
+        <div class="card-icon">📊</div>
+        <div class="card-title">Agent Matrix</div>
+        <div class="card-desc">All 21 positions — full fallback chains, usage meters, active status</div>
+        <span class="card-tag tag-local">Local HTML</span>
+      </a>
+
+      <a class="card" href="http://localhost:8789" target="_blank">
+        <div class="card-icon">🎬</div>
+        <div class="card-title">YouTube Brain</div>
+        <div class="card-desc">9,617 video knowledge base — search, browse, filter by topic</div>
+        <span class="card-tag tag-browser">Port 8789</span>
+      </a>
+
+      <a class="card" href="llm-matrix.html" target="_blank">
+        <div class="card-icon">🧠</div>
+        <div class="card-title">LLM Matrix</div>
+        <div class="card-desc">All models — task scores, pricing, position recommendations, skills gaps</div>
+        <span class="card-tag tag-local">Local HTML</span>
+      </a>
+
+      <a class="card" href="OPERATIONS.html" target="_blank">
+        <div class="card-icon">📖</div>
+        <div class="card-title">Operations Guide</div>
+        <div class="card-desc">How-to for everything — remote access, monitoring, agent subs, server</div>
+        <span class="card-tag tag-local">Local HTML</span>
+      </a>
+
+    </div>
+  </div>
+
+  <!-- QUICK COMMANDS -->
+  <div class="section">
+    <div class="section-title">Terminal Commands — run from <code>D:\paperclip</code></div>
+
+    <div class="cmd-block">
+      <h3>Check Claude usage</h3>
+      <p>See how much of your Anthropic Max plan is used (session + weekly). Prints sub recommendations if near limit.</p>
+      <pre><code>python scripts\check_claude_usage.py --sub-if-needed</code></pre>
+    </div>
+
+    <div class="cmd-block">
+      <h3>View auto-monitor log</h3>
+      <p>The monitor runs every 2 hours and auto-subs agents when limits are near:</p>
+      <pre><code>python scripts\auto_monitor.py --log</code></pre>
+    </div>
+
+    <div class="cmd-block">
+      <h3>Agent sub / restore</h3>
+      <pre><code>python scripts\position_manager.py sub CEO fallback1
+python scripts\position_manager.py restore CEO
+python scripts\position_manager.py restore all
+python scripts\position_manager.py status</code></pre>
+    </div>
+
+    <div class="cmd-block">
+      <h3>Refresh agent matrix dashboard</h3>
+      <pre><code>python scripts\position_manager.py dashboard</code></pre>
+    </div>
+
+    <div class="cmd-block">
+      <h3>LLM Matrix — weekly model check</h3>
+      <p>Lists stale models, prints research prompt, regenerates the dashboard. Run after updating model scores/pricing in <code>scripts\llm-matrix-data.json</code>.</p>
+      <pre><code>python scripts\update_llm_matrix.py --research   # what needs researching
+python scripts\update_llm_matrix.py              # regenerate dashboard only
+python scripts\update_llm_matrix.py --hire       # run hiring algorithm</code></pre>
+    </div>
+
+    <div class="cmd-block">
+      <h3>Start Paperclip server (if not running)</h3>
+      <pre><code>D:\paperclip\start.cmd</code></pre>
+    </div>
+
+  </div>
+
+  <!-- REMOTE ACCESS -->
+  <div class="section">
+    <div class="section-title">Remote Access (from laptop while away)</div>
+
+    <div class="cmd-block">
+      <h3>Access Paperclip from your laptop browser</h3>
+      <p>Desktop must be on. Works anywhere — no VPN needed (Tailscale Funnel).</p>
+      <pre><code>https://greg-shinedesktop.tail4ef50.ts.net</code></pre>
+    </div>
+
+    <div class="cmd-block">
+      <h3>Remote Desktop (to run terminal commands remotely)</h3>
+      <p>
+        1. Enable on desktop: search "Remote Desktop settings" → turn on<br>
+        2. Get Tailscale IP (run once on desktop): <code>tailscale ip -4</code><br>
+        3. On laptop: open Remote Desktop Connection → enter the Tailscale IP<br>
+        4. Log in with your Windows username/password
+      </p>
+    </div>
+  </div>
+
+  <!-- INBOX / FAILED RUNS -->
+  <div class="section">
+    <div class="section-title">Inbox — Dismiss failed run notifications</div>
+
+    <details>
+      <summary>ℹ️ When will failed runs appear, and what to do</summary>
+      <div class="details-body">
+        <p class="info-row">Failed runs appear in the Paperclip inbox when an agent heartbeat fails — for example, when a usage limit is hit or a model is temporarily unavailable. Once the underlying issue is resolved (limit resets, fallback kicks in), the old failures are just noise.</p>
+        <p class="info-row"><strong>They will recur</strong> each time an agent hits a quota or adapter error — especially once heartbeats are enabled. The script below dismisses whatever is currently showing. You'll need to re-run it after new failures appear.</p>
+        <p class="info-row"><strong>To dismiss:</strong> Open Paperclip in Chrome → F12 → Console tab → paste the script below → press Enter → refresh the page.</p>
+        <pre><code>// Dismiss ALL current failed runs from the inbox:
+const key = "paperclip:inbox:dismissed";
+fetch("/api/companies/505ab906-66b5-4400-b131-96b8aee91c5d/heartbeat-runs?limit=50")
+  .then(r => r.json())
+  .then(runs => {
+    const arr = Array.isArray(runs) ? runs : (runs.runs || runs.data || []);
+    const ids = arr.filter(r => r.status === "failed" || r.status === "timed_out").map(r => "run:" + r.id);
+    const existing = JSON.parse(localStorage.getItem(key) || "[]");
+    localStorage.setItem(key, JSON.stringify([...new Set([...existing, ...ids])]));
+    console.log("Dismissed", ids.length, "failed runs. Refresh the page.");
+  });
+</code></pre>
+        <p class="info-row" style="margin-top:8px">This version auto-fetches all current failed runs — no need to update the script manually each time.</p>
+      </div>
+    </details>
+
+  </div>
+
+  <p style="font-size:0.75em;color:#94a3b8;margin-top:24px">
+    Life Admin Ops Hub &bull; Last updated: 2026-04-06
+  </p>
+</body>
+</html>

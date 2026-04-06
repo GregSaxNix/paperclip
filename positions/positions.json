@@ -1,0 +1,215 @@
+{
+  "last_updated": "2026-04-06T09:39:41.458738+00:00",
+  "positions": {
+    "CEO": {
+      "agent_id": "297d6a61-9900-4e31-9e7e-8ec3fa93c7a3",
+      "character": "Clawdy",
+      "dept_path": "executive/CEO",
+      "active_slot": "Primary",
+      "active_adapter": "claude_local",
+      "active_model": "claude-opus-4-6",
+      "local_only": false,
+      "last_sub": null
+    },
+    "CTO": {
+      "agent_id": "56d606ab-a36c-4cd9-bf71-1ed422d49d4e",
+      "character": "Gayan",
+      "dept_path": "executive/CTO",
+      "active_slot": "Primary",
+      "active_adapter": "claude_local",
+      "active_model": "claude-opus-4-6",
+      "local_only": false,
+      "last_sub": null
+    },
+    "COO": {
+      "agent_id": "b9acdc0e-671b-4956-9d14-ee9761ad9f06",
+      "character": "COO",
+      "dept_path": "executive/COO",
+      "active_slot": "Primary",
+      "active_adapter": "claude_local",
+      "active_model": "claude-sonnet-4-6",
+      "local_only": false,
+      "last_sub": null
+    },
+    "SeniorEngineer": {
+      "agent_id": "20afbcb3-9fd0-4d72-a44e-16c2a4bea983",
+      "character": "Senior Eng",
+      "dept_path": "technology/senior-engineer",
+      "active_slot": "Primary",
+      "active_adapter": "ollama_local",
+      "active_model": "deepseek-v4",
+      "local_only": false,
+      "last_sub": null
+    },
+    "Engineer": {
+      "agent_id": "787afb8c-df1d-4632-8ee3-40da4d06f17b",
+      "character": "Engineer",
+      "dept_path": "technology/engineer",
+      "active_slot": "Primary",
+      "active_adapter": "codex_local",
+      "active_model": "gpt-5.3-codex",
+      "local_only": false,
+      "last_sub": null
+    },
+    "QABot": {
+      "agent_id": "6ba034eb-b618-4aef-9de8-afc8336853be",
+      "character": "QA Bot",
+      "dept_path": "technology/qa-bot",
+      "active_slot": "Primary",
+      "active_adapter": "ollama_local",
+      "active_model": "deepseek-v4",
+      "local_only": false,
+      "last_sub": null
+    },
+    "Designer": {
+      "agent_id": "5f031fe8-6bd7-4a33-a8eb-705f5f3e6c69",
+      "character": "Designer",
+      "dept_path": "technology/designer",
+      "active_slot": "Fallback 1",
+      "active_adapter": "gemini_local",
+      "active_model": "gemini-2.5-flash",
+      "local_only": false,
+      "last_sub": "2026-04-06T09:39:41.088632+00:00"
+    },
+    "ContentLead": {
+      "agent_id": "d4047079-65bb-49d4-9bc6-f5a8e3fe259a",
+      "character": "Content Lead",
+      "dept_path": "business-ops/content-lead",
+      "active_slot": "Fallback 1",
+      "active_adapter": "ollama_local",
+      "active_model": "mistral-large-latest",
+      "local_only": false,
+      "last_sub": "2026-04-06T09:39:41.209606+00:00"
+    },
+    "Accountant": {
+      "agent_id": "e51a0fc4-367f-4e2c-9ad5-702a0cba546b",
+      "character": "Accountant",
+      "dept_path": "business-ops/accountant",
+      "active_slot": "Fallback 1",
+      "active_adapter": "ollama_local",
+      "active_model": "deepseek-chat",
+      "local_only": false,
+      "last_sub": "2026-04-06T09:39:41.336857+00:00"
+    },
+    "Spielberg": {
+      "agent_id": "8a28534f-4dd2-4802-98ab-7e83712874ea",
+      "character": "Spielberg",
+      "dept_path": "business-ops/spielberg",
+      "active_slot": "Fallback 1",
+      "active_adapter": "ollama_local",
+      "active_model": "grok-3-mini",
+      "local_only": false,
+      "last_sub": "2026-04-06T09:39:40.962225+00:00"
+    },
+    "Finance": {
+      "agent_id": "f2e65bc6-31af-4053-acbd-187cd3d89d92",
+      "character": "Finance",
+      "dept_path": "finance/finance",
+      "active_slot": "Primary",
+      "active_adapter": "ollama_local",
+      "active_model": "deepseek-reasoner (R1)",
+      "local_only": false,
+      "last_sub": null
+    },
+    "Doc": {
+      "agent_id": "40a94a4b-043e-46e7-97c3-dac60fc911d2",
+      "character": "Doc",
+      "dept_path": "health/doc",
+      "active_slot": "Primary",
+      "active_adapter": "ollama_local",
+      "active_model": "gemma4:26b",
+      "local_only": true,
+      "last_sub": null
+    },
+    "Freud": {
+      "agent_id": "00544001-8e06-4739-a6ad-8b5fc18bf1de",
+      "character": "Freud",
+      "dept_path": "health/freud",
+      "active_slot": "Primary",
+      "active_adapter": "ollama_local",
+      "active_model": "gemma4:26b",
+      "local_only": true,
+      "last_sub": null
+    },
+    "TravelAgent": {
+      "agent_id": "66de6564-88df-4a0c-b918-299d2d6619ea",
+      "character": "Travel Agent",
+      "dept_path": "travel/travel-agent",
+      "active_slot": "Fallback 1",
+      "active_adapter": "ollama_local",
+      "active_model": "kimi-k2.5",
+      "local_only": false,
+      "last_sub": "2026-04-06T09:39:41.458729+00:00"
+    },
+    "Researcher": {
+      "agent_id": "9d589490-af2a-4717-b7a8-b61c60059765",
+      "character": "Researcher",
+      "dept_path": "research/researcher",
+      "active_slot": "Primary",
+      "active_adapter": "ollama_local",
+      "active_model": "grok-4.1",
+      "local_only": false,
+      "last_sub": null
+    },
+    "Yoda": {
+      "agent_id": "19c2937c-8e11-4f18-a166-9cdec6ab07e5",
+      "character": "Yoda",
+      "dept_path": "council/yoda",
+      "active_slot": "Primary",
+      "active_adapter": "claude_local",
+      "active_model": "claude-opus-4-6",
+      "local_only": false,
+      "last_sub": null
+    },
+    "Contrarian": {
+      "agent_id": "e8ce7488-0d6d-42c8-a63f-88e46d8a0a7c",
+      "character": "Contrarian",
+      "dept_path": "council/contrarian",
+      "active_slot": "Primary",
+      "active_adapter": "ollama_local",
+      "active_model": "grok-3",
+      "local_only": false,
+      "last_sub": null
+    },
+    "CouncilLocal": {
+      "agent_id": "579e8c85-f6f2-4ddb-af55-e970312756a3",
+      "character": "Council Local",
+      "dept_path": "council/local",
+      "active_slot": "Primary",
+      "active_adapter": "ollama_local",
+      "active_model": "gemma4:26b",
+      "local_only": true,
+      "last_sub": null
+    },
+    "CouncilEU": {
+      "agent_id": "c02e9e21-2fc8-4cfb-998a-59cc1a1ce3b0",
+      "character": "Council EU",
+      "dept_path": "council/eu",
+      "active_slot": "Primary",
+      "active_adapter": "ollama_local",
+      "active_model": "mistral-large-latest",
+      "local_only": false,
+      "last_sub": null
+    },
+    "CouncilCH": {
+      "agent_id": "bdb5860d-8bc6-46e1-b808-2307afd14b1c",
+      "character": "Council CH",
+      "dept_path": "council/ch",
+      "active_slot": "Primary",
+      "active_adapter": "ollama_local",
+      "active_model": "kimi-k2.5",
+      "local_only": false,
+      "last_sub": null
+    },
+    "CouncilTech": {
+      "agent_id": "614bf0a2-5576-49c7-b993-525ffdb83698",
+      "character": "Council Tech",
+      "dept_path": "council/tech",
+      "active_slot": "Primary",
+      "active_adapter": "codex_local",
+      "active_model": "gpt-5.3-codex",
+      "local_only": false,
+      "last_sub": null
+    }
+  }
+}

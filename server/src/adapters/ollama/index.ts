@@ -17,11 +17,14 @@ export const ollamaLocalAdapter: ServerAdapterModule = {
 
 Adapter: ollama_local
 
-Runs models locally via Ollama on the host machine. All data stays local — nothing is sent to external APIs. Uses Ollama's OpenAI-compatible chat completions endpoint.
+Runs models via Ollama locally or any OpenAI-compatible chat completions endpoint. When apiKey is set, adds Bearer auth for cloud API providers (DeepSeek, xAI/Grok, Mistral, etc.).
 
 Core fields:
 - url (string, optional): Ollama base URL. Default: http://localhost:11434
 - model (string, required): Model name to use (e.g. llama3.1:8b-instruct)
 - timeoutMs (number, optional): Request timeout in milliseconds. Default: 120000
+- apiKey (string, optional): Bearer token for cloud API auth. When set, adds Authorization header. Enables use with OpenAI-compatible cloud APIs (DeepSeek, xAI, Mistral, etc.)
+- inputTokenPriceUsd (number, optional): Cost per input token in USD (e.g. 0.000003 for $3/M tokens). Default: 0. Set for API-backed models to enable cost tracking.
+- outputTokenPriceUsd (number, optional): Cost per output token in USD (e.g. 0.000015 for $15/M tokens). Default: 0. Set for API-backed models to enable cost tracking.
 `,
 };

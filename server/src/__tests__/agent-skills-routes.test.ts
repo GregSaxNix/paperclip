@@ -459,4 +459,34 @@ describe("agent skill routes", () => {
       | undefined;
     expect(approvalInput?.payload?.adapterConfig?.promptTemplate).toBeUndefined();
   });
+
+  it("rejects http adapter without url", async () => {
+    const res = await request(createApp())
+      .post("/api/companies/company-1/agents")
+      .send({
+        name: "Webhook Agent",
+        role: "engineer",
+        adapterType: "http",
+        adapterConfig: {},
+      });
+
+    expect(res.status).toBe(422);
+    expect(String(res.body?.error ?? "")).toMatch(/http adapter requires adapterConfig\.url/);
+  });
+
+  it("allows http adapter when resolved config includes url", async () => {
+    mockSecretService.resolveAdapterConfigForRuntime.mockResolvedValue({
+      config: { url: "https://example.com/hook", env: {} },
+    });
+    const res = await request(createApp())
+      .post("/api/companies/company-1/agents")
+      .send({
+        name: "Webhook Agent",
+        role: "engineer",
+        adapterType: "http",
+        adapterConfig: { url: "https://example.com/hook" },
+      });
+
+    expect(res.status, JSON.stringify(res.body)).toBe(201);
+  });
 });
