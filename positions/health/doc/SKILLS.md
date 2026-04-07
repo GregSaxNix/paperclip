@@ -11,7 +11,7 @@ _Synced to the agent by `position_manager.py`. These are active now._
 ## Document Skills (install from anthropics/skills)
 _Official Anthropic vetted skills. Install via Paperclip Plugin Manager or API._
 
-- [ ] `pdf` — Referral letters, pathology reports, specialist letters, test results
+- [x] `pdf` — Referral letters, pathology reports, specialist letters, test results
 
 ## Custom Build Skills (pending)
 _These skills do not exist publicly in the right form. Build progressively as needed._

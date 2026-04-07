@@ -11,7 +11,7 @@ _Synced to the agent by `position_manager.py`. These are active now._
 ## Document Skills (install from anthropics/skills)
 _Official Anthropic vetted skills. Install via Paperclip Plugin Manager or API._
 
-- [ ] `pptx` — Visual presentation decks and design mockups
+- [x] `pptx` — Visual presentation decks and design mockups
 
 ## Job Skills (vet then install)
 _Community skills requiring manual review before installation._

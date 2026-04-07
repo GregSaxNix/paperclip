@@ -1,5 +1,5 @@
 {
-  "last_updated": "2026-04-06T09:39:41.458738+00:00",
+  "last_updated": "2026-04-06T20:23:27.956893+00:00",
   "positions": {
     "CEO": {
       "agent_id": "297d6a61-9900-4e31-9e7e-8ec3fa93c7a3",
@@ -208,6 +208,16 @@
       "active_slot": "Primary",
       "active_adapter": "codex_local",
       "active_model": "gpt-5.3-codex",
+      "local_only": false,
+      "last_sub": null
+    },
+    "CyberSecurity": {
+      "agent_id": "a138bf13-e993-4037-a588-8b6a0248f978",
+      "character": "Sentry",
+      "dept_path": "technology/cyber-security",
+      "active_slot": "Primary",
+      "active_adapter": "ollama_local",
+      "active_model": "deepseek-reasoner",
       "local_only": false,
       "last_sub": null
     }

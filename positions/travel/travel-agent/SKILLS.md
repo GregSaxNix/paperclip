@@ -11,7 +11,7 @@ _Synced to the agent by `position_manager.py`. These are active now._
 ## Document Skills (install from anthropics/skills)
 _Official Anthropic vetted skills. Install via Paperclip Plugin Manager or API._
 
-- [ ] `pdf` — Travel guides, visa documents, health advisories
+- [x] `pdf` — Travel guides, visa documents, health advisories
 
 ## MCP Tool Integrations
 _Model Context Protocol servers. Available to claude_local adapter agents only._

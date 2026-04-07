@@ -11,8 +11,8 @@ _Synced to the agent by `position_manager.py`. These are active now._
 ## Document Skills (install from anthropics/skills)
 _Official Anthropic vetted skills. Install via Paperclip Plugin Manager or API._
 
-- [ ] `xlsx` — Complex financial models, projections, scenario tables
-- [ ] `pdf` — Financial statements, investment reports, research documents
+- [x] `xlsx` — Complex financial models, projections, scenario tables
+- [x] `pdf` — Financial statements, investment reports, research documents
 
 ## Job Skills (vet then install)
 _Community skills requiring manual review before installation._

@@ -10,8 +10,8 @@ _Synced to the agent by `position_manager.py`. These are active now._
 ## Document Skills (install from anthropics/skills)
 _Official Anthropic vetted skills. Install via Paperclip Plugin Manager or API._
 
-- [ ] `xlsx` — Financial spreadsheets, expense tracking, budget models
-- [ ] `pdf` — Tax documents, financial statements, ATO correspondence
+- [x] `xlsx` — Financial spreadsheets, expense tracking, budget models
+- [x] `pdf` — Tax documents, financial statements, ATO correspondence
 
 ## Job Skills (vet then install)
 _Community skills requiring manual review before installation._

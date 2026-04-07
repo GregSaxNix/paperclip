@@ -11,9 +11,9 @@ _Synced to the agent by `position_manager.py`. These are active now._
 ## Document Skills (install from anthropics/skills)
 _Official Anthropic vetted skills. Install via Paperclip Plugin Manager or API._
 
-- [ ] `pdf` — Operational documents, process guides, reports
-- [ ] `pptx` — Operational presentations and briefing decks
-- [ ] `docx` — Structured process documentation and reports
+- [x] `pdf` — Operational documents, process guides, reports
+- [x] `pptx` — Operational presentations and briefing decks
+- [x] `docx` — Structured process documentation and reports
 
 ## Job Skills (vet then install)
 _Community skills requiring manual review before installation._

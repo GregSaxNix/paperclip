@@ -13,8 +13,8 @@ _Synced to the agent by `position_manager.py`. These are active now._
 ## Document Skills (install from anthropics/skills)
 _Official Anthropic vetted skills. Install via Paperclip Plugin Manager or API._
 
-- [ ] `pdf` — Research papers, technical reports, whitepapers
-- [ ] `docx` — Structured research briefs and summaries
+- [x] `pdf` — Research papers, technical reports, whitepapers
+- [x] `docx` — Structured research briefs and summaries
 
 ## MCP Tool Integrations
 _Model Context Protocol servers. Available to claude_local adapter agents only._
@@ -27,3 +27,15 @@ _Model Context Protocol servers. Available to claude_local adapter agents only._
 _These skills do not exist publicly in the right form. Build progressively as needed._
 
 - [ ] `llm-matrix-updater` — Research protocol for updating llm-matrix-data.json — pricing, benchmarks, new releases
+
+## Standing Responsibility — LLM Playbook
+
+The Researcher is the **maintainer** of `D:\paperclip\LLM-PLAYBOOK.md`.
+
+Update this document when:
+- A model is added, removed, or substituted (positions.json changes)
+- New pricing or benchmarks are published for any model in the lineup
+- Prompting patterns are discovered or revised through use
+- A new model family is onboarded
+
+Protocol: check `positions.json` → update Roster table → update llm-matrix-data.json → update playbook → update `last_updated` date.

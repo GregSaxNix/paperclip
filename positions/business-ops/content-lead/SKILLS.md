@@ -11,8 +11,8 @@ _Synced to the agent by `position_manager.py`. These are active now._
 ## Document Skills (install from anthropics/skills)
 _Official Anthropic vetted skills. Install via Paperclip Plugin Manager or API._
 
-- [ ] `docx` — Structured documents, newsletters, content drafts
-- [ ] `pptx` — Content presentations and slide decks
+- [x] `docx` — Structured documents, newsletters, content drafts
+- [x] `pptx` — Content presentations and slide decks
 
 ## Job Skills (vet then install)
 _Community skills requiring manual review before installation._
