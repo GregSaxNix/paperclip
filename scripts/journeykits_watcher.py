@@ -5,9 +5,9 @@ Periodically checks JourneyKits.ai for new skills from trusted publishers,
 screens them, installs SKILL.md files, and posts a Paperclip issue summary.
 
 Schedule: Sundays 6 AM AEST via Windows Task Scheduler.
-Run:       python D:\paperclip\scripts\journeykits_watcher.py
-Log:       D:\paperclip\scripts\journeykits_watcher.log
-State:     D:\paperclip\scripts\journeykits_state.json
+Run:       python D:/paperclip/scripts/journeykits_watcher.py
+Log:       D:/paperclip/scripts/journeykits_watcher.log
+State:     D:/paperclip/scripts/journeykits_state.json
 """
 
 import json
@@ -56,7 +56,7 @@ PAGE_SIZE = 100
 def log(msg: str) -> None:
     ts = datetime.now(timezone.utc).strftime("%Y-%m-%dT%H:%M:%SZ")
     line = f"[{ts}] {msg}"
-    print(line)
+    print(line.encode("ascii", errors="replace").decode("ascii"))
     with open(LOG_FILE, "a", encoding="utf-8") as f:
         f.write(line + "\n")
 
@@ -122,7 +122,11 @@ def fetch_all_kits() -> list[dict]:
         page = fetch_json(url)
         if not page:
             break
-        items = page if isinstance(page, list) else page.get("kits", page.get("data", []))
+        # API returns {"items": [...], "total": N} or plain list
+        if isinstance(page, list):
+            items = page
+        else:
+            items = page.get("items", page.get("kits", page.get("data", [])))
         if not items:
             break
         kits.extend(items)
@@ -316,7 +320,7 @@ Skills directory: `C:\\Users\\Administrator\\.claude\\skills\\`
         "assignedAgentId": RESEARCHER_AGENT_ID,
     }
 
-    result = post_json(f"{PAPERCLIP_BASE}/api/issues", payload)
+    result = post_json(f"{PAPERCLIP_BASE}/api/companies/{LIFE_ADMIN_COMPANY_ID}/issues", payload)
     if result:
         issue_id = result.get("id", result.get("issueId", "?"))
         log(f"Paperclip issue created: {issue_id}")
