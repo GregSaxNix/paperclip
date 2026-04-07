@@ -217,7 +217,7 @@ def synthesise_skill_md(kit: dict) -> str:
     # Build trigger list — use tags + name words if triggers not explicit
     if not triggers:
         triggers = [t.lower().replace("-", " ") for t in tags[:5]]
-    trigger_lines = "\n".join(f"  - \"{t}\"" for t in triggers[:8])
+    trigger_lines = "\n".join(f"  - \"{t}\"" for t in triggers[:8]) if triggers else ""
 
     # Build tool list
     if not tools:
@@ -232,13 +232,12 @@ def synthesise_skill_md(kit: dict) -> str:
     # Body — use full usage/instructions if available, else description
     body = usage.strip() if usage.strip() else description.strip()
 
+    triggers_block = f"triggers:\n{trigger_lines}\n" if trigger_lines else ""
     skill_md = f"""---
 name: {slug}
 description: >
   {short_desc}
-triggers:
-{trigger_lines}
-model: {model}
+{triggers_block}model: {model}
 tools:
 {tool_lines}
 license: {license_str}
