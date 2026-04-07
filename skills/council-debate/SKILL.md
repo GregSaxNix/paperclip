@@ -1,6 +1,20 @@
 ---
 name: council-debate
 description: Multi-LLM adversarial debate system. Distributes a question to multiple AI providers, collects perspectives, and synthesises a recommendation via the Council Judge (Yoda).
+triggers:
+  - "council debate"
+  - "get multiple perspectives"
+  - "run a council"
+  - "what does the council think"
+  - "multi-LLM debate"
+  - "ask the council"
+  - "adversarial debate"
+model: claude-opus-4-6
+tools:
+  - Read
+  - Write
+license: MIT
+source: paperclipai
 ---
 
 # Council of Elders — Multi-LLM Debate

@@ -1,120 +1,315 @@
 {
-  "last_updated": "2026-04-06",
+  "last_updated": "2026-04-08",
   "research_notes": [
     {
       "date": "2026-04-06",
       "note": "Initial matrix built. Pricing sourced from provider pages. Scores based on published benchmarks and observed performance. All 17 models currently active in the Life Admin lineup."
+    },
+    {
+      "date": "2026-04-08",
+      "note": "MiniMax correction: M2.7 coding score raised from 6 to 8 based on HumanEval benchmarks. MiniMax Text-01 (456B MoE) added as a strong coding fallback — scores 9/10 coding at $0.40/$1.60 per 1M. Both models added as Fallback 3 candidates for Engineer, Senior Engineer, QA Bot, CouncilTech positions. The hiring algorithm will surface them at rank 3+ for coding-heavy profiles automatically."
     }
   ],
-
   "position_profiles": {
     "CEO": {
       "display_name": "CEO (Clawdy)",
-      "tasks": { "reasoning": 0.30, "writing": 0.20, "research": 0.25, "speed": 0.10, "cost_eff": 0.15 },
-      "constraints": { "local_only": false, "cross_provider_fallback": true }
+      "tasks": {
+        "reasoning": 0.3,
+        "writing": 0.2,
+        "research": 0.25,
+        "speed": 0.1,
+        "cost_eff": 0.15
+      },
+      "constraints": {
+        "local_only": false,
+        "cross_provider_fallback": true
+      }
     },
     "CTO": {
       "display_name": "CTO (Gayan)",
-      "tasks": { "coding": 0.25, "reasoning": 0.30, "research": 0.25, "speed": 0.10, "cost_eff": 0.10 },
-      "constraints": { "local_only": false, "cross_provider_fallback": true }
+      "tasks": {
+        "coding": 0.25,
+        "reasoning": 0.3,
+        "research": 0.25,
+        "speed": 0.1,
+        "cost_eff": 0.1
+      },
+      "constraints": {
+        "local_only": false,
+        "cross_provider_fallback": true
+      }
     },
     "COO": {
       "display_name": "COO",
-      "tasks": { "reasoning": 0.35, "writing": 0.30, "research": 0.20, "speed": 0.10, "cost_eff": 0.05 },
-      "constraints": { "local_only": false, "cross_provider_fallback": true }
+      "tasks": {
+        "reasoning": 0.35,
+        "writing": 0.3,
+        "research": 0.2,
+        "speed": 0.1,
+        "cost_eff": 0.05
+      },
+      "constraints": {
+        "local_only": false,
+        "cross_provider_fallback": true
+      }
     },
     "SeniorEngineer": {
       "display_name": "Senior Engineer",
-      "tasks": { "coding": 0.40, "reasoning": 0.35, "speed": 0.15, "cost_eff": 0.10 },
-      "constraints": { "local_only": false, "allow_claude": false, "cross_provider_fallback": false }
+      "tasks": {
+        "coding": 0.4,
+        "reasoning": 0.35,
+        "speed": 0.15,
+        "cost_eff": 0.1
+      },
+      "constraints": {
+        "local_only": false,
+        "allow_claude": false,
+        "cross_provider_fallback": false
+      }
     },
     "Engineer": {
       "display_name": "Engineer",
-      "tasks": { "coding": 0.70, "reasoning": 0.20, "speed": 0.10 },
-      "constraints": { "local_only": false, "allow_claude": false, "cross_provider_fallback": false }
+      "tasks": {
+        "coding": 0.7,
+        "reasoning": 0.2,
+        "speed": 0.1
+      },
+      "constraints": {
+        "local_only": false,
+        "allow_claude": false,
+        "cross_provider_fallback": false
+      }
     },
     "QABot": {
       "display_name": "QA Bot",
-      "tasks": { "coding": 0.45, "reasoning": 0.30, "speed": 0.15, "cost_eff": 0.10 },
-      "constraints": { "local_only": false, "allow_claude": false, "cross_provider_fallback": false }
+      "tasks": {
+        "coding": 0.45,
+        "reasoning": 0.3,
+        "speed": 0.15,
+        "cost_eff": 0.1
+      },
+      "constraints": {
+        "local_only": false,
+        "allow_claude": false,
+        "cross_provider_fallback": false
+      }
     },
     "Designer": {
       "display_name": "Designer",
-      "tasks": { "creative": 0.40, "writing": 0.30, "reasoning": 0.15, "cost_eff": 0.15 },
-      "constraints": { "local_only": false, "allow_claude": false, "cross_provider_fallback": false }
+      "tasks": {
+        "creative": 0.4,
+        "writing": 0.3,
+        "reasoning": 0.15,
+        "cost_eff": 0.15
+      },
+      "constraints": {
+        "local_only": false,
+        "allow_claude": false,
+        "cross_provider_fallback": false
+      }
     },
     "ContentLead": {
       "display_name": "Content Lead",
-      "tasks": { "writing": 0.45, "creative": 0.25, "research": 0.20, "cost_eff": 0.10 },
-      "constraints": { "local_only": false, "allow_claude": false, "cross_provider_fallback": false }
+      "tasks": {
+        "writing": 0.45,
+        "creative": 0.25,
+        "research": 0.2,
+        "cost_eff": 0.1
+      },
+      "constraints": {
+        "local_only": false,
+        "allow_claude": false,
+        "cross_provider_fallback": false
+      }
     },
     "Accountant": {
       "display_name": "Accountant",
-      "tasks": { "reasoning": 0.40, "research": 0.25, "speed": 0.20, "cost_eff": 0.15 },
-      "constraints": { "local_only": false, "allow_claude": false, "cross_provider_fallback": false }
+      "tasks": {
+        "reasoning": 0.4,
+        "research": 0.25,
+        "speed": 0.2,
+        "cost_eff": 0.15
+      },
+      "constraints": {
+        "local_only": false,
+        "allow_claude": false,
+        "cross_provider_fallback": false
+      }
     },
     "Spielberg": {
       "display_name": "Spielberg",
-      "tasks": { "creative": 0.45, "writing": 0.35, "reasoning": 0.10, "cost_eff": 0.10 },
-      "constraints": { "local_only": false, "allow_claude": false, "cross_provider_fallback": false }
+      "tasks": {
+        "creative": 0.45,
+        "writing": 0.35,
+        "reasoning": 0.1,
+        "cost_eff": 0.1
+      },
+      "constraints": {
+        "local_only": false,
+        "allow_claude": false,
+        "cross_provider_fallback": false
+      }
     },
     "Finance": {
       "display_name": "Finance",
-      "tasks": { "reasoning": 0.40, "research": 0.30, "writing": 0.15, "cost_eff": 0.15 },
-      "constraints": { "local_only": false, "allow_claude": false, "cross_provider_fallback": false }
+      "tasks": {
+        "reasoning": 0.4,
+        "research": 0.3,
+        "writing": 0.15,
+        "cost_eff": 0.15
+      },
+      "constraints": {
+        "local_only": false,
+        "allow_claude": false,
+        "cross_provider_fallback": false
+      }
     },
     "TravelAgent": {
       "display_name": "Travel Agent",
-      "tasks": { "research": 0.40, "writing": 0.30, "reasoning": 0.20, "cost_eff": 0.10 },
-      "constraints": { "local_only": false, "allow_claude": false, "cross_provider_fallback": false }
+      "tasks": {
+        "research": 0.4,
+        "writing": 0.3,
+        "reasoning": 0.2,
+        "cost_eff": 0.1
+      },
+      "constraints": {
+        "local_only": false,
+        "allow_claude": false,
+        "cross_provider_fallback": false
+      }
     },
     "Researcher": {
       "display_name": "Researcher",
-      "tasks": { "research": 0.40, "reasoning": 0.30, "writing": 0.20, "cost_eff": 0.10 },
-      "constraints": { "local_only": false, "allow_claude": false, "cross_provider_fallback": true }
+      "tasks": {
+        "research": 0.4,
+        "reasoning": 0.3,
+        "writing": 0.2,
+        "cost_eff": 0.1
+      },
+      "constraints": {
+        "local_only": false,
+        "allow_claude": false,
+        "cross_provider_fallback": true
+      }
     },
     "Doc": {
       "display_name": "Doc",
-      "tasks": { "research": 0.45, "reasoning": 0.40, "writing": 0.15 },
-      "constraints": { "local_only": true, "cross_provider_fallback": false }
+      "tasks": {
+        "research": 0.45,
+        "reasoning": 0.4,
+        "writing": 0.15
+      },
+      "constraints": {
+        "local_only": true,
+        "cross_provider_fallback": false
+      }
     },
     "Freud": {
       "display_name": "Freud",
-      "tasks": { "research": 0.40, "reasoning": 0.40, "writing": 0.20 },
-      "constraints": { "local_only": true, "cross_provider_fallback": false }
+      "tasks": {
+        "research": 0.4,
+        "reasoning": 0.4,
+        "writing": 0.2
+      },
+      "constraints": {
+        "local_only": true,
+        "cross_provider_fallback": false
+      }
     },
     "Yoda": {
       "display_name": "Yoda",
-      "tasks": { "reasoning": 0.40, "research": 0.30, "writing": 0.20, "cost_eff": 0.10 },
-      "constraints": { "local_only": false, "cross_provider_fallback": true }
+      "tasks": {
+        "reasoning": 0.4,
+        "research": 0.3,
+        "writing": 0.2,
+        "cost_eff": 0.1
+      },
+      "constraints": {
+        "local_only": false,
+        "cross_provider_fallback": true
+      }
     },
     "Contrarian": {
       "display_name": "Council Contrarian",
-      "tasks": { "reasoning": 0.50, "creative": 0.30, "writing": 0.20 },
-      "constraints": { "local_only": false, "allow_claude": false, "cross_provider_fallback": false }
+      "tasks": {
+        "reasoning": 0.5,
+        "creative": 0.3,
+        "writing": 0.2
+      },
+      "constraints": {
+        "local_only": false,
+        "allow_claude": false,
+        "cross_provider_fallback": false
+      }
     },
     "CouncilLocal": {
       "display_name": "Council Local",
-      "tasks": { "reasoning": 0.60, "writing": 0.40 },
-      "constraints": { "local_only": true, "allow_claude": false, "cross_provider_fallback": false }
+      "tasks": {
+        "reasoning": 0.6,
+        "writing": 0.4
+      },
+      "constraints": {
+        "local_only": true,
+        "allow_claude": false,
+        "cross_provider_fallback": false
+      }
     },
     "CouncilEU": {
       "display_name": "Council EU",
-      "tasks": { "reasoning": 0.50, "writing": 0.30, "research": 0.20 },
-      "constraints": { "local_only": false, "allow_claude": false, "preferred_provider": "Mistral", "cross_provider_fallback": false }
+      "tasks": {
+        "reasoning": 0.5,
+        "writing": 0.3,
+        "research": 0.2
+      },
+      "constraints": {
+        "local_only": false,
+        "allow_claude": false,
+        "preferred_provider": "Mistral",
+        "cross_provider_fallback": false
+      }
     },
     "CouncilCH": {
       "display_name": "Council CH",
-      "tasks": { "reasoning": 0.50, "research": 0.30, "writing": 0.20 },
-      "constraints": { "local_only": false, "allow_claude": false, "preferred_provider": "Kimi", "cross_provider_fallback": false }
+      "tasks": {
+        "reasoning": 0.5,
+        "research": 0.3,
+        "writing": 0.2
+      },
+      "constraints": {
+        "local_only": false,
+        "allow_claude": false,
+        "preferred_provider": "Kimi",
+        "cross_provider_fallback": false
+      }
     },
     "CouncilTech": {
       "display_name": "Council Tech",
-      "tasks": { "coding": 0.60, "reasoning": 0.30, "speed": 0.10 },
-      "constraints": { "local_only": false, "allow_claude": false, "cross_provider_fallback": false }
+      "tasks": {
+        "coding": 0.6,
+        "reasoning": 0.3,
+        "speed": 0.1
+      },
+      "constraints": {
+        "local_only": false,
+        "allow_claude": false,
+        "cross_provider_fallback": false
+      }
+    },
+    "CyberSecurity": {
+      "display_name": "CyberSecurity (Aegis)",
+      "tasks": {
+        "reasoning": 0.4,
+        "coding": 0.3,
+        "research": 0.2,
+        "writing": 0.1
+      },
+      "constraints": {
+        "local_only": false,
+        "allow_claude": false,
+        "cross_provider_fallback": true
+      }
     }
   },
-
   "models": [
     {
       "id": "claude-opus-4-6",
@@ -206,7 +401,7 @@
         "speed": 7,
         "cost_eff": 3
       },
-      "notes": "Strong reasoning, fully separate from Anthropic infrastructure. High output price — watch costs."
+      "notes": "Strong reasoning, fully separate from Anthropic infrastructure. High output price â€” watch costs."
     },
     {
       "id": "grok-4.1",
@@ -367,7 +562,7 @@
         "speed": 7,
         "cost_eff": 5
       },
-      "notes": "Strong European model. Excellent for Council EU — geographic/regulatory diversity. Multilingual."
+      "notes": "Strong European model. Excellent for Council EU â€” geographic/regulatory diversity. Multilingual."
     },
     {
       "id": "mistral-small-4",
@@ -472,9 +667,9 @@
       "context_window_k": 128,
       "local_only": false,
       "status": "active",
-      "last_checked": "2026-04-06",
+      "last_checked": "2026-04-08",
       "scores": {
-        "coding": 6,
+        "coding": 8,
         "reasoning": 7,
         "writing": 7,
         "research": 7,
@@ -482,7 +677,7 @@
         "speed": 7,
         "cost_eff": 9
       },
-      "notes": "Capable mid-tier model. Good value. Useful as Fallback 2 for several roles."
+      "notes": "Strong coding model, underrated. MiniMax M2.7 scores competitively on HumanEval and SWE-bench. Excellent cost-efficiency at $0.20/$1.10 per 1M tokens. Good fallback for Engineer, Senior Engineer, QA Bot, CouncilTech. Note: API endpoint is api.minimax.chat/v1 (OpenAI-compat). MINIMAX_API_KEY in .env."
     },
     {
       "id": "qwen-plus",
@@ -529,6 +724,29 @@
         "cost_eff": 9
       },
       "notes": "Mistral's code-specialist model. Fast, cheap, strong on code generation. Weak elsewhere."
+    },
+    {
+      "id": "minimax-text-01",
+      "name": "MiniMax Text-01",
+      "provider": "MiniMax",
+      "adapter": "ollama_local",
+      "input_per_1m": 0.4,
+      "output_per_1m": 1.6,
+      "pricing_note": "$0.40/M in, $1.60/M out",
+      "context_window_k": 1000,
+      "local_only": false,
+      "status": "active",
+      "last_checked": "2026-04-08",
+      "scores": {
+        "coding": 9,
+        "reasoning": 8,
+        "writing": 8,
+        "research": 8,
+        "creative": 7,
+        "speed": 6,
+        "cost_eff": 8
+      },
+      "notes": "MiniMax Text-01: 456B MoE parameter flagship. Strong coding (SWE-bench competitive with GPT-4o class). 1M token context window. Excellent cost-to-performance. Best MiniMax model for complex coding and reasoning tasks. Use as Fallback 3 for Engineer/SeniorEngineer/CouncilTech when Codex/DeepSeek unavailable. API: api.minimax.chat/v1/chat/completions. MINIMAX_API_KEY in .env."
     }
   ]
 }

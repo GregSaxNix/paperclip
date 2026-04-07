@@ -4,7 +4,6 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>LLM Matrix — Life Admin</title>
-  <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🤖</text></svg>">
   <style>
     * { box-sizing: border-box; }
     body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif; background: #f1f5f9; color: #1e293b; margin: 0; padding: 24px; }
@@ -63,8 +62,8 @@
 <body>
   <h1>🧠 LLM Matrix — Life Admin</h1>
   <p class="sub">
-    Last data update: <strong>2026-04-06</strong> &bull;
-    Dashboard generated: 2026-04-07 06:34 &bull;
+    Last data update: <strong>2026-04-08</strong> &bull;
+    Dashboard generated: 2026-04-08 07:30 &bull;
     <a href="lineup_dashboard.html">Agent Matrix</a> &bull;
     <a href="ops-hub.html">Ops Hub</a>
   </p>
@@ -246,8 +245,8 @@
           <td><code>ollama_local</code></td>
           <td style="text-align:right">$0.20</td>
           <td style="text-align:right">$1</td>
-          <td style="background:#fef9c3;color:#78350f;font-weight:600;text-align:center">6</td><td style="background:#d9f99d;color:#14532d;font-weight:600;text-align:center">7</td><td style="background:#d9f99d;color:#14532d;font-weight:600;text-align:center">7</td><td style="background:#d9f99d;color:#14532d;font-weight:600;text-align:center">7</td><td style="background:#fef9c3;color:#78350f;font-weight:600;text-align:center">6</td><td style="background:#d9f99d;color:#14532d;font-weight:600;text-align:center">7</td><td style="background:#bbf7d0;color:#14532d;font-weight:600;text-align:center">9</td>
-          <td style="color:#64748b;font-size:0.8em">Capable mid-tier model. Good value. Useful as Fallback 2 for several roles.</td>
+          <td style="background:#d9f99d;color:#14532d;font-weight:600;text-align:center">8</td><td style="background:#d9f99d;color:#14532d;font-weight:600;text-align:center">7</td><td style="background:#d9f99d;color:#14532d;font-weight:600;text-align:center">7</td><td style="background:#d9f99d;color:#14532d;font-weight:600;text-align:center">7</td><td style="background:#fef9c3;color:#78350f;font-weight:600;text-align:center">6</td><td style="background:#d9f99d;color:#14532d;font-weight:600;text-align:center">7</td><td style="background:#bbf7d0;color:#14532d;font-weight:600;text-align:center">9</td>
+          <td style="color:#64748b;font-size:0.8em">Strong coding model, underrated. MiniMax M2.7 scores competitively on HumanEval and SWE-bench. Excellent cost-efficiency at $0.20/$1.10 per 1M tokens. Good fallback for Engineer, Senior Engineer, QA Bot, CouncilTech. Note: API endpoint is api.minimax.chat/v1 (OpenAI-compat). MINIMAX_API_KEY in .env.</td>
         </tr>
         <tr  data-provider="Alibaba">
           <td><strong>Qwen Plus</strong></td>
@@ -266,6 +265,15 @@
           <td style="text-align:right">$0.90</td>
           <td style="background:#bbf7d0;color:#14532d;font-weight:600;text-align:center">9</td><td style="background:#fef9c3;color:#78350f;font-weight:600;text-align:center">6</td><td style="background:#fef9c3;color:#78350f;font-weight:600;text-align:center">5</td><td style="background:#fef9c3;color:#78350f;font-weight:600;text-align:center">5</td><td style="background:#fed7aa;color:#7f1d1d;font-weight:600;text-align:center">4</td><td style="background:#d9f99d;color:#14532d;font-weight:600;text-align:center">8</td><td style="background:#bbf7d0;color:#14532d;font-weight:600;text-align:center">9</td>
           <td style="color:#64748b;font-size:0.8em">Mistral's code-specialist model. Fast, cheap, strong on code generation. Weak elsewhere.</td>
+        </tr>
+        <tr  data-provider="MiniMax">
+          <td><strong>MiniMax Text-01</strong></td>
+          <td>MiniMax</td>
+          <td><code>ollama_local</code></td>
+          <td style="text-align:right">$0.40</td>
+          <td style="text-align:right">$2</td>
+          <td style="background:#bbf7d0;color:#14532d;font-weight:600;text-align:center">9</td><td style="background:#d9f99d;color:#14532d;font-weight:600;text-align:center">8</td><td style="background:#d9f99d;color:#14532d;font-weight:600;text-align:center">8</td><td style="background:#d9f99d;color:#14532d;font-weight:600;text-align:center">8</td><td style="background:#d9f99d;color:#14532d;font-weight:600;text-align:center">7</td><td style="background:#fef9c3;color:#78350f;font-weight:600;text-align:center">6</td><td style="background:#d9f99d;color:#14532d;font-weight:600;text-align:center">8</td>
+          <td style="color:#64748b;font-size:0.8em">MiniMax Text-01: 456B MoE parameter flagship. Strong coding (SWE-bench competitive with GPT-4o class). 1M token context window. Excellent cost-to-performance. Best MiniMax model for complex coding and reasoning tasks. Use as Fallback 3 for Engineer/SeniorEngineer/CouncilTech when Codex/DeepSeek unavailable. API: api.minimax.chat/v1/chat/completions. MINIMAX_API_KEY in .env.</td>
         </tr>
         </tbody>
       </table>
@@ -295,7 +303,7 @@
         <tr>
           <td><strong>CTO (Gayan)</strong></td>
           <td><code style="font-size:0.8em">claude-opus-4-6</code></td>
-          <td><span class="slot-chip" title="Claude Opus 4.6 - score 9.00" style="background:#bbf7d0;color:#14532d;font-weight:700">#1 Opus 4.6</span><span class="slot-chip" title="DeepSeek R1 - score 8.30" style="background:#d9f99d;color:#14532d;font-weight:500">DS R1</span><span class="slot-chip" title="Claude Sonnet 4.6 - score 8.10" style="background:#d9f99d;color:#14532d;font-weight:500">Sonnet 4.6</span><span class="slot-chip" title="Gemini 2.5 Flash - score 8.10" style="background:#d9f99d;color:#14532d;font-weight:500">Gem. Flash</span><span class="slot-chip" title="DeepSeek V4 - score 8.00" style="background:#d9f99d;color:#14532d;font-weight:500">DS Chat</span></td>
+          <td><span class="slot-chip" title="Claude Opus 4.6 - score 9.00" style="background:#bbf7d0;color:#14532d;font-weight:700">#1 Opus 4.6</span><span class="slot-chip" title="DeepSeek R1 - score 8.30" style="background:#d9f99d;color:#14532d;font-weight:500">DS R1</span><span class="slot-chip" title="Claude Sonnet 4.6 - score 8.10" style="background:#d9f99d;color:#14532d;font-weight:500">Sonnet 4.6</span><span class="slot-chip" title="Gemini 2.5 Flash - score 8.10" style="background:#d9f99d;color:#14532d;font-weight:500">Gem. Flash</span><span class="slot-chip" title="MiniMax Text-01 - score 8.05" style="background:#d9f99d;color:#14532d;font-weight:500">MiniMax T01</span></td>
           <td><span class="badge warn">⚠️ Claude Opus 4.6 better fit</span></td>
         </tr>
         <tr>
@@ -313,55 +321,55 @@
         <tr>
           <td><strong>Engineer</strong></td>
           <td><code style="font-size:0.8em">gpt-5.3-codex</code></td>
-          <td><span class="slot-chip" title="GPT-5.3 Codex - score 9.20" style="background:#bbf7d0;color:#14532d;font-weight:700">#1 Codex</span><span class="slot-chip" title="Grok Code Fast 1 - score 8.60" style="background:#d9f99d;color:#14532d;font-weight:500">Grok Fast</span><span class="slot-chip" title="DeepSeek V4 - score 8.60" style="background:#d9f99d;color:#14532d;font-weight:500">DS Chat</span><span class="slot-chip" title="Codestral - score 8.30" style="background:#d9f99d;color:#14532d;font-weight:500">Codestral</span><span class="slot-chip" title="Grok-3 - score 8.10" style="background:#d9f99d;color:#14532d;font-weight:500">Grok-3</span></td>
+          <td><span class="slot-chip" title="GPT-5.3 Codex - score 9.20" style="background:#bbf7d0;color:#14532d;font-weight:700">#1 Codex</span><span class="slot-chip" title="Grok Code Fast 1 - score 8.60" style="background:#d9f99d;color:#14532d;font-weight:500">Grok Fast</span><span class="slot-chip" title="DeepSeek V4 - score 8.60" style="background:#d9f99d;color:#14532d;font-weight:500">DS Chat</span><span class="slot-chip" title="MiniMax Text-01 - score 8.50" style="background:#d9f99d;color:#14532d;font-weight:500">MiniMax T01</span><span class="slot-chip" title="Codestral - score 8.30" style="background:#d9f99d;color:#14532d;font-weight:500">Codestral</span></td>
           <td><span class="badge warn">⚠️ GPT-5.3 Codex better fit</span></td>
         </tr>
         <tr>
           <td><strong>QA Bot</strong></td>
           <td><code style="font-size:0.8em">deepseek-v4</code></td>
-          <td><span class="slot-chip" title="GPT-5.3 Codex - score 8.60" style="background:#d9f99d;color:#14532d;font-weight:700">#1 Codex</span><span class="slot-chip" title="Grok Code Fast 1 - score 8.40" style="background:#d9f99d;color:#14532d;font-weight:500">Grok Fast</span><span class="slot-chip" title="DeepSeek V4 - score 8.40" style="background:#d9f99d;color:#14532d;font-weight:500">DS Chat</span><span class="slot-chip" title="DeepSeek R1 - score 8.15" style="background:#d9f99d;color:#14532d;font-weight:500">DS R1</span><span class="slot-chip" title="Gemini 2.5 Flash - score 8.10" style="background:#d9f99d;color:#14532d;font-weight:500">Gem. Flash</span></td>
+          <td><span class="slot-chip" title="GPT-5.3 Codex - score 8.60" style="background:#d9f99d;color:#14532d;font-weight:700">#1 Codex</span><span class="slot-chip" title="Grok Code Fast 1 - score 8.40" style="background:#d9f99d;color:#14532d;font-weight:500">Grok Fast</span><span class="slot-chip" title="DeepSeek V4 - score 8.40" style="background:#d9f99d;color:#14532d;font-weight:500">DS Chat</span><span class="slot-chip" title="DeepSeek R1 - score 8.15" style="background:#d9f99d;color:#14532d;font-weight:500">DS R1</span><span class="slot-chip" title="MiniMax Text-01 - score 8.15" style="background:#d9f99d;color:#14532d;font-weight:500">MiniMax T01</span></td>
           <td><span class="badge warn">⚠️ GPT-5.3 Codex better fit</span></td>
         </tr>
         <tr>
           <td><strong>Designer</strong></td>
           <td><code style="font-size:0.8em">gemini-2.5-flash</code></td>
-          <td><span class="slot-chip" title="Gemini 2.5 Flash - score 7.75" style="background:#d9f99d;color:#14532d;font-weight:700">#1 Gem. Flash</span><span class="slot-chip" title="Kimi K2.5 - score 7.35" style="background:#d9f99d;color:#14532d;font-weight:500">Kimi K2.5</span><span class="slot-chip" title="Mistral Large 3 - score 7.15" style="background:#d9f99d;color:#14532d;font-weight:500">Mistral L</span><span class="slot-chip" title="Grok-3 - score 7.00" style="background:#d9f99d;color:#14532d;font-weight:500">Grok-3</span><span class="slot-chip" title="Grok-3 Mini - score 6.90" style="background:#fef9c3;color:#78350f;font-weight:500">Grok Mini</span></td>
+          <td><span class="slot-chip" title="Gemini 2.5 Flash - score 7.75" style="background:#d9f99d;color:#14532d;font-weight:700">#1 Gem. Flash</span><span class="slot-chip" title="MiniMax Text-01 - score 7.60" style="background:#d9f99d;color:#14532d;font-weight:500">MiniMax T01</span><span class="slot-chip" title="Kimi K2.5 - score 7.35" style="background:#d9f99d;color:#14532d;font-weight:500">Kimi K2.5</span><span class="slot-chip" title="Mistral Large 3 - score 7.15" style="background:#d9f99d;color:#14532d;font-weight:500">Mistral L</span><span class="slot-chip" title="Grok-3 - score 7.00" style="background:#d9f99d;color:#14532d;font-weight:500">Grok-3</span></td>
           <td><span class="badge warn">⚠️ Gemini 2.5 Flash better fit</span></td>
         </tr>
         <tr>
           <td><strong>Content Lead</strong></td>
           <td><code style="font-size:0.8em">mistral-large-latest</code></td>
-          <td><span class="slot-chip" title="Gemini 2.5 Flash - score 7.85" style="background:#d9f99d;color:#14532d;font-weight:700">#1 Gem. Flash</span><span class="slot-chip" title="Kimi K2.5 - score 7.80" style="background:#d9f99d;color:#14532d;font-weight:500">Kimi K2.5</span><span class="slot-chip" title="Grok-4.1 - score 7.45" style="background:#d9f99d;color:#14532d;font-weight:500">Grok-4.1</span><span class="slot-chip" title="Mistral Large 3 - score 7.45" style="background:#d9f99d;color:#14532d;font-weight:500">Mistral L</span><span class="slot-chip" title="Grok-3 - score 7.25" style="background:#d9f99d;color:#14532d;font-weight:500">Grok-3</span></td>
+          <td><span class="slot-chip" title="Gemini 2.5 Flash - score 7.85" style="background:#d9f99d;color:#14532d;font-weight:700">#1 Gem. Flash</span><span class="slot-chip" title="Kimi K2.5 - score 7.80" style="background:#d9f99d;color:#14532d;font-weight:500">Kimi K2.5</span><span class="slot-chip" title="MiniMax Text-01 - score 7.75" style="background:#d9f99d;color:#14532d;font-weight:500">MiniMax T01</span><span class="slot-chip" title="Grok-4.1 - score 7.45" style="background:#d9f99d;color:#14532d;font-weight:500">Grok-4.1</span><span class="slot-chip" title="Mistral Large 3 - score 7.45" style="background:#d9f99d;color:#14532d;font-weight:500">Mistral L</span></td>
           <td><span class="badge warn">⚠️ Gemini 2.5 Flash better fit</span></td>
         </tr>
         <tr>
           <td><strong>Accountant</strong></td>
           <td><code style="font-size:0.8em">deepseek-chat</code></td>
-          <td><span class="slot-chip" title="DeepSeek R1 - score 8.20" style="background:#d9f99d;color:#14532d;font-weight:700">#1 DS R1</span><span class="slot-chip" title="Kimi K2.5 - score 8.20" style="background:#d9f99d;color:#14532d;font-weight:500">Kimi K2.5</span><span class="slot-chip" title="Gemini 2.5 Flash - score 8.15" style="background:#d9f99d;color:#14532d;font-weight:500">Gem. Flash</span><span class="slot-chip" title="DeepSeek V4 - score 7.70" style="background:#d9f99d;color:#14532d;font-weight:500">DS Chat</span><span class="slot-chip" title="Grok-3 Mini - score 7.50" style="background:#d9f99d;color:#14532d;font-weight:500">Grok Mini</span></td>
+          <td><span class="slot-chip" title="DeepSeek R1 - score 8.20" style="background:#d9f99d;color:#14532d;font-weight:700">#1 DS R1</span><span class="slot-chip" title="Kimi K2.5 - score 8.20" style="background:#d9f99d;color:#14532d;font-weight:500">Kimi K2.5</span><span class="slot-chip" title="Gemini 2.5 Flash - score 8.15" style="background:#d9f99d;color:#14532d;font-weight:500">Gem. Flash</span><span class="slot-chip" title="DeepSeek V4 - score 7.70" style="background:#d9f99d;color:#14532d;font-weight:500">DS Chat</span><span class="slot-chip" title="MiniMax Text-01 - score 7.60" style="background:#d9f99d;color:#14532d;font-weight:500">MiniMax T01</span></td>
           <td><span class="badge warn">⚠️ DeepSeek R1 better fit</span></td>
         </tr>
         <tr>
           <td><strong>Spielberg</strong></td>
           <td><code style="font-size:0.8em">grok-3-mini</code></td>
-          <td><span class="slot-chip" title="Gemini 2.5 Flash - score 7.65" style="background:#d9f99d;color:#14532d;font-weight:700">#1 Gem. Flash</span><span class="slot-chip" title="Mistral Large 3 - score 7.25" style="background:#d9f99d;color:#14532d;font-weight:500">Mistral L</span><span class="slot-chip" title="Kimi K2.5 - score 7.20" style="background:#d9f99d;color:#14532d;font-weight:500">Kimi K2.5</span><span class="slot-chip" title="Grok-3 - score 7.15" style="background:#d9f99d;color:#14532d;font-weight:500">Grok-3</span><span class="slot-chip" title="Grok-4.1 - score 7.05" style="background:#d9f99d;color:#14532d;font-weight:500">Grok-4.1</span></td>
+          <td><span class="slot-chip" title="Gemini 2.5 Flash - score 7.65" style="background:#d9f99d;color:#14532d;font-weight:700">#1 Gem. Flash</span><span class="slot-chip" title="MiniMax Text-01 - score 7.55" style="background:#d9f99d;color:#14532d;font-weight:500">MiniMax T01</span><span class="slot-chip" title="Mistral Large 3 - score 7.25" style="background:#d9f99d;color:#14532d;font-weight:500">Mistral L</span><span class="slot-chip" title="Kimi K2.5 - score 7.20" style="background:#d9f99d;color:#14532d;font-weight:500">Kimi K2.5</span><span class="slot-chip" title="Grok-3 - score 7.15" style="background:#d9f99d;color:#14532d;font-weight:500">Grok-3</span></td>
           <td><span class="badge warn">⚠️ Gemini 2.5 Flash better fit</span></td>
         </tr>
         <tr>
           <td><strong>Finance</strong></td>
           <td><code style="font-size:0.8em">deepseek-reasoner (R1)</code></td>
-          <td><span class="slot-chip" title="DeepSeek R1 - score 8.50" style="background:#d9f99d;color:#14532d;font-weight:700">#1 DS R1</span><span class="slot-chip" title="Kimi K2.5 - score 8.45" style="background:#d9f99d;color:#14532d;font-weight:500">Kimi K2.5</span><span class="slot-chip" title="Gemini 2.5 Flash - score 8.15" style="background:#d9f99d;color:#14532d;font-weight:500">Gem. Flash</span><span class="slot-chip" title="DeepSeek V4 - score 7.70" style="background:#d9f99d;color:#14532d;font-weight:500">DS Chat</span><span class="slot-chip" title="Grok-3 - score 7.65" style="background:#d9f99d;color:#14532d;font-weight:500">Grok-3</span></td>
+          <td><span class="slot-chip" title="DeepSeek R1 - score 8.50" style="background:#d9f99d;color:#14532d;font-weight:700">#1 DS R1</span><span class="slot-chip" title="Kimi K2.5 - score 8.45" style="background:#d9f99d;color:#14532d;font-weight:500">Kimi K2.5</span><span class="slot-chip" title="Gemini 2.5 Flash - score 8.15" style="background:#d9f99d;color:#14532d;font-weight:500">Gem. Flash</span><span class="slot-chip" title="MiniMax Text-01 - score 8.00" style="background:#d9f99d;color:#14532d;font-weight:500">MiniMax T01</span><span class="slot-chip" title="DeepSeek V4 - score 7.70" style="background:#d9f99d;color:#14532d;font-weight:500">DS Chat</span></td>
           <td><span class="badge warn">⚠️ DeepSeek R1 better fit</span></td>
         </tr>
         <tr>
           <td><strong>Travel Agent</strong></td>
           <td><code style="font-size:0.8em">kimi-k2.5</code></td>
-          <td><span class="slot-chip" title="Kimi K2.5 - score 8.50" style="background:#d9f99d;color:#14532d;font-weight:700">#1 Kimi K2.5</span><span class="slot-chip" title="Gemini 2.5 Flash - score 8.10" style="background:#d9f99d;color:#14532d;font-weight:500">Gem. Flash</span><span class="slot-chip" title="Grok-4.1 - score 7.90" style="background:#d9f99d;color:#14532d;font-weight:500">Grok-4.1</span><span class="slot-chip" title="DeepSeek R1 - score 7.80" style="background:#d9f99d;color:#14532d;font-weight:500">DS R1</span><span class="slot-chip" title="Grok-3 - score 7.70" style="background:#d9f99d;color:#14532d;font-weight:500">Grok-3</span></td>
+          <td><span class="slot-chip" title="Kimi K2.5 - score 8.50" style="background:#d9f99d;color:#14532d;font-weight:700">#1 Kimi K2.5</span><span class="slot-chip" title="Gemini 2.5 Flash - score 8.10" style="background:#d9f99d;color:#14532d;font-weight:500">Gem. Flash</span><span class="slot-chip" title="MiniMax Text-01 - score 8.00" style="background:#d9f99d;color:#14532d;font-weight:500">MiniMax T01</span><span class="slot-chip" title="Grok-4.1 - score 7.90" style="background:#d9f99d;color:#14532d;font-weight:500">Grok-4.1</span><span class="slot-chip" title="DeepSeek R1 - score 7.80" style="background:#d9f99d;color:#14532d;font-weight:500">DS R1</span></td>
           <td><span class="badge warn">⚠️ Kimi K2.5 better fit</span></td>
         </tr>
         <tr>
           <td><strong>Researcher</strong></td>
           <td><code style="font-size:0.8em">grok-4.1</code></td>
-          <td><span class="slot-chip" title="Kimi K2.5 - score 8.50" style="background:#d9f99d;color:#14532d;font-weight:700">#1 Kimi K2.5</span><span class="slot-chip" title="DeepSeek R1 - score 8.20" style="background:#d9f99d;color:#14532d;font-weight:500">DS R1</span><span class="slot-chip" title="Gemini 2.5 Flash - score 8.10" style="background:#d9f99d;color:#14532d;font-weight:500">Gem. Flash</span><span class="slot-chip" title="Grok-4.1 - score 7.90" style="background:#d9f99d;color:#14532d;font-weight:500">Grok-4.1</span><span class="slot-chip" title="Grok-3 - score 7.80" style="background:#d9f99d;color:#14532d;font-weight:500">Grok-3</span></td>
+          <td><span class="slot-chip" title="Kimi K2.5 - score 8.50" style="background:#d9f99d;color:#14532d;font-weight:700">#1 Kimi K2.5</span><span class="slot-chip" title="DeepSeek R1 - score 8.20" style="background:#d9f99d;color:#14532d;font-weight:500">DS R1</span><span class="slot-chip" title="Gemini 2.5 Flash - score 8.10" style="background:#d9f99d;color:#14532d;font-weight:500">Gem. Flash</span><span class="slot-chip" title="MiniMax Text-01 - score 8.00" style="background:#d9f99d;color:#14532d;font-weight:500">MiniMax T01</span><span class="slot-chip" title="Grok-4.1 - score 7.90" style="background:#d9f99d;color:#14532d;font-weight:500">Grok-4.1</span></td>
           <td><span class="badge warn">⚠️ Kimi K2.5 better fit</span></td>
         </tr>
         <tr>
@@ -385,7 +393,7 @@
         <tr>
           <td><strong>Council Contrarian</strong></td>
           <td><code style="font-size:0.8em">grok-3</code></td>
-          <td><span class="slot-chip" title="Grok-3 - score 8.20" style="background:#d9f99d;color:#14532d;font-weight:700">#1 Grok-3</span><span class="slot-chip" title="Grok-4.1 - score 7.70" style="background:#d9f99d;color:#14532d;font-weight:500">Grok-4.1</span><span class="slot-chip" title="Mistral Large 3 - score 7.70" style="background:#d9f99d;color:#14532d;font-weight:500">Mistral L</span><span class="slot-chip" title="Gemini 2.5 Flash - score 7.70" style="background:#d9f99d;color:#14532d;font-weight:500">Gem. Flash</span><span class="slot-chip" title="DeepSeek R1 - score 7.40" style="background:#d9f99d;color:#14532d;font-weight:500">DS R1</span></td>
+          <td><span class="slot-chip" title="Grok-3 - score 8.20" style="background:#d9f99d;color:#14532d;font-weight:700">#1 Grok-3</span><span class="slot-chip" title="Grok-4.1 - score 7.70" style="background:#d9f99d;color:#14532d;font-weight:500">Grok-4.1</span><span class="slot-chip" title="Mistral Large 3 - score 7.70" style="background:#d9f99d;color:#14532d;font-weight:500">Mistral L</span><span class="slot-chip" title="Gemini 2.5 Flash - score 7.70" style="background:#d9f99d;color:#14532d;font-weight:500">Gem. Flash</span><span class="slot-chip" title="MiniMax Text-01 - score 7.70" style="background:#d9f99d;color:#14532d;font-weight:500">MiniMax T01</span></td>
           <td><span class="badge ok">✅ Best fit</span></td>
         </tr>
         <tr>
@@ -409,13 +417,13 @@
         <tr>
           <td><strong>Council Tech</strong></td>
           <td><code style="font-size:0.8em">gpt-5.3-codex</code></td>
-          <td><span class="slot-chip" title="GPT-5.3 Codex - score 9.00" style="background:#bbf7d0;color:#14532d;font-weight:700">#1 Codex</span><span class="slot-chip" title="DeepSeek V4 - score 8.50" style="background:#d9f99d;color:#14532d;font-weight:500">DS Chat</span><span class="slot-chip" title="Grok Code Fast 1 - score 8.40" style="background:#d9f99d;color:#14532d;font-weight:500">Grok Fast</span><span class="slot-chip" title="DeepSeek R1 - score 8.30" style="background:#d9f99d;color:#14532d;font-weight:500">DS R1</span><span class="slot-chip" title="Grok-3 - score 8.20" style="background:#d9f99d;color:#14532d;font-weight:500">Grok-3</span></td>
+          <td><span class="slot-chip" title="GPT-5.3 Codex - score 9.00" style="background:#bbf7d0;color:#14532d;font-weight:700">#1 Codex</span><span class="slot-chip" title="DeepSeek V4 - score 8.50" style="background:#d9f99d;color:#14532d;font-weight:500">DS Chat</span><span class="slot-chip" title="Grok Code Fast 1 - score 8.40" style="background:#d9f99d;color:#14532d;font-weight:500">Grok Fast</span><span class="slot-chip" title="MiniMax Text-01 - score 8.40" style="background:#d9f99d;color:#14532d;font-weight:500">MiniMax T01</span><span class="slot-chip" title="DeepSeek R1 - score 8.30" style="background:#d9f99d;color:#14532d;font-weight:500">DS R1</span></td>
           <td><span class="badge warn">⚠️ GPT-5.3 Codex better fit</span></td>
         </tr>
         <tr>
           <td><strong>CyberSecurity (Aegis)</strong></td>
           <td><code style="font-size:0.8em">deepseek-reasoner</code></td>
-          <td><span class="slot-chip" title="DeepSeek R1 - score 8.60" style="background:#d9f99d;color:#14532d;font-weight:700">#1 DS R1</span><span class="slot-chip" title="Grok-3 - score 8.40" style="background:#d9f99d;color:#14532d;font-weight:500">Grok-3</span><span class="slot-chip" title="DeepSeek V4 - score 8.00" style="background:#d9f99d;color:#14532d;font-weight:500">DS Chat</span><span class="slot-chip" title="Gemini 2.5 Flash - score 8.00" style="background:#d9f99d;color:#14532d;font-weight:500">Gem. Flash</span><span class="slot-chip" title="GPT-5.3 Codex - score 8.00" style="background:#d9f99d;color:#14532d;font-weight:500">Codex</span></td>
+          <td><span class="slot-chip" title="DeepSeek R1 - score 8.60" style="background:#d9f99d;color:#14532d;font-weight:700">#1 DS R1</span><span class="slot-chip" title="Grok-3 - score 8.40" style="background:#d9f99d;color:#14532d;font-weight:500">Grok-3</span><span class="slot-chip" title="MiniMax Text-01 - score 8.30" style="background:#d9f99d;color:#14532d;font-weight:500">MiniMax T01</span><span class="slot-chip" title="DeepSeek V4 - score 8.00" style="background:#d9f99d;color:#14532d;font-weight:500">DS Chat</span><span class="slot-chip" title="Gemini 2.5 Flash - score 8.00" style="background:#d9f99d;color:#14532d;font-weight:500">Gem. Flash</span></td>
           <td><span class="badge warn">⚠️ DeepSeek R1 better fit</span></td>
         </tr>
         </tbody>
@@ -424,7 +432,7 @@
 
     <details style="background:white;border:1px solid #e2e8f0;border-radius:8px;padding:12px 18px;margin-bottom:20px">
       <summary>Research Notes</summary>
-      <div style="margin-top:10px"><div class="note-entry"><strong>2026-04-06</strong> — Initial matrix built. Pricing sourced from provider pages. Scores based on published benchmarks and observed performance. All 17 models currently active in the Life Admin lineup.</div></div>
+      <div style="margin-top:10px"><div class="note-entry"><strong>2026-04-08</strong> — MiniMax correction: M2.7 coding score raised from 6 to 8 based on HumanEval benchmarks. MiniMax Text-01 (456B MoE) added as a strong coding fallback — scores 9/10 coding at $0.40/$1.60 per 1M. Both models added as Fallback 3 candidates for Engineer, Senior Engineer, QA Bot, CouncilTech positions. The hiring algorithm will surface them at rank 3+ for coding-heavy profiles automatically.</div><div class="note-entry"><strong>2026-04-06</strong> — Initial matrix built. Pricing sourced from provider pages. Scores based on published benchmarks and observed performance. All 17 models currently active in the Life Admin lineup.</div></div>
     </details>
   </div>
 
@@ -545,9 +553,9 @@
         <tr>
           <td><strong>Researcher</strong></td>
           <td style="font-size:0.8em"><span class="skill-chip installed">paperclip</span><span class="skill-chip installed">para-memory-files</span><span class="skill-chip installed">council-debate</span><span class="skill-chip installed">skill-discovery</span></td>
-          <td style="font-size:0.8em"><span class="skill-chip pending">[x] `pdf`</span><span class="skill-chip pending">[x] `docx`</span><span class="skill-chip pending">[ ] `llm-matrix-updater`</span></td>
+          <td style="font-size:0.8em"><span class="skill-chip pending">[x] `pdf`</span><span class="skill-chip pending">[x] `docx`</span><span class="skill-chip pending">[ ] `llm-matrix-updater`</span><span class="skill-chip pending">A model is added, removed, or substituted (positions.json changes)</span></td>
           <td style="font-size:0.8em"><span class="skill-chip mcp">[ ] **Tavily (claude_local only)**</span><span class="skill-chip mcp">[ ] **Exa (claude_local only)**</span><span class="skill-chip mcp">[ ] **Sequential Thinking (claude_local only)**</span></td>
-          <td><div style="background:#fef9c3;padding:2px 8px;border-radius:10px;text-align:center;font-size:0.8em;font-weight:600">57%</div></td>
+          <td><div style="background:#fecaca;padding:2px 8px;border-radius:10px;text-align:center;font-size:0.8em;font-weight:600">36%</div></td>
         </tr>
         <tr>
           <td><strong>Yoda</strong></td>
@@ -692,8 +700,8 @@
           <td><strong>Designer</strong></td>
           <td><code style="font-size:0.8em">gemini-2.5-flash</code></td>
           <td><strong>Gemini 2.5 Flash</strong><br><span style="font-size:0.75em;color:#64748b">7.75 · $0.15/M in, $0.60/M out</span></td>
+          <td><strong>MiniMax Text-01</strong><br><span style="font-size:0.75em;color:#64748b">7.60 · $0.40/M in, $1.60/M out</span></td>
           <td><strong>Kimi K2.5</strong><br><span style="font-size:0.75em;color:#64748b">7.35 · $0.14/M in, $0.60/M out</span></td>
-          <td><strong>Mistral Large 3</strong><br><span style="font-size:0.75em;color:#64748b">7.15 · $2/M in, $6/M out</span></td>
           <td></td>
           <td><span class="badge warn">⚠️ Change available</span></td>
         </tr>
@@ -702,7 +710,7 @@
           <td><code style="font-size:0.8em">mistral-large-latest</code></td>
           <td><strong>Gemini 2.5 Flash</strong><br><span style="font-size:0.75em;color:#64748b">7.85 · $0.15/M in, $0.60/M out</span></td>
           <td><strong>Kimi K2.5</strong><br><span style="font-size:0.75em;color:#64748b">7.80 · $0.14/M in, $0.60/M out</span></td>
-          <td><strong>Grok-4.1</strong><br><span style="font-size:0.75em;color:#64748b">7.45 · $3/M in, $15/M out</span></td>
+          <td><strong>MiniMax Text-01</strong><br><span style="font-size:0.75em;color:#64748b">7.75 · $0.40/M in, $1.60/M out</span></td>
           <td></td>
           <td><span class="badge warn">⚠️ Change available</span></td>
         </tr>
@@ -719,8 +727,8 @@
           <td><strong>Spielberg</strong></td>
           <td><code style="font-size:0.8em">grok-3-mini</code></td>
           <td><strong>Gemini 2.5 Flash</strong><br><span style="font-size:0.75em;color:#64748b">7.65 · $0.15/M in, $0.60/M out</span></td>
+          <td><strong>MiniMax Text-01</strong><br><span style="font-size:0.75em;color:#64748b">7.55 · $0.40/M in, $1.60/M out</span></td>
           <td><strong>Mistral Large 3</strong><br><span style="font-size:0.75em;color:#64748b">7.25 · $2/M in, $6/M out</span></td>
-          <td><strong>Kimi K2.5</strong><br><span style="font-size:0.75em;color:#64748b">7.20 · $0.14/M in, $0.60/M out</span></td>
           <td></td>
           <td><span class="badge warn">⚠️ Change available</span></td>
         </tr>
@@ -738,7 +746,7 @@
           <td><code style="font-size:0.8em">kimi-k2.5</code></td>
           <td><strong>Kimi K2.5</strong><br><span style="font-size:0.75em;color:#64748b">8.50 · $0.14/M in, $0.60/M out</span></td>
           <td><strong>Gemini 2.5 Flash</strong><br><span style="font-size:0.75em;color:#64748b">8.10 · $0.15/M in, $0.60/M out</span></td>
-          <td><strong>Grok-4.1</strong><br><span style="font-size:0.75em;color:#64748b">7.90 · $3/M in, $15/M out</span></td>
+          <td><strong>MiniMax Text-01</strong><br><span style="font-size:0.75em;color:#64748b">8.00 · $0.40/M in, $1.60/M out</span></td>
           <td></td>
           <td><span class="badge warn">⚠️ Change available</span></td>
         </tr>
@@ -828,7 +836,7 @@
           <td><code style="font-size:0.8em">deepseek-reasoner</code></td>
           <td><strong>DeepSeek R1</strong><br><span style="font-size:0.75em;color:#64748b">8.60 · $0.55/M in, $2.19/M out</span></td>
           <td><strong>Grok-3</strong><br><span style="font-size:0.75em;color:#64748b">8.40 · $3/M in, $15/M out</span></td>
-          <td><strong>DeepSeek V4</strong><br><span style="font-size:0.75em;color:#64748b">8.00 · $0.27/M in, $1.10/M out</span></td>
+          <td><strong>MiniMax Text-01</strong><br><span style="font-size:0.75em;color:#64748b">8.30 · $0.40/M in, $1.60/M out</span></td>
           <td></td>
           <td><span class="badge warn">⚠️ Change available</span></td>
         </tr>
@@ -853,7 +861,7 @@
   </div>
 
   <p style="font-size:0.75em;color:#94a3b8;margin-top:24px">
-    LLM Matrix &bull; Life Admin &bull; Generated 2026-04-07 06:34
+    LLM Matrix &bull; Life Admin &bull; Generated 2026-04-08 07:30
   </p>
 
   <script>

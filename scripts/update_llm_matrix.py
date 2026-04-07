@@ -1,3 +1,4 @@
+# -*- coding: utf-8 -*-
 r"""
 update_llm_matrix.py -- LLM Matrix management tool for Life Admin
 
@@ -55,7 +56,8 @@ MODEL_SHORT_NAMES = {
     "kimi-k2.5":           "Kimi K2.5",
     "gemini-2.5-flash":    "Gem. Flash",
     "gpt-5.3-codex":       "Codex",
-    "minimax-m2.7":        "MiniMax",
+    "minimax-m2.7":        "MiniMax M2",
+    "minimax-text-01":     "MiniMax T01",
     "qwen-plus":           "Qwen+",
     "codestral":           "Codestral",
 }
@@ -259,7 +261,7 @@ def cmd_skills():
         mcp = len(skills.get("mcp", []))
         total = inst + pend + cust
         pct = f"{(inst / total * 100):.0f}%" if total > 0 else "0%"
-        gap_flag = "⚠️ " if pend + cust > 0 else "✅ "
+        gap_flag = "[!] " if pend + cust > 0 else "[+] "
         print(f"  {gap_flag}{pos_key:<18} {inst:<10} {pend:<10} {cust:<10} {mcp:<10} ({pct} installed)")
     print()
 
@@ -298,7 +300,7 @@ def cmd_hire():
                 "recommended": primary_name,
                 "score": top3[0]["score"] if top3 else 0,
             })
-            print(f"  ⚠️  CURRENT: {current_model} — recommended change to {primary_name}")
+            print(f"  [!] CURRENT: {current_model} -- recommended change to {primary_name}")
 
     print("\n" + "=" * 70)
     if changes_recommended:
