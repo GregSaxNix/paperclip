@@ -53,6 +53,49 @@
   <h1>📎 Life Admin — Ops Hub</h1>
   <p class="sub">Your central control panel. Bookmark: <code>D:\paperclip\scripts\ops-hub.html</code></p>
 
+  <!-- INGEST HEALTH BADGE -->
+  <div id="ingestStatus" class="cmd-block" style="display:none;margin-bottom:18px">
+    <h3 style="display:flex;align-items:center;gap:8px;margin-bottom:6px">
+      <span id="ingestDot" style="display:inline-block;width:10px;height:10px;border-radius:50%;background:#94a3b8"></span>
+      YouTube Brain ingest — <span id="ingestState" style="font-weight:500;color:#64748b">checking…</span>
+    </h3>
+    <p id="ingestMsg" style="font-size:0.8em;color:#64748b;margin:0"></p>
+  </div>
+  <script>
+    (function(){
+      // Fetch status JSON written by sync_watch_history.py.
+      // Uses fetch on a same-directory relative path; works under file:// in Chrome/Edge
+      // when the file is local and same-origin.
+      fetch('ingest-status.json', {cache:'no-store'})
+        .then(function(r){ return r.ok ? r.json() : null; })
+        .then(function(d){
+          if(!d) return;
+          var el = document.getElementById('ingestStatus');
+          var dot = document.getElementById('ingestDot');
+          var state = document.getElementById('ingestState');
+          var msg = document.getElementById('ingestMsg');
+          el.style.display = 'block';
+          var s = d.state || 'unknown';
+          state.textContent = s.toUpperCase();
+          var colours = {ok:'#16a34a', stale:'#f59e0b', error:'#ef4444', unknown:'#94a3b8'};
+          dot.style.background = colours[s] || colours.unknown;
+          state.style.color = colours[s] || colours.unknown;
+          var lastSync = d.last_sync_time ? new Date(d.last_sync_time).toLocaleString('en-AU') : 'never';
+          var lastNew = d.last_successful_sync_time ? new Date(d.last_successful_sync_time).toLocaleString('en-AU') : 'never';
+          msg.innerHTML = (d.message || '') +
+            ' &middot; last sync: ' + lastSync +
+            ' &middot; last new video: ' + lastNew +
+            (d.consecutive_zero_runs ? ' &middot; ' + d.consecutive_zero_runs + ' zero-runs' : '');
+          // If state is non-ok, hoist the badge above the fold visually.
+          if(s !== 'ok'){
+            el.style.background = (s === 'stale') ? '#fef3c7' : (s === 'error' ? '#fee2e2' : '#f1f5f9');
+            el.style.borderColor = (s === 'stale') ? '#fcd34d' : (s === 'error' ? '#fca5a5' : '#e2e8f0');
+          }
+        })
+        .catch(function(){ /* silent — ingest status optional */ });
+    })();
+  </script>
+
   <!-- INTERFACES -->
   <div class="section">
     <div class="section-title">Interfaces &amp; Tools</div>
