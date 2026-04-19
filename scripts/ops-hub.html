@@ -76,20 +76,29 @@
           var msg = document.getElementById('ingestMsg');
           el.style.display = 'block';
           var s = d.state || 'unknown';
-          state.textContent = s.toUpperCase();
-          var colours = {ok:'#16a34a', stale:'#f59e0b', error:'#ef4444', unknown:'#94a3b8'};
+          var labels = {
+            ok: 'OK',
+            quiet: 'QUIET (no new videos watched)',
+            stale: 'STALE — needs attention',
+            error: 'ERROR',
+            unknown: 'UNKNOWN'
+          };
+          state.textContent = labels[s] || s.toUpperCase();
+          // ok = green, quiet = blue (informational, not a problem), stale = orange, error = red.
+          var colours = {ok:'#16a34a', quiet:'#3b82f6', stale:'#f59e0b', error:'#ef4444', unknown:'#94a3b8'};
           dot.style.background = colours[s] || colours.unknown;
           state.style.color = colours[s] || colours.unknown;
           var lastSync = d.last_sync_time ? new Date(d.last_sync_time).toLocaleString('en-AU') : 'never';
           var lastNew = d.last_successful_sync_time ? new Date(d.last_successful_sync_time).toLocaleString('en-AU') : 'never';
+          var lastFetch = d.last_fetch_with_entries_time ? new Date(d.last_fetch_with_entries_time).toLocaleString('en-AU') : 'never';
           msg.innerHTML = (d.message || '') +
-            ' &middot; last sync: ' + lastSync +
+            '<br><span style="font-size:0.9em">last sync: ' + lastSync +
             ' &middot; last new video: ' + lastNew +
-            (d.consecutive_zero_runs ? ' &middot; ' + d.consecutive_zero_runs + ' zero-runs' : '');
-          // If state is non-ok, hoist the badge above the fold visually.
-          if(s !== 'ok'){
-            el.style.background = (s === 'stale') ? '#fef3c7' : (s === 'error' ? '#fee2e2' : '#f1f5f9');
-            el.style.borderColor = (s === 'stale') ? '#fcd34d' : (s === 'error' ? '#fca5a5' : '#e2e8f0');
+            ' &middot; last successful fetch: ' + lastFetch + '</span>';
+          // Hoist visually only when state actually needs Greg's attention (stale / error).
+          if(s === 'stale' || s === 'error'){
+            el.style.background = (s === 'stale') ? '#fef3c7' : '#fee2e2';
+            el.style.borderColor = (s === 'stale') ? '#fcd34d' : '#fca5a5';
           }
         })
         .catch(function(){ /* silent — ingest status optional */ });
