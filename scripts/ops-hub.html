@@ -75,7 +75,7 @@
       <a class="card" href="http://localhost:8789" target="_blank">
         <div class="card-icon">🎬</div>
         <div class="card-title">YouTube Brain</div>
-        <div class="card-desc">9,617 video knowledge base — search, browse, filter by topic</div>
+        <div class="card-desc">~9,760 watched videos — opens to your watch history (most recent first); filter by liked/topic/channel/year in any combination.</div>
         <span class="card-tag tag-browser">Port 8789</span>
       </a>
 
@@ -93,7 +93,83 @@
         <span class="card-tag tag-local">Local HTML</span>
       </a>
 
+      <a class="card" href="file:///D:/assistant-os/dashboard/review.html" target="_blank">
+        <div class="card-icon">🧠</div>
+        <div class="card-title">Assistant OS — Review</div>
+        <div class="card-desc">Portable AI memory + identity store. Review queue: items I (Claude) wrote that need your eyes/approval.</div>
+        <span class="card-tag tag-local">Local HTML</span>
+      </a>
+
+      <a class="card" href="http://localhost:8790" target="_blank">
+        <div class="card-icon">📚</div>
+        <div class="card-title">Second Brain</div>
+        <div class="card-desc">Karpathy-style world-knowledge wiki built from YouTube transcripts + uploads. Different from Assistant OS (that's about you).</div>
+        <span class="card-tag tag-browser">Port 8790</span>
+      </a>
+
     </div>
+  </div>
+
+  <!-- WHAT EACH TOOL DOES -->
+  <div class="section">
+    <div class="section-title">What each tool does &amp; why it exists</div>
+    <p style="font-size:0.82em;color:#64748b;margin:-4px 0 12px 0">Open these any time you've forgotten what a thing is for.</p>
+
+    <details>
+      <summary>📎 Paperclip — what it is</summary>
+      <div class="details-body">
+        <p class="info-row"><strong>Problem it solves:</strong> Running a small fleet of specialised AI agents (CEO, CTO, Researcher, Council members, etc.) with separate roles, prompts, and model assignments — and being able to swap models or run them in fallback chains when one is rate-limited.</p>
+        <p class="info-row"><strong>What it does:</strong> Hosts agent definitions, manages issues/comments between agents, runs heartbeats, tracks usage, and provides a chat UI to talk to any agent. 22 positions configured. Currently 1 company (Life Admin).</p>
+        <p class="info-row"><strong>Where it lives:</strong> <code>D:\paperclip</code> — server on port 3100 (auto-starts via Task Scheduler).</p>
+      </div>
+    </details>
+
+    <details>
+      <summary>📊 Agent Matrix &amp; 🧠 LLM Matrix — what they are</summary>
+      <div class="details-body">
+        <p class="info-row"><strong>Agent Matrix:</strong> Live view of all 22 positions — which model each one runs on, fallback chains, usage meters, active status. Use it to spot when an agent is at risk of hitting a quota limit.</p>
+        <p class="info-row"><strong>LLM Matrix:</strong> All available LLMs scored on tasks (research, code, write, etc.), with pricing. Recommends which model fits which position. Use it weekly to decide if you should re-assign a model to a position.</p>
+        <p class="info-row"><strong>Refresh:</strong> <code>python scripts\position_manager.py dashboard</code> for Agent Matrix; <code>python scripts\update_llm_matrix.py</code> for LLM Matrix.</p>
+      </div>
+    </details>
+
+    <details>
+      <summary>🎬 YouTube Brain — what it is</summary>
+      <div class="details-body">
+        <p class="info-row"><strong>Problem it solves:</strong> You watch a lot of YouTube. You can never remember which video had that specific point about X. Standard YouTube search doesn't work because it's not your library, and YouTube's history is unsearchable.</p>
+        <p class="info-row"><strong>What it does:</strong> Indexes every video you've watched (~9,760 currently), pulls the transcript, classifies into topics, lets you full-text search across the lot. Default landing view shows your watch history sorted most-recent first; layer on liked/topic/channel/year filters in any combination.</p>
+        <p class="info-row"><strong>Where it lives:</strong> <code>D:\youtube-brain</code> — server on port 8789. SQLite database with FTS index. Local LLM (Ollama) for classification — no cloud.</p>
+      </div>
+    </details>
+
+    <details>
+      <summary>📚 Second Brain — what it is</summary>
+      <div class="details-body">
+        <p class="info-row"><strong>Problem it solves:</strong> YouTube Brain stores raw videos. But you also want a curated wiki of <em>concepts you care about</em> and <em>creators you trust</em> — built from those transcripts plus other sources (PDFs, URLs, notes).</p>
+        <p class="info-row"><strong>What it does:</strong> Karpathy-style "compile once, keep current" knowledge wiki. Concept pages like <code>ai-agents.md</code>, entity pages like <code>matthew-berman.md</code>. Ingests new YouTube transcripts daily, appends "Update:" blocks to the relevant pages. Obsidian-compatible.</p>
+        <p class="info-row"><strong>Where it lives:</strong> <code>D:\second-brain</code> — server on port 8790. Different from Assistant OS — Second Brain is <em>world-knowledge</em>; Assistant OS is <em>self-knowledge about Greg</em>.</p>
+      </div>
+    </details>
+
+    <details>
+      <summary>🧠 Assistant OS — what it is</summary>
+      <div class="details-body">
+        <p class="info-row"><strong>Problem it solves:</strong> You use multiple AI tools (Claude Code, Cursor, ChatGPT). Each one starts knowing nothing about you. Re-explaining your style, preferences, Shine context, project state every time is wasted effort. And if you switch tools, that knowledge doesn't follow.</p>
+        <p class="info-row"><strong>What it does:</strong> Single Git-versioned Markdown store (<code>D:\assistant-os\canonical\</code>) of identity, preferences, working style, current state, Shine domain knowledge. Compilers generate ready-to-use config for Claude Code (<code>CLAUDE.md</code> + <code>.claude/rules/</code>) and Cursor (<code>AGENTS.md</code> + <code>.cursor/rules/*.mdc</code>). Drop those into any project and the assistant immediately knows you. ChatGPT/OpenClaw/PAM/MCP exporters deferred to Phase 2.</p>
+        <p class="info-row"><strong>Review queue:</strong> Open the <strong>Assistant OS — Review</strong> card above. Items I marked uncertain show up there with one-click "open in VS Code" buttons.</p>
+        <p class="info-row"><strong>Operating guide:</strong> <code>D:\assistant-os\RUNBOOK.md</code> — how to edit a canonical file, recompile, refresh weekly digest, add open loops.</p>
+        <p class="info-row"><strong>Where the plan lives:</strong> <code>C:\Users\Administrator\.claude\plans\i-have-the-attached-cheeky-pizza.md</code> — full implementation plan with Plan Update Log.</p>
+      </div>
+    </details>
+
+    <details>
+      <summary>🗺️ Talent Map / Shine website — what they are</summary>
+      <div class="details-body">
+        <p class="info-row"><strong>Talent Map:</strong> Workforce intelligence platform combining ABS Census data with Shine's network of ~17,500 Indigenous professionals. Three pathways: Workforce Planning (data only), Talent Connect (consented introductions, fee per intro), End to End Recruitment (Shine-led). Lives at <code>D:\TalentMap</code>; frontend on port 3002. Production database has 168,518 records.</p>
+        <p class="info-row"><strong>Shine website:</strong> Marketing site for Shine People Solutions. In development at <code>D:\shine-website\shine-website</code>. Target deploy: Vercel.</p>
+      </div>
+    </details>
+
   </div>
 
   <!-- QUICK COMMANDS -->
@@ -190,7 +266,7 @@ fetch("/api/companies/505ab906-66b5-4400-b131-96b8aee91c5d/heartbeat-runs?limit=
   </div>
 
   <p style="font-size:0.75em;color:#94a3b8;margin-top:24px">
-    Life Admin Ops Hub &bull; Last updated: 2026-04-06
+    Life Admin Ops Hub &bull; Last updated: 2026-04-19
   </p>
 </body>
 </html>
