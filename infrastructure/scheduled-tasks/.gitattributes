@@ -1,0 +1,7 @@
+# Task XMLs MUST stay UTF-16LE with BOM. `schtasks /query /xml` emits in this
+# encoding and `schtasks /create /xml` rejects anything else as "malformed
+# document syntax (1,2)". If an IDE or linter "fixes" the encoding to UTF-8
+# the file will silently look fine in git diff but the restore script will
+# fail every time. Treating them as binary stops git autocrlf line-ending
+# mangling AND signals to editors not to re-encode on save.
+*.xml binary
