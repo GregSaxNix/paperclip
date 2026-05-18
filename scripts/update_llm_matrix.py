@@ -12,15 +12,19 @@ Usage:
   python update_llm_matrix.py --skills     # Show skills gap report for all positions
   python update_llm_matrix.py --hire       # Run hiring algorithm, show recommendations
   python update_llm_matrix.py --open       # Regenerate and open in browser
+  python update_llm_matrix.py --guidelines-stale     # List MODEL-PROMPTING-GUIDELINES sections > 6 months or with stub URLs
+  python update_llm_matrix.py --guidelines <model>   # Print the guidelines section for a given model (trigger phrase: "check model guidelines for X")
 
 Data file: D:\paperclip\scripts\llm-matrix-data.json
 Output:    D:\paperclip\scripts\llm-matrix.html
+Guidelines: D:\paperclip\MODEL-PROMPTING-GUIDELINES.md
 """
 
 import json
+import re
 import sys
 import webbrowser
-from datetime import datetime
+from datetime import datetime, timedelta
 from pathlib import Path
 
 SCRIPTS_DIR = Path(__file__).parent
@@ -28,6 +32,8 @@ POSITIONS_DIR = SCRIPTS_DIR.parent / "positions"
 DATA_FILE = SCRIPTS_DIR / "llm-matrix-data.json"
 HTML_FILE = SCRIPTS_DIR / "llm-matrix.html"
 POSITIONS_JSON = POSITIONS_DIR / "positions.json"
+GUIDELINES_FILE = SCRIPTS_DIR.parent / "MODEL-PROMPTING-GUIDELINES.md"
+GUIDELINES_STALE_DAYS = 183  # ~6 months
 
 TASK_LABELS = {
     "coding":    "Coding",
@@ -215,10 +221,185 @@ def cmd_stale():
     print()
     print("To update: edit llm-matrix-data.json with new scores/pricing,")
     print("           then run: python update_llm_matrix.py")
+    print("After updating scores, run: python check_model_lineups.py --dry-run")
+
+# ─── Prompting guidelines helpers ─────────────────────────────────────────────
+
+def _parse_guidelines_sections():
+    """Parse MODEL-PROMPTING-GUIDELINES.md into a list of sections.
+
+    Returns a list of dicts: {heading, slug, provider, models, docs_url,
+    date_captured, is_stub, body_lines, line_start, line_end, stale, broken_url}.
+    """
+    if not GUIDELINES_FILE.exists():
+        return []
+    with open(GUIDELINES_FILE, encoding="utf-8") as f:
+        lines = f.read().splitlines()
+
+    sections = []
+    current = None
+    for idx, line in enumerate(lines):
+        m = re.match(r"^## (?!Table of contents$|Maintenance contract$)(.+?) — (.+)$", line)
+        if m:
+            if current:
+                current["line_end"] = idx - 1
+                sections.append(current)
+            heading = line[3:].strip()
+            current = {
+                "heading": heading,
+                "provider": m.group(1).strip(),
+                "models": m.group(2).strip(),
+                "slug": re.sub(r"[^a-z0-9]+", "-", heading.lower()).strip("-"),
+                "docs_url": None,
+                "date_captured": None,
+                "is_stub": False,
+                "body_lines": [],
+                "line_start": idx,
+                "line_end": len(lines) - 1,
+            }
+            continue
+        if current is not None:
+            current["body_lines"].append(line)
+            url_match = re.match(r"\*\*Provider docs URL:\*\*\s*(.+)", line)
+            if url_match and current["docs_url"] is None:
+                val = url_match.group(1).strip()
+                current["docs_url"] = None if val.startswith("_pending") else val
+            date_match = re.match(r"\*\*Date captured:\*\*\s*(.+)", line)
+            if date_match and current["date_captured"] is None:
+                val = date_match.group(1).strip()
+                if val.startswith("_pending"):
+                    current["is_stub"] = True
+                else:
+                    current["date_captured"] = val
+
+    if current:
+        sections.append(current)
+
+    cutoff = datetime.now() - timedelta(days=GUIDELINES_STALE_DAYS)
+    for s in sections:
+        s["stale"] = False
+        s["broken_url"] = False
+        if s["is_stub"]:
+            continue
+        if s["date_captured"]:
+            try:
+                captured = datetime.fromisoformat(s["date_captured"])
+                if captured < cutoff:
+                    s["stale"] = True
+            except ValueError:
+                s["stale"] = True
+        else:
+            s["stale"] = True
+        if not s["docs_url"]:
+            s["broken_url"] = True
+
+    return sections
+
+
+def cmd_guidelines_stale():
+    sections = _parse_guidelines_sections()
+    if not sections:
+        print(f"No sections parsed from {GUIDELINES_FILE}")
+        print("(File missing, or section headings don't match the expected pattern '## Provider — Models'.)")
+        return
+
+    print(f"\nMODEL-PROMPTING-GUIDELINES status — {datetime.now().strftime('%Y-%m-%d')}")
+    print("=" * 70)
+
+    filled = [s for s in sections if not s["is_stub"]]
+    stubs = [s for s in sections if s["is_stub"]]
+    stale = [s for s in filled if s["stale"]]
+    broken = [s for s in filled if s["broken_url"]]
+
+    print(f"\nTotal sections: {len(sections)}")
+    print(f"  Filled:  {len(filled)}")
+    print(f"  Stubs:   {len(stubs)}")
+    print(f"  Stale (>{GUIDELINES_STALE_DAYS} days): {len(stale)}")
+    print(f"  Broken URL: {len(broken)}")
+
+    if stale:
+        print(f"\n[!] Stale sections (Date captured > {GUIDELINES_STALE_DAYS} days):")
+        for s in stale:
+            print(f"  • {s['heading']}  (captured {s['date_captured'] or 'never'})")
+
+    if broken:
+        print(f"\n[!] Sections with missing/pending Provider docs URL:")
+        for s in broken:
+            print(f"  • {s['heading']}")
+
+    if stubs:
+        print(f"\n[i] Stub sections (provider not yet in active use):")
+        for s in stubs:
+            print(f"  • {s['heading']}")
+
+    if not stale and not broken and not stubs:
+        print("\nAll guideline sections are filled, dated, and within the 6-month freshness window.")
+    print()
+
+
+def cmd_guidelines_lookup(model_query):
+    """Print the guidelines section matching `model_query`.
+
+    Wired to the trigger phrase: 'check model guidelines for X'.
+    Matches against provider name, model versions string, or heading slug.
+    """
+    if not model_query:
+        print("Usage: python update_llm_matrix.py --guidelines <model name>")
+        return
+
+    sections = _parse_guidelines_sections()
+    if not sections:
+        print(f"No sections parsed from {GUIDELINES_FILE}")
+        return
+
+    q = model_query.lower().strip()
+    q_tokens = [t for t in re.split(r"[\s/,]+", q) if t]
+    matches = []
+    for s in sections:
+        haystack = " ".join([s["heading"], s["provider"], s["models"], s["slug"]]).lower()
+        # Match if the full query is a contiguous substring OR every token appears separately.
+        if q in haystack or (q_tokens and all(t in haystack for t in q_tokens)):
+            matches.append(s)
+
+    if not matches:
+        print(f"\nNo section found for '{model_query}'.")
+        print(f"\nAvailable sections in {GUIDELINES_FILE.name}:")
+        for s in sections:
+            tag = " [stub]" if s["is_stub"] else " [stale]" if s["stale"] else ""
+            print(f"  • {s['heading']}{tag}")
+        print("\nIf this is a new model, add a section using the template at the bottom of MODEL-PROMPTING-GUIDELINES.md")
+        return
+
+    for s in matches:
+        print(f"\n{'=' * 70}")
+        print(f"## {s['heading']}")
+        if s["is_stub"]:
+            print(f"\n[!] STUB SECTION — no provider docs captured yet.")
+            print(f"    Trigger the weekly Researcher run, or fetch the docs and fill the 9 components manually.")
+            print(f"    Template is at the bottom of {GUIDELINES_FILE.name}.")
+            continue
+        if s["stale"]:
+            print(f"\n[!] STALE — Date captured {s['date_captured']} is > {GUIDELINES_STALE_DAYS} days old. Refresh before relying on this section in production code.")
+        if s["broken_url"]:
+            print(f"\n[!] BROKEN URL — Provider docs URL is missing or pending. Refresh.")
+        print(f"\nProvider docs URL: {s['docs_url']}")
+        print(f"Date captured:     {s['date_captured']}")
+        print(f"{'=' * 70}")
+        for line in s["body_lines"]:
+            print(line)
+    print()
+
+
+# ─── Existing commands ─────────────────────────────────────────────────────────
 
 def cmd_research():
     data = load_data()
     stale = [m for m in data["models"] if is_stale(m.get("last_checked"))]
+    sections = _parse_guidelines_sections()
+    g_stale = [s for s in sections if not s["is_stub"] and s["stale"]]
+    g_broken = [s for s in sections if not s["is_stub"] and s["broken_url"]]
+    g_stubs = [s for s in sections if s["is_stub"]]
+
     print(f"\nLLM Matrix — Research Needed ({datetime.now().strftime('%Y-%m-%d')})")
     print("=" * 60)
     if stale:
@@ -227,6 +408,22 @@ def cmd_research():
             print(f"  • {m['provider']}: {m['name']} — check pricing + capability updates")
     else:
         print("  All models are up to date (checked within 7 days).")
+
+    if sections:
+        print(f"\nMODEL-PROMPTING-GUIDELINES status:")
+        print(f"  Filled sections:        {len([s for s in sections if not s['is_stub']])}")
+        print(f"  Stub sections:          {len(g_stubs)}")
+        print(f"  Stale (>{GUIDELINES_STALE_DAYS} days):     {len(g_stale)}")
+        print(f"  Broken provider URL:    {len(g_broken)}")
+        if g_stale:
+            print(f"\n  Stale sections needing refresh:")
+            for s in g_stale:
+                print(f"    • {s['heading']}  (captured {s['date_captured']})")
+        if g_broken:
+            print(f"\n  Sections with missing URL:")
+            for s in g_broken:
+                print(f"    • {s['heading']}")
+
     print("""
 Research checklist:
   1. Anthropic: claude.ai/news — new model releases, pricing changes
@@ -238,13 +435,22 @@ Research checklist:
   7. OpenAI: openai.com/codex — Codex task limits, new features
   8. MiniMax/Qwen: check provider dashboards
 
+Per-model prompting guidelines (MODEL-PROMPTING-GUIDELINES.md):
+  • For every NEW model in MODEL-RESEARCH.md, add a section using the 9-component template.
+  • For every STALE section, re-fetch the provider's prompting docs and refresh.
+  • For every BROKEN URL, search for the new official prompting page and update.
+  • For every STUB whose provider has activated (now used in LLM-MATRIX.md), promote to full section.
+
 Update process:
   1. Edit D:\\paperclip\\scripts\\llm-matrix-data.json
      — update input_per_1m, output_per_1m, scores, last_checked
      — add new models if released
-  2. Run: python update_llm_matrix.py
-  3. Run: python update_llm_matrix.py --hire  (check if lineup changes needed)
-  4. Run: python position_manager.py sync all  (push updated pricing to agents)
+  2. Edit D:\\paperclip\\MODEL-PROMPTING-GUIDELINES.md
+     — refresh stale sections, add new model sections
+  3. Run: python update_llm_matrix.py
+  4. Run: python update_llm_matrix.py --hire  (check if lineup changes needed)
+  5. Run: python update_llm_matrix.py --guidelines-stale  (verify all sections fresh)
+  6. Run: python position_manager.py sync all  (push updated pricing to agents)
 """)
 
 def cmd_skills():
@@ -708,6 +914,12 @@ def main():
         cmd_skills()
     elif "--hire" in args:
         cmd_hire()
+    elif "--guidelines-stale" in args:
+        cmd_guidelines_stale()
+    elif "--guidelines" in args:
+        idx = args.index("--guidelines")
+        model_arg = " ".join(args[idx + 1:]) if idx + 1 < len(args) else ""
+        cmd_guidelines_lookup(model_arg)
     else:
         generate_html()
         print("Done.")

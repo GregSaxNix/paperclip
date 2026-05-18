@@ -4,6 +4,10 @@
 **Update cadence:** Weekly — re-run model research agent to capture pricing/model changes.  
 **Last updated:** 2026-04-06
 
+**Companion files:**
+- [LLM-MATRIX.md](./LLM-MATRIX.md) — position assignments and fallback chains
+- [MODEL-PROMPTING-GUIDELINES.md](./MODEL-PROMPTING-GUIDELINES.md) — per-model prompt-engineering rules (URL, JSON mechanism, delimiters, temperature, worked example, anti-patterns). **Refreshed in the same weekly pass as this file.**
+
 ---
 
 ## All Available Models (API access, last 6 months)
@@ -290,7 +294,9 @@ Based on this matrix, some original recommendations can be improved:
 
 ## Update Schedule
 
-This file should be refreshed weekly. Run the model research agent with prompt:
-> "Research all major AI providers (Anthropic, OpenAI, Google, xAI, Mistral, DeepSeek, Moonshot, MiniMax, Qwen, GLM) for new models and pricing changes in the past 7 days. Update MODEL-RESEARCH.md."
+This file should be refreshed weekly, alongside [MODEL-PROMPTING-GUIDELINES.md](./MODEL-PROMPTING-GUIDELINES.md). Run the model research agent with prompt:
+> "Research all major AI providers (Anthropic, OpenAI, Google, xAI, Mistral, DeepSeek, Moonshot, MiniMax, Qwen, GLM) for new models and pricing changes in the past 7 days. Update MODEL-RESEARCH.md AND MODEL-PROMPTING-GUIDELINES.md."
 
 Track: new model releases, pricing changes, free tier changes, context window updates, new capabilities.
+
+**For every new model added here, the same weekly run MUST add a section to MODEL-PROMPTING-GUIDELINES.md** (provider docs URL, JSON mechanism, delimiter prefs, temperature, worked example, anti-patterns). Use `python scripts/update_llm_matrix.py --guidelines-stale` to verify nothing is missed.

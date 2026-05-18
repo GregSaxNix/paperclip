@@ -6,7 +6,11 @@
 
 > ⚠️ **Codex weekly limit hit (2026-04-06):** Engineer and CTO fall back to Grok-Code-Fast-1 → MiniMax-M2.7 until weekly Codex reset. See Codex Usage Monitoring section.
 
-> 📋 **Companion file:** [MODEL-RESEARCH.md](./MODEL-RESEARCH.md) — full model × task suitability matrix, provider comparisons, Codex monitoring design. Update weekly.
+> 📋 **Companion files:**
+> - [MODEL-RESEARCH.md](./MODEL-RESEARCH.md) — full model × task suitability matrix, provider comparisons, Codex monitoring design.
+> - [MODEL-PROMPTING-GUIDELINES.md](./MODEL-PROMPTING-GUIDELINES.md) — per-model prompt-engineering rules (URL, JSON mechanism, delimiters, temperature, worked example, anti-patterns).
+>
+> Both companions are refreshed in the same weekly Researcher run.
 
 ---
 
