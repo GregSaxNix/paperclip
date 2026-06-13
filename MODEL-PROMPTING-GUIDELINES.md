@@ -17,11 +17,13 @@
 | Provider | Model versions | Section | Status |
 |----------|----------------|---------|--------|
 | Anthropic | Claude Opus 4.6, Sonnet 4.6, Haiku 4.5 | [§ Anthropic Claude](#anthropic--claude-opus-46--sonnet-46--haiku-45) | Filled 2026-05-18 |
+| Google | Gemini 3.5 Flash, 3.1 Flash-Lite, 3.1 Pro (preview) | [§ Google Gemini 3.x](#google--gemini-35-flash--31-flash-lite--31-pro-preview) | Filled 2026-05-20 |
 | Google | Gemini 2.5 Pro, Flash, Flash-Lite | [§ Google Gemini 2.5](#google--gemini-25-pro--flash--flash-lite) | Filled 2026-05-18 |
+| Google | Gemma 4 12B / 26B (local via Ollama) | [§ Google Gemma 4](#google--gemma-4-12b--26b-local-via-ollama) | Filled 2026-06-07 |
 | DeepSeek | V3.2, V4, R1 | [§ DeepSeek](#deepseek--v32--v4--r1) | Filled 2026-05-18 |
 | Moonshot | Kimi K2.5 | [§ Kimi K2.5](#moonshot--kimi-k25) | Filled 2026-05-18 |
 | xAI | Grok-4, Grok-4.1, Grok-3, Grok-Code-Fast-1 | [§ xAI Grok](#xai--grok-4--grok-41--grok-3) | Filled 2026-05-18 |
-| OpenAI | GPT-5.3 Codex, GPT-4o, o3/o4-mini | [§ OpenAI](#openai--gpt-53-codex--gpt-4o--o-series) | Stub — pending weekly agent |
+| OpenAI | GPT-5.3 Codex, GPT-4o, o3/o4-mini | [§ OpenAI](#openai--gpt-53-codex--gpt-4o--o-series) | Filled 2026-06-13 (Codex focus) |
 | Mistral | Large 3, Small 4, Codestral, Magistral 1.2 | [§ Mistral](#mistral--large-3--small-4--codestral) | Stub — pending weekly agent |
 | Alibaba | Qwen 2.5-Max, Qwen-Plus, Qwen-Turbo | [§ Qwen](#alibaba--qwen-25-max--qwen-plus--qwen-turbo) | Stub — pending weekly agent |
 | Zhipu AI | GLM-5, GLM-4.7, GLM-4.7-Flash | [§ GLM](#zhipu-ai--glm-5--glm-47--glm-47-flash) | Stub — pending weekly agent |
@@ -173,6 +175,80 @@ response = client.messages.create(
 
 ---
 
+## Google — Gemini 3.5 Flash / 3.1 Flash-Lite / 3.1 Pro (preview)
+
+**Provider docs URL:** https://ai.google.dev/gemini-api/docs/prompting-strategies (Gemini 3 section) + https://ai.google.dev/gemini-api/docs/structured-output
+**Date captured:** 2026-05-20
+**Applies to model IDs:** `gemini-3.5-flash` (stable), `gemini-3.1-flash-lite` (stable), `gemini-3.1-pro-preview` (preview), `gemini-3-flash-preview` (preview)
+
+### 1. Prompt structure — same as 2.5 (context-first, question-last) but stricter
+
+Same context-first / question-last pattern as Gemini 2.5. The transition phrase ("Based on the information above, answer the following:") is even more important on 3.x — anecdotal observation 2026-05-20 is that 3.5 Flash without the transition phrase is more prone to ignoring late-prompt overrides.
+
+### 2. JSON output — `response_schema` works the same BUT budget for thinking
+
+`response_schema` and `response_mime_type='application/json'` work identically to 2.5. The new operational gotcha:
+
+**`max_output_tokens` must be ≥8000 for 3.x classification.** 3.5 Flash burns tokens on internal reasoning even when `thinking_budget` is not explicitly set. Observed at 800 tokens: ~5–10% of responses are JSON-truncated mid-value. At 8000, errors drop to zero. Real-world example from TalentMap classifier 2026-05-20 on 150-row sample: 3.5 Flash output ~500 tokens on average per call vs ~150 tokens for 2.5 Flash.
+
+For reliable JSON on 3.x:
+```python
+config=types.GenerateContentConfig(
+    temperature=1.0,                  # see §5 — non-optional for 3.x
+    max_output_tokens=8000,           # not 800 — leave head-room for reasoning
+    response_mime_type='application/json',
+    response_schema=YourPydanticModel,
+)
+```
+
+### 3. Delimiter preferences
+
+Same as 2.5: XML for long contexts, markdown for short. No change.
+
+### 4. Classification task framing
+
+Same multiple-choice / enumerated-set advice as 2.5. 3.5 Flash returns slightly higher 6-digit rate (98.7%) vs the 4-digit honest-partial fallback that the prompt allows; this MAY be a regression in "stop when evidence is thin" behaviour vs 2.5 Flash (which returned 100% 6-digit on the same sample). Watch this on graded-confidence tasks.
+
+### 5. Temperature default & quirks (the non-optional rule)
+
+**3.x family MUST run at `temperature=1.0`.** Google's Gemini 3 prompting doc states this explicitly — any other value degrades output. This is the OPPOSITE of 2.5 (where 0 was best for structured extraction) and the OPPOSITE of every other provider.
+
+Consequence: 3.x classification is non-deterministic by design. Two runs on the same input will not necessarily produce the same code. For audit-style use cases run N times and take majority vote.
+
+3.x **does** support `thinking_config=types.ThinkingConfig(thinking_budget=N)` like 2.5 — but the "burn-on-reasoning" behaviour seen at 800 max_output_tokens happens even when thinking is not explicitly enabled. Setting `thinking_budget=0` may help reduce output cost but was not verified as of 2026-05-20.
+
+### 6. Pricing (per 1M tokens, captured 2026-05-20)
+
+| Model | Input | Output | Status |
+|---|---:|---:|---|
+| `gemini-3.5-flash` | $1.50 | $9.00 | stable |
+| `gemini-3.1-flash-lite` | $0.25 | $1.50 | stable |
+| `gemini-3.1-pro-preview` | $2.00 (≤200k) / $4.00 (>200k) | $12.00 / $18.00 | preview |
+| `gemini-3-flash-preview` | $0.50 | $3.00 | preview |
+
+For comparison: 2.5 Flash is $0.30/$2.50, 2.5 Flash-Lite is $0.10/$0.40. **3.5 Flash is 5x input / 3.6x output more expensive than 2.5 Flash.** Real-world per-call cost with classification prompt (3.5k input, ~500 output) is ~$0.010 for 3.5 Flash vs ~$0.0014 for 2.5 Flash — a 7x multiplier.
+
+### 7. TalentMap empirical findings (2026-05-20, 150-row rich-context sample)
+
+| Model | vs Claude @6 | vs 2.5 Flash @6 | 6-digit rate | Cost / 72k rows |
+|---|---:|---:|---:|---:|
+| 2.5 Flash-Lite | 17.5% | — | 100% | $30 |
+| 2.5 Flash | 19.2% | (self) | 100% | $104 |
+| 3.1 Flash-Lite | 15.8% | 46.0% | 86.7% | $118 |
+| 3.5 Flash | **24.1%** | 64.2% | 98.7% | $709 |
+
+3.5 Flash: +5pp absolute Claude-agreement vs 2.5 Flash at 6.8x cost. Worth it for audit / re-classification; **not** worth it for production polling.
+
+3.1 Flash-Lite: **regression** — lower Claude-agreement than 2.5 Flash-Lite AND 4x more expensive. Avoid.
+
+### 8. Known anti-patterns
+
+- **Don't** run 3.x at temperature 0 — output degrades materially per Google's docs.
+- **Don't** set `max_output_tokens=800` for 3.x classification — JSON gets truncated mid-string.
+- **Don't** assume 3.x is a drop-in replacement for 2.x prompts — 36% of rows change at 6-digit level when swapping 2.5 → 3.5 Flash. Re-validate every downstream consumer of the classifier output.
+
+---
+
 ## Google — Gemini 2.5 Pro / Flash / Flash-Lite
 
 **Provider docs URL:** https://ai.google.dev/gemini-api/docs/prompting-strategies + https://ai.google.dev/gemini-api/docs/structured-output
@@ -320,6 +396,123 @@ result: ClassifiedClause = response.parsed
 - **Don't** use Flash-Lite for thinking-mode tasks — it doesn't support it. Use Flash or Pro.
 - **Don't** put role/persona in the first user message — use `system_instruction`. Persona inside user content is occasionally ignored or merged with the question.
 - **Don't** use markdown headers for prompts >10k tokens — switch to XML.
+
+---
+
+## Google — Gemma 4 12B / 26B (local via Ollama)
+
+**Provider docs URL:** https://ai.google.dev/gemma/docs/core/prompt-structure + https://ollama.com/blog/structured-outputs
+**Date captured:** 2026-06-07
+**Applies to model IDs:** `gemma4:12b`, `gemma4:26b` (Ollama, `ollama_local` adapter — free, on-device on the RTX 4090)
+
+> **Gemma ≠ Gemini.** Gemma is the open-weights family we run locally; its prompt conventions differ from the Gemini API sections above. Two big differences: (1) **no system role** — Gemma has only `user` and `model` turns; (2) JSON is enforced by **Ollama's `format` parameter** (a JSON Schema object), not Gemini's `response_schema`.
+
+### 1. Prompt structure recommendations
+
+Gemma's chat template uses exactly two roles — `user` and `model` — wrapped in `<start_of_turn>` / `<end_of_turn>` control tokens. **Ollama applies this template for you** from the model's Modelfile, so you send normal role messages and never hand-write the turn tokens.
+
+1. **No system role.** Gemma folds system-level instructions into the *first user turn*. With Ollama you may still pass a `system` field (or a `{"role":"system"}` message) — Ollama's Gemma template prepends it to the first user turn automatically. Put role + invariant rules there.
+2. **Order:** persona/rules → context block → few-shot examples → the actual instruction/question **last**. Like Gemini, Gemma weights late tokens most for generation.
+3. **Multimodal** (text + image + audio, 256K context): pass images as base64 in a message's `images` array (`/api/chat`). The vision encoder is bundled in the `gemma4:*` tags.
+
+### 2. JSON output mechanism
+
+**Use Ollama's `format` parameter with a full JSON Schema object** — constrained decoding, so the model literally cannot emit non-conforming tokens. Do NOT ask for JSON in prose.
+
+```python
+import ollama
+from pydantic import BaseModel, Field
+from typing import Literal
+
+class ClassifiedClause(BaseModel):
+    clause_type: Literal["indemnification", "termination", "confidentiality", "other"]
+    risk_score: int = Field(ge=1, le=5)
+    rationale: str
+
+resp = ollama.chat(
+    model="gemma4:12b",
+    messages=[{"role": "user", "content": "..."}],
+    format=ClassifiedClause.model_json_schema(),   # <-- the JSON enforcement mechanism
+    options={"temperature": 0},
+)
+parsed = ClassifiedClause.model_validate_json(resp["message"]["content"])
+```
+
+Raw HTTP equivalent: POST `/api/chat` (or `/api/generate`) with `"format": { ...json schema... }` and `"stream": false`. The bare string `"format": "json"` also works but only guarantees *valid* JSON, not *your shape* — always pass the schema object when you have one.
+
+### 3. Delimiter preferences
+
+Markdown headers or XML tags both work. Gemma was trained heavily on markdown, so **markdown (`## Context`, `## Task`) is the safe default**; reserve XML tags for fencing verbatim input you don't want interpreted (e.g. `<document>…</document>`).
+
+### 4. Classification task framing
+
+Frame as **multiple-choice** with an explicit enum, same as Gemini. Put the allowed values in the `format` schema (`Literal[...]` → JSON enum) and keep the prompt high-level — the schema enum is hard-enforced, so the model cannot return an out-of-set label. For graded scores, give per-level anchor descriptions in the prompt text.
+
+### 5. Temperature default & quirks
+
+- **Gemma's partner-recommended sampling is `temperature=1.0, top_p=0.95, top_k=64`** — the default for general / creative / coding use (Gemma 4 notably performs well at high temperature *even for coding*).
+- **For deterministic extraction / classification, override to `temperature=0`** (greedy). Use this whenever you pass a `format` schema.
+- Set via Ollama's `options` object: `options={"temperature": 0, "top_p": 0.95, "top_k": 64}`.
+- **No dedicated "thinking mode"** (unlike Gemini Flash or DeepSeek R1) — Gemma 4 reasons inline. There is no separate thinking-budget knob.
+
+### 6. Worked example
+
+```python
+import ollama
+from pydantic import BaseModel, Field
+from typing import Literal
+
+class ClassifiedClause(BaseModel):
+    clause_type: Literal[
+        "indemnification", "limitation_of_liability", "termination",
+        "confidentiality", "ip_ownership", "payment_terms", "warranty",
+        "data_protection", "non_compete", "force_majeure", "governing_law",
+        "auto_renewal", "other"
+    ]
+    risk_score: int = Field(ge=1, le=5, description="1=boilerplate, 5=escalate")
+    rationale: str
+
+# Gemma has NO system role — fold role + rules into the first user turn.
+# (Ollama also accepts a `system=` arg and prepends it to the first user turn for you.)
+user_prompt = """You are a contract clause classifier. You categorise clauses by type
+and assess risk on a 1-5 scale, returning a single best-fit clause_type and a
+rationale under 30 words.
+
+## Risk scale anchors
+1 = boilerplate, no negotiation needed
+2 = mildly unusual but acceptable
+3 = noteworthy, flag in summary
+4 = material exposure, recommend redline
+5 = catastrophic, escalate to partner
+
+## Examples
+- "Either party may terminate with 30 days notice." -> termination, score 2 (mutual, standard).
+- "Supplier indemnifies Customer for ALL losses incl. consequential damages, no cap." -> indemnification, score 5 (uncapped).
+
+## Clause to classify
+<document>
+Customer indemnifies Supplier against any third-party IP claims arising from
+Customer's modifications to the Software.
+</document>
+
+Classify the clause inside <document> and return the structured result."""
+
+resp = ollama.chat(
+    model="gemma4:12b",
+    messages=[{"role": "user", "content": user_prompt}],
+    format=ClassifiedClause.model_json_schema(),
+    options={"temperature": 0},
+)
+result = ClassifiedClause.model_validate_json(resp["message"]["content"])
+```
+
+### 7. Known anti-patterns
+
+- **Don't** send a `{"role":"system"}` turn expecting a Gemini/Claude-style separate system channel — Gemma has none; it gets merged into the first user turn. Write the prompt knowing that.
+- **Don't** hand-write `<start_of_turn>` / `<end_of_turn>` tokens when calling via Ollama — the Modelfile template adds them; doubling them corrupts the prompt.
+- **Don't** rely on prose "respond in JSON" — pass the schema to `format`. Prose-only JSON from Gemma sometimes arrives wrapped in ```json fences.
+- **Don't** run extraction at the default `temperature=1.0` — drop to `0` for structured / classification work; keep `1.0` only for creative / coding generation.
+- **Don't** assume `gemma4:12b` and `gemma4:26b` need different prompts — same family, same template; the 26B is just stronger. Prompt identically; pick the size by task difficulty / VRAM headroom.
 
 ---
 
@@ -729,19 +922,76 @@ response = client.chat.completions.create(
 
 ## OpenAI — GPT-5.3 Codex / GPT-4o / o-series
 
-**Provider docs URL:** _pending — populated on next weekly run_
-**Date captured:** _pending — flagged for population by the weekly model-research agent_
+**Provider docs URL:** [Codex prompting guide](https://developers.openai.com/cookbook/examples/gpt-5/codex_prompting_guide) · [Codex best practices](https://developers.openai.com/codex/learn/best-practices) · [AGENTS.md for Codex](https://developers.openai.com/codex/guides/agents-md) · [GPT-5 prompting guide](https://cookbook.openai.com/examples/gpt-5/gpt-5_prompting_guide)
+**Date captured:** 2026-06-13 (filled for the Shine CRM project — Codex as independent code-review gate)
 
-**Stub.** OpenAI GPT-5.3 Codex is currently consumed via ChatGPT Plus device auth (`codex_local` adapter), not via the API. Until Greg adds an OpenAI API key (per the post-Codex-tracking decision in `MODEL-RESEARCH.md`), per-model API prompting guidance is deferred.
+**Scope note:** Two distinct surfaces. **(A) Codex** = the *agentic coding/review tool* (CLI / IDE / GitHub), powered by `gpt-5.3-codex`, driven by natural-language tasks + repo `AGENTS.md`, NOT by JSON-output API calls. This is what Greg uses for code review. **(B) the OpenAI API** (GPT-5.x chat, o-series) for programmatic calls. The two are prompted differently; §1–6 below cover Codex (the live use case), §7 notes API differences.
 
-When this section is populated, expected coverage:
-- GPT-5.3 Codex (Codex CLI behaviour — different from API)
-- GPT-4o + GPT-4o mini (chat / vision)
-- o3, o4-mini (reasoning models — temperature ignored, reasoning_effort parameter)
-- Structured Outputs (`response_format={"type": "json_schema", "strict": true}`)
-- Developer message vs system message vs user message hierarchy
+### 1. Prompt structure recommendations (Codex)
 
-**Auto-populate trigger:** weekly Researcher run, after the OpenAI API key is added to Paperclip.
+Codex wants four elements, in this order — **Goal → Context → Constraints → Done-when**:
+- **Goal:** one line — what to do (e.g. "review slice N for correctness + security").
+- **Context:** the specific files/dirs/docs, `@`-mentioned or path-listed. Point at the acceptance criteria and the spec it must conform to. Don't make Codex hunt.
+- **Constraints:** standards, what NOT to touch, review-only vs edit, safety.
+- **Done-when:** explicit completion + verification criteria ("tests run and pasted; verdict PASS/CONDITIONAL/FAIL").
+
+Codex is **autonomous and persistent by default** — it gathers context, plans, implements, tests and refines end-to-end in one turn. Two consequences: (a) do NOT ask for an upfront plan/preamble — it causes premature stopping; (b) for review, explicitly say **review-only, do not modify code**, or its default bias to *implement* will make it start editing.
+
+**Durable rules belong in `AGENTS.md`, not the prompt.** Codex auto-loads `AGENTS.md` (nearest file to each changed file wins). The official review pattern: keep a `CODE_REVIEW.md` (durable standards) referenced from `AGENTS.md`, and keep each task prompt lean — "review X against the standards." This is also the cheapest pattern on a limited plan (ChatGPT Plus): durable context loads from the repo, the prompt stays short.
+
+### 2. JSON / structured output
+
+Codex (the tool) is **not** a JSON-output surface — it returns prose review findings + edits, not a parsed object. If you need machine-readable review output, specify the exact output contract in the prompt (e.g. "end with a line `VERDICT: PASS|CONDITIONAL|FAIL`"). For the **API** path (not Codex), use Structured Outputs: `response_format={"type":"json_schema","json_schema":{...,"strict":true}}` — schema-enforced.
+
+### 3. Delimiter & formatting preferences
+
+- **Markdown**, lightly: headings only where they aid scanning; **bullets (`-`), 4–6 per list, ordered by importance**, not deep-nested hierarchies.
+- **Backticks** for paths, commands, env vars, identifiers; **fenced code blocks** with an info string for multi-line snippets.
+- **File references as `path/to/file.ts:42`** (clickable in Codex surfaces) — Codex emits and expects this form.
+- Avoid heavy ANSI/decorative formatting.
+
+### 4. Code-review task framing (the live use case)
+
+When the task says **"review"**, Codex adopts a review mindset: *"Prioritise identifying bugs, risks, behavioural regressions, and missing tests. Findings must be the primary focus."* Output is **findings-first, ordered by severity, with `file:line` references**; assumptions/summaries are secondary. *"If no issues found, state that explicitly and note residual testing gaps."* This maps cleanly onto a PASS/CONDITIONAL/FAIL gate. Reinforce: tell it to **actually run the tests/checks and paste output** ("run the relevant checks, confirm the result") — Codex's verify loop is built for this; don't accept eyeballed claims.
+
+### 5. reasoning_effort & params (no temperature for reasoning models)
+
+`gpt-5.3-codex`: **`medium` reasoning_effort** is the all-round default (balances depth/speed); use **`high` / `xhigh`** for hard or high-stakes tasks (security, data-integrity, migration review). reasoning_effort is the real quality knob — **temperature is ignored** on reasoning models; don't try to tune via temperature. Supports long/multi-hour reasoning with compaction. Lower effort (`low`/`minimal`) = less exploration, faster, cheaper — fine for mechanical reviews, too shallow for security gates.
+
+### 6. Worked example (a review-gate prompt in Codex shape)
+
+```text
+Goal: Independently review Slice 2 (DB schema, RLS, audit) of the Shine CRM. Review only — do NOT modify code.
+
+Context:
+- Standards: ./CODE_REVIEW.md (durable review rules; auto-loaded via AGENTS.md)
+- Slice scope + acceptance criteria: docs/implementation/00-master-plan.md (Slice 2)
+- Specs it must conform to: docs/architecture/04-security-model.md, 02-schema-design.md
+- Code: db/migrations/, src/lib/supabase/
+
+Constraints:
+- Read-only review. Do not edit files or run destructive git.
+- Use high reasoning effort. Run the test suite + the RLS catalog test yourself; paste real output.
+- Findings first, severity-ordered, each with file:line. No upfront plan/preamble.
+
+Done when: you output numbered findings (sev-ordered) + a final line `VERDICT: PASS | CONDITIONAL (with must-fix list) | FAIL`, with pasted test output as evidence. PASS only if every crm table has RLS + grants in-migration, policies match the role matrix, and tests are green.
+```
+
+### 7. API path differences (GPT-5.x / o-series, not Codex tool)
+
+- Message hierarchy: **developer** message (instructions) > **user** > **assistant**; `system` is treated as `developer`. Put durable instructions in the developer message.
+- GPT-5.x is **sensitive to contradictory instructions** — it burns reasoning reconciling them. Keep the prompt internally consistent (the GPT-5 guide calls this out explicitly).
+- "Eagerness" is tunable: for thorough work, instruct persistence ("keep going until fully resolved, don't hand back early"); for latency, lower reasoning_effort.
+- Reasoning models (o-series, GPT-5 reasoning): no temperature/top_p tuning — use reasoning_effort.
+
+### 8. Known anti-patterns
+
+- **Overloading the prompt with durable rules** → move them to `AGENTS.md` / `CODE_REVIEW.md`.
+- **Asking for an upfront plan or status preamble** → causes premature stopping; let it work, or use the plan tool for genuinely multi-step tasks.
+- **Forgetting "review-only"** on a review → Codex starts editing (its default is to implement).
+- **Tuning temperature** on `gpt-5.3-codex`/o-series → ignored; use reasoning_effort.
+- **One long thread per project** instead of one thread per task → context bloat; start a fresh task per gate.
+- **Broad try/catch / success-shaped fallbacks** in code it writes, and **destructive git** (`reset --hard`, `checkout --`) → it's trained to avoid these; don't instruct them.
 
 ---
 
@@ -832,4 +1082,4 @@ This file is owned by the **Researcher agent** ([positions/research/researcher/S
 
 ---
 
-_Last updated: 2026-05-18 — initial creation with 5 fully-filled provider sections (Anthropic, Google, DeepSeek, Moonshot, xAI) + 5 stubs (OpenAI, Mistral, Qwen, GLM, MiniMax)._
+_Last updated: 2026-06-13 — OpenAI/Codex section filled (Codex-as-code-review focus, for the Shine CRM project) from OpenAI's official Codex prompting guide + best-practices docs. Remaining stubs: Mistral, Qwen, GLM, MiniMax._
