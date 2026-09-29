@@ -9,6 +9,6 @@
 |------|-------------|-------|------|-------------|
 | Primary | codex_local | gpt-5.3-codex | Weekly quota (finite) | When Codex quota available |
 | Fallback 1 | ollama_local | MiniMax-M2.7 | ~$0.30/M | ⚠️ ACTIVE NOW — Codex quota exhausted |
-| Emergency | ollama_local | gemma4:26b | FREE (local) | All cloud unavailable |
+| Emergency | ollama_local | gemma4:12b | FREE (local) | All cloud unavailable |
 
 **⚠️ Note:** Codex weekly quota exhausted 2026-04-06. Council Tech is on Fallback 1 until quota resets.

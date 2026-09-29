@@ -54,4 +54,4 @@ _Auto-updated by `update_llm_matrix.py --hire` after each research cycle_
 | Primary | ollama_local | grok-4.1 | ~$0.20/M | 2026-04-06 |
 | Fallback 1 | ollama_local | kimi-k2.5 | ~$0.60/M | 2026-04-06 |
 | Fallback 2 | ollama_local | qwen-plus | ~$0.26/M | 2026-04-06 |
-| Emergency | ollama_local | gemma4:26b | FREE (local) | 2026-04-06 |
+| Emergency | ollama_local | gemma4:12b | FREE (local) | 2026-04-06 |

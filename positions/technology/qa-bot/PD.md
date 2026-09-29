@@ -50,4 +50,4 @@ _Auto-updated by `update_llm_matrix.py --hire` after each research cycle_
 | Primary | ollama_local | deepseek-v4 | ~$0.30/M | 2026-04-06 |
 | Fallback 1 | ollama_local | codestral | ~$0.30/M | 2026-04-06 |
 | Fallback 2 | claude_local | claude-haiku-4-5 | FREE (Max plan) | 2026-04-06 |
-| Emergency | ollama_local | gemma4:26b | FREE (local) | 2026-04-06 |
+| Emergency | ollama_local | gemma4:12b | FREE (local) | 2026-04-06 |

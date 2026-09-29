@@ -54,6 +54,7 @@ MODEL_SHORT_NAMES = {
     "grok-4.1":            "Grok-4.1",
     "grok-code-fast-1":    "Grok Fast",
     "grok-3-mini":         "Grok Mini",
+    "gemma4:12b":          "Gemma4:12b",
     "gemma4:26b":          "Gemma4:26b",
     "deepseek-chat":       "DS Chat",
     "deepseek-reasoner":   "DS R1",
@@ -839,7 +840,7 @@ def generate_html():
   <div id="tab-hiring" class="tab-panel">
     <div class="hire-bar">
       <span>Last hiring round: <strong>run <code>python update_llm_matrix.py --hire</code> to see full report</strong></span>
-      <span style="margin-left:auto;color:#94a3b8;font-size:0.8em">Emergency slot is always gemma4:26b (availability guarantee, not merit)</span>
+      <span style="margin-left:auto;color:#94a3b8;font-size:0.8em">Emergency slot is always gemma4:12b (Doc/Freud stay on gemma4:26b)</span>
     </div>
 
     <div class="card">
@@ -860,7 +861,7 @@ def generate_html():
         Each position has a <strong>task weight profile</strong> in <code>llm-matrix-data.json</code> (e.g. CEO = 30% reasoning, 25% research, 20% writing...).
         The algorithm scores every model by computing <em>sum(task_score × weight)</em> across all task dimensions.
         The highest-scoring model becomes the recommended Primary; next two become Fallback 1 and Fallback 2.
-        Emergency is always <strong>gemma4:26b</strong> — it is the always-available local fallback regardless of score.
+        Emergency is always <strong>gemma4:12b</strong> — it is the always-available local fallback regardless of score. Doc and Freud stay on gemma4:26b.
         <br><br>
         Local-only positions (Doc, Freud, Council Local) only consider models where <code>local_only: true</code>.
         If a better model is released or pricing drops significantly, re-run <code>--hire</code> to see if lineup changes are warranted.

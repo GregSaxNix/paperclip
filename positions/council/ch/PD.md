@@ -35,7 +35,7 @@ _Used by the LLM recruitment algorithm in `update_llm_matrix.py --hire`_
 ## Constraints
 - Must NOT be local_only
 - Preferred provider: Kimi/Moonshot (Chinese AI infrastructure)
-- Emergency fallback: gemma4:26b only when all Kimi models unavailable
+- Emergency fallback: gemma4:12b only when all Kimi models unavailable
 
 ## Current employment
 _Auto-updated by `update_llm_matrix.py --hire` after each research cycle_
@@ -44,4 +44,4 @@ _Auto-updated by `update_llm_matrix.py --hire` after each research cycle_
 |------|---------|-------|------|-----------|
 | Primary | ollama_local | kimi-k2.5 | ~$0.60/M | 2026-04-06 |
 | Fallback 1 | ollama_local | deepseek-chat | ~$0.26/M | 2026-04-06 |
-| Emergency | ollama_local | gemma4:26b | FREE (local) | 2026-04-06 |
+| Emergency | ollama_local | gemma4:12b | FREE (local) | 2026-04-06 |

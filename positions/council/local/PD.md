@@ -30,13 +30,13 @@ _Used by the LLM recruitment algorithm in `update_llm_matrix.py --hire`_
 - Summarisation and synthesis from provided context only
 
 ## Constraints
-- LOCAL ONLY — must always run on gemma4:26b via ollama_local
+- LOCAL ONLY — must always run on gemma4:12b via ollama_local
 - NO external calls, NO internet access, NO MCP servers
-- Only valid model: gemma4:26b
+- Only valid model: gemma4:12b
 
 ## Current employment
 _Auto-updated by `update_llm_matrix.py --hire` after each research cycle_
 
 | Slot | Adapter | Model | Cost | Appointed |
 |------|---------|-------|------|-----------|
-| Primary | ollama_local | gemma4:26b | FREE (local) | 2026-04-06 |
+| Primary | ollama_local | gemma4:12b | FREE (local) | 2026-06-07 |

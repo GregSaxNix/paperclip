@@ -47,4 +47,4 @@ _Auto-updated by `update_llm_matrix.py --hire` after each research cycle_
 |------|---------|-------|------|-----------|
 | Primary | codex_local | gpt-5.3-codex | Weekly quota | 2026-04-06 |
 | Fallback 1 | ollama_local | minimax-m2.7 | ~$0.30/M | 2026-04-06 |
-| Emergency | ollama_local | gemma4:26b | FREE (local) | 2026-04-06 |
+| Emergency | ollama_local | gemma4:12b | FREE (local) | 2026-04-06 |

@@ -25,7 +25,7 @@ export async function execute(ctx: AdapterExecutionContext): Promise<AdapterExec
   const { runId, agent, config, context, onLog } = ctx;
 
   const baseUrl = asString(config.url, "http://localhost:11434");
-  const model = asString(config.model, "qwen2.5:32b");
+  const model = asString(config.model, "gemma4:12b");
   const timeoutMs = asNumber(config.timeoutMs, 120_000);
   const apiKey = asString(config.apiKey, "").trim();
   const instructionsFilePath = asString(config.instructionsFilePath, "").trim();

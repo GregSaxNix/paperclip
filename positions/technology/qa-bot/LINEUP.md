@@ -10,4 +10,4 @@
 | Primary | ollama_local | deepseek-v4 | ~$0.30/M | Default — strong code review |
 | Fallback 1 | ollama_local | codestral | ~$0.30/M | DeepSeek unavailable; code specialist |
 | Fallback 2 | claude_local | claude-haiku-4-5 | FREE (Max plan) | Both above down |
-| Emergency | ollama_local | gemma4:26b | FREE (local) | All cloud unavailable |
+| Emergency | ollama_local | gemma4:12b | FREE (local) | All cloud unavailable |

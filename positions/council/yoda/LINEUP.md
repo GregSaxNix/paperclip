@@ -10,4 +10,4 @@
 | Primary | claude_local | claude-opus-4-6 | FREE (Max plan) | Default — best reasoning for judgement |
 | Fallback 1 | ollama_local | grok-3 | ~$3/M | claude_local down; strong reasoning |
 | Fallback 2 | gemini_local | gemini-2.5-flash | ~$0.15/M | Both above down |
-| Emergency | ollama_local | gemma4:26b | FREE (local) | All cloud unavailable |
+| Emergency | ollama_local | gemma4:12b | FREE (local) | All cloud unavailable |

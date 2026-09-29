@@ -62,7 +62,7 @@
 |----------|-----------|----------|---------------|---------|--------|
 | Council Judge | Yoda | 19c2937c-8e11-4f18-a166-9cdec6ab07e5 | Claude Opus 4.6 | claude_local | idle |
 | Council Contrarian | Council Contrarian | e8ce7488-0d6d-42c8-a63f-88e46d8a0a7c | Grok-3 | ollama_local | idle |
-| Council Local | Council Local | 579e8c85-f6f2-4ddb-af55-e970312756a3 | gemma4:26b | ollama_local | idle 🔒 |
+| Council Local | Council Local | 579e8c85-f6f2-4ddb-af55-e970312756a3 | gemma4:12b | ollama_local | idle 🔒 |
 | Council EU | Council EU | c02e9e21-2fc8-4cfb-998a-59cc1a1ce3b0 | Mistral Large 3 | ollama_local | idle |
 | Council CH | Council CH | bdb5860d-8bc6-46e1-b808-2307afd14b1c | Kimi K2.5 | ollama_local | idle |
 | Council Tech | Council Tech | 614bf0a2-5576-49c7-b993-525ffdb83698 | gpt-5.3-codex ⚠️ | codex_local | error |

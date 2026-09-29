@@ -76,7 +76,7 @@ export function OllamaConfigFields({
             }
             immediate
             className={inputClass}
-            placeholder="llama3.1:8b-instruct"
+            placeholder="gemma4:12b"
           />
         )}
       </Field>

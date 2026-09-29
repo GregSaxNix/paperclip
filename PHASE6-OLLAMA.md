@@ -1,5 +1,7 @@
 # Phase 6: Ollama/4090 Private Agent for Life Admin
 
+Current local default (2026-09-29): `gemma4:12b`. Doc and Freud stay on `gemma4:26b`. The pull commands later in this note are the original phase instructions.
+
 Paste everything below this line into the Paperclip Cursor session.
 
 ---

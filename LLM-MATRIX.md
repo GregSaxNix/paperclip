@@ -2,7 +2,7 @@
 
 **Purpose:** Assign the best-fit LLM to each agent role based on required capabilities and cost.  
 **Approach:** "Job interview" — each position has a description, models rated on fit and cost.  
-**Last updated:** 2026-04-06
+**Last updated:** 2026-04-06 (gemma4:12b added to available models 2026-06-07)
 
 > ⚠️ **Codex weekly limit hit (2026-04-06):** Engineer and CTO fall back to Grok-Code-Fast-1 → MiniMax-M2.7 until weekly Codex reset. See Codex Usage Monitoring section.
 
@@ -21,8 +21,9 @@
 | Anthropic (Max) | Claude Opus 4.6 | **FREE** | **FREE** | claude_local | Best reasoning overall |
 | Anthropic (Max) | Claude Sonnet 4.6 | **FREE** | **FREE** | claude_local | Balanced, fast, highly capable |
 | Anthropic (Max) | Claude Haiku 4.5 | **FREE** | **FREE** | claude_local | Ultra-fast, structured tasks |
-| Local Ollama | gemma4:26b | **FREE** | **FREE** | ollama_local | Private, on-device, always available |
-| Qwen (local) | Qwen2.5-7B/14B | **FREE** | **FREE** | ollama_local | Runs on RTX 4090; private Qwen option |
+| Local Ollama | gemma4:26b *(Doc/Freud only)* | **FREE** | **FREE** | ollama_local | Heavy local; reserved for Doc/Freud health agents (17 GB VRAM) |
+| Local Ollama | gemma4:12b | **FREE** | **FREE** | ollama_local | **New (Jun 2026):** multimodal (text/image/audio), 256K ctx; ~8GB VRAM; faster/lighter than 26b; Apache 2.0 |
+| Qwen (local) | qwen3.8:27b | **FREE** | **FREE** | ollama_local | Coding and agent local model (Sep 2026). ~18 GB; run it on its own. Replaces Qwen2.5 and Qwen3 32B. |
 | GLM (Zhipu) | GLM-4.5-Flash / 4.7-Flash | **FREE** | **FREE** | ollama_local + apiKey | Free flash models; basic/simple tasks |
 | Qwen (Alibaba) | Qwen-Turbo | $0.05 | $0.15 | ollama_local + apiKey | Ultra-cheap simple tasks |
 | Mistral | Mistral Nemo | $0.02 | — | ollama_local + apiKey | Cheapest Mistral; minimal tasks |
@@ -51,7 +52,7 @@
 > ⚠️ **Gemini 2.0 Flash is DEPRECATED** — shutting down June 1, 2026. Replaced by Gemini 2.5 Flash above.  
 > **OpenAI API key:** Completely separate from Codex OAuth auth — safe to add after tracking quota for 1 week.  
 > **Grok web/X search:** Built-in `x_search` and `web_search` via Responses API ($2.50–5 per 1K calls). Available for any agent, not just Council Contrarian.  
-> **Qwen local:** Qwen2.5-7B and 14B run on the RTX 4090 via Ollama — free and private.  
+> **Qwen local:** `qwen3.8:27b` runs on the RTX 4090 via Ollama — free and private. Qwen2.5 and `qwen3:32b` are retired on this machine.  
 > **Kimi K2.5 pricing corrected:** $0.60/$2.50 per million tokens (was incorrectly documented as $2.50/$10).  
 > **MiniMax M2.7 pricing corrected:** $0.30/$1.20 per million tokens (was $0.80/$2.40).  
 > **Full model × task scores:** See [MODEL-RESEARCH.md](./MODEL-RESEARCH.md)
@@ -86,11 +87,11 @@ Ollama now offers hosted cloud inference at $20/month (Pro) or $100/month (Max).
 ## Guiding Principles
 
 1. **Cheapest model that meets the bar** — no overspending on luxury models for simple tasks
-2. **Free tier first:** Claude Opus/Sonnet/Haiku (Max) ≫ gemma4:26b (local, always available) ≫ Qwen2.5 local
+2. **Free tier first:** Claude Opus/Sonnet/Haiku (Max) ≫ gemma4:12b (standard local, always available) ≫ qwen3.8:27b local
 3. **Cost tiers:** GLM-Flash/Mistral-Nemo (free-$0.02) > DeepSeek/Grok-Code/Grok-4.1/Gemini-Flash/Mistral-Small4 (~$0.14–0.30) > Kimi/DeepSeek-R1/MiniMax (~$0.30–0.60) > Mistral-Large/Qwen-Max (~$2) > Grok-3/4 (~$3)
 4. **Expensive last:** Gemini Pro, gpt-5.3-codex — only for tasks only they can do
-5. **Codex fallback chain (⚠️ active now — weekly limit hit):** Codex → Grok-Code-Fast-1 → MiniMax-M2.7 → gemma4:26b
-6. **Universal emergency fallback:** Every agent must have gemma4:26b as absolute last resort ("limp mode")
+5. **Codex fallback chain (⚠️ active now — weekly limit hit):** Codex → Grok-Code-Fast-1 → MiniMax-M2.7 → gemma4:12b
+6. **Universal emergency fallback:** Every agent must have gemma4:12b as absolute last resort ("limp mode"); Doc/Freud instead run gemma4:26b as their local-only primary
 7. **Doc/Freud:** gemma4:26b LOCAL ONLY — no exceptions. Health data never leaves the machine
 8. **Grok models:** Full lineup available; Grok-3 for contrarian/web research, Grok-Code-Fast-1 for coding, Grok-4.1 Fast for long-context
 9. **OpenRouter:** Recommended for multi-provider management — single key for Grok, Mistral, DeepSeek, Kimi, MiniMax, Qwen, GLM
@@ -100,13 +101,15 @@ Ollama now offers hosted cloud inference at $20/month (Pro) or $100/month (Max).
 
 ## Confirmed Model Assignments (by department)
 
+> **Local-model default updated 2026-06-07:** The standard local / emergency-fallback model is now **gemma4:12b** (near-26B quality at ~8 GB VRAM vs 17 GB, which frees the RTX 4090 to hold two local models at once). All Fallback-2 (emergency) and council local-fallback entries below resolve to gemma4:12b. Exception: the health agents **Doc** and **Freud** keep **gemma4:26b** (local-only, quality-critical). Live configs are applied via `position_manager.py sync`; Council Local has been flipped and verified.
+
 ### Executive
 
 | Agent | Role | Primary | Fallback 1 | Fallback 2 (emergency) |
 |-------|------|---------|-----------|------------------------|
-| Clawdy | CEO | Claude Opus | Claude Sonnet | gemma4:26b |
-| Gayan | CTO | Claude Opus | Grok-Code-Fast-1 → MiniMax | gemma4:26b |
-| COO | COO | Claude Sonnet | Mistral-large | gemma4:26b |
+| Clawdy | CEO | Claude Opus | Claude Sonnet | gemma4:12b |
+| Gayan | CTO | Claude Opus | Grok-Code-Fast-1 → MiniMax | gemma4:12b |
+| COO | COO | Claude Sonnet | Mistral-large | gemma4:12b |
 
 > **CTO role:** Receives and assesses CEO's instructions/plans, orchestrates work to engineering and design teams, reviews completed work against brief, then reports outcomes back to CEO. Model needs strong reasoning + code-awareness.
 
@@ -114,10 +117,10 @@ Ollama now offers hosted cloud inference at $20/month (Pro) or $100/month (Max).
 
 | Agent | Role | Primary | Fallback 1 | Fallback 2 |
 |-------|------|---------|-----------|------------|
-| Senior Engineer | Engineering | DeepSeek V4 *(1M ctx, 81% SWE)* | Grok-Code-Fast-1 → DeepSeek V3.2 | gemma4:26b |
-| Engineer | Engineering | gpt-5.3-codex ⚠️ *quota* | Grok-Code-Fast-1 → MiniMax-M2.7 | gemma4:26b |
-| QA Bot | Code review / testing | DeepSeek V4 | Codestral → Claude Haiku | gemma4:26b |
-| Designer | UI/UX | Claude Sonnet | Gemini 2.5 Flash | gemma4:26b |
+| Senior Engineer | Engineering | DeepSeek V4 *(1M ctx, 81% SWE)* | Grok-Code-Fast-1 → DeepSeek V3.2 | gemma4:12b |
+| Engineer | Engineering | gpt-5.3-codex ⚠️ *quota* | Grok-Code-Fast-1 → MiniMax-M2.7 | gemma4:12b |
+| QA Bot | Code review / testing | DeepSeek V4 | Codestral → Claude Haiku | gemma4:12b |
+| Designer | UI/UX | Claude Sonnet | Gemini 2.5 Flash | gemma4:12b |
 
 > ⚠️ **Active now:** Codex weekly limit hit. Engineer uses Grok-Code-Fast-1 → MiniMax-M2.7 until quota resets.  
 > **Senior Engineer:** DeepSeek V4 (Mar 2026) — $0.30/M, 1M context, 81% SWE-bench. Upgraded from V3. MiniMax-M2.7 now $0.30/M (corrected from $0.80). See MODEL-RESEARCH.md.
@@ -126,15 +129,15 @@ Ollama now offers hosted cloud inference at $20/month (Pro) or $100/month (Max).
 
 | Agent | Role | Primary | Fallback 1 | Fallback 2 |
 |-------|------|---------|-----------|------------|
-| Content Lead | Writing / comms | Claude Sonnet | Mistral-large | gemma4:26b |
-| Accountant | Finance / bookkeeping | Claude Haiku | DeepSeek | gemma4:26b |
-| Spielberg | Video content | Claude Sonnet | Grok-3-mini | gemma4:26b |
+| Content Lead | Writing / comms | Claude Sonnet | Mistral-large | gemma4:12b |
+| Accountant | Finance / bookkeeping | Claude Haiku | DeepSeek | gemma4:12b |
+| Spielberg | Video content | Claude Sonnet | Grok-3-mini | gemma4:12b |
 
 ### Finance & Investments *(new agent)*
 
 | Agent | Role | Primary | Fallback 1 | Fallback 2 |
 |-------|------|---------|-----------|------------|
-| Finance | Portfolio / budget | DeepSeek R1 | Kimi K2.5 *(long docs)* | gemma4:26b |
+| Finance | Portfolio / budget | DeepSeek R1 | Kimi K2.5 *(long docs)* | gemma4:12b |
 
 ### Family & Health *(local only)*
 
@@ -147,13 +150,13 @@ Ollama now offers hosted cloud inference at $20/month (Pro) or $100/month (Max).
 
 | Agent | Role | Primary | Fallback 1 | Fallback 2 |
 |-------|------|---------|-----------|------------|
-| Travel Agent | Gypsy years planning | Claude Sonnet | Kimi K2.5 *(long docs, web search)* | gemma4:26b |
+| Travel Agent | Gypsy years planning | Claude Sonnet | Kimi K2.5 *(long docs, web search)* | gemma4:12b |
 
 ### Research
 
 | Agent | Role | Primary | Fallback 1 | Fallback 2 |
 |-------|------|---------|-----------|------------|
-| Researcher | Cross-dept research | Grok-4.1 *(131K, web search)* | Kimi K2.5 *(web search, analyst)* | gemma4:26b |
+| Researcher | Cross-dept research | Grok-4.1 *(131K, web search)* | Kimi K2.5 *(web search, analyst)* | gemma4:12b |
 
 ---
 
@@ -163,14 +166,14 @@ Council members renamed from model names to role-based titles.
 
 | New Name | Old Name | Model | Fallback | Role |
 |----------|----------|-------|---------|------|
-| Yoda | Yoda | Claude Opus | Claude Sonnet → gemma4:26b | Judge — synthesises debate into recommendation |
-| Council Contrarian | Skeptic | Grok-3 | Grok-3-mini → gemma4:26b (contrarian prompting) | Devil's advocate — challenges assumptions |
-| Council Local | Gemma | gemma4:26b local | *none (always available)* | Local voice — free, grounded, private |
-| Council EU | Mistral | Mistral Large 3 | Mistral Small 4 → gemma4:26b | European balanced perspective |
-| Council CH | Kimi | Kimi K2.5 | DeepSeek → gemma4:26b | Deep analyst — long-context specialist |
-| Council Tech | Codex | gpt-5.3-codex | MiniMax-M2.7 → gemma4:26b | Technical / code perspective |
+| Yoda | Yoda | Claude Opus | Claude Sonnet → gemma4:12b | Judge — synthesises debate into recommendation |
+| Council Contrarian | Skeptic | Grok-3 | Grok-3-mini → gemma4:12b (contrarian prompting) | Devil's advocate — challenges assumptions |
+| Council Local | Gemma | gemma4:12b local | *none (always available)* | Local voice — free, grounded, private |
+| Council EU | Mistral | Mistral Large 3 | Mistral Small 4 → gemma4:12b | European balanced perspective |
+| Council CH | Kimi | Kimi K2.5 | DeepSeek → gemma4:12b | Deep analyst — long-context specialist |
+| Council Tech | Codex | gpt-5.3-codex | MiniMax-M2.7 → gemma4:12b | Technical / code perspective |
 
-> **On Gemma as contrarian fallback:** Gemma (gemma4:26b) CAN be prompted in a contrarian/adversarial style via the system prompt. It's less sophisticated than Grok-3 for this but workable as an emergency fallback. The instructions for Council Contrarian should include a contrarian-mode prompt that Gemma can follow if Grok is unavailable.
+> **On Gemma as contrarian fallback:** Gemma (gemma4:12b) CAN be prompted in a contrarian/adversarial style via the system prompt. It's less sophisticated than Grok-3 for this but workable as an emergency fallback. The instructions for Council Contrarian should include a contrarian-mode prompt that Gemma can follow if Grok is unavailable.
 
 > **Council Contrarian note:** Renamed from "Skeptic" to "Council Contrarian" for consistency. Agent in Paperclip will be renamed accordingly.
 

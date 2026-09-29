@@ -41,7 +41,7 @@ _Source: `D:\paperclip\positions\positions.json` — always check for current fa
 | Cyber Security (Sentry) | — | deepseek-reasoner | ollama_local |
 | Doc | — | gemma4:26b | ollama_local (LOCAL ONLY) |
 | Freud | — | gemma4:26b | ollama_local (LOCAL ONLY) |
-| Council Local | — | gemma4:26b | ollama_local (LOCAL ONLY) |
+| Council Local | — | gemma4:12b | ollama_local (LOCAL ONLY) |
 | Researcher | — | grok-4.1 | ollama_local |
 | Contrarian | — | grok-3 | ollama_local |
 | Spielberg | — | grok-3-mini | ollama_local |

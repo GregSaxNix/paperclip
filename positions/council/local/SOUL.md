@@ -43,5 +43,5 @@ For health and family debates:
 
 ---
 
-_This position always runs locally on gemma4:26b. No cloud fallback._  
-_Last updated: 2026-04-06_
+_This position always runs locally on gemma4:12b. No cloud fallback._  
+_Last updated: 2026-09-29_

@@ -9,4 +9,4 @@
 |------|-------------|-------|------|-------------|
 | Primary | ollama_local | mistral-large-latest | ~$2/M | Default — European rigour |
 | Fallback 1 | ollama_local | mistral-small-4 | ~$0.15/M | Mistral Large unavailable |
-| Emergency | ollama_local | gemma4:26b | FREE (local) | All Mistral unavailable |
+| Emergency | ollama_local | gemma4:12b | FREE (local) | All Mistral unavailable |

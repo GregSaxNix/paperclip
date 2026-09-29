@@ -2,7 +2,7 @@
 
 **Purpose:** Comprehensive matrix of all available AI models × all agent task types. Used to inform and update LLM-MATRIX.md.  
 **Update cadence:** Weekly — re-run model research agent to capture pricing/model changes.  
-**Last updated:** 2026-04-06
+**Last updated:** 2026-04-06 (gemma4:12b/26b local entries added 2026-06-07)
 
 **Companion files:**
 - [LLM-MATRIX.md](./LLM-MATRIX.md) — position assignments and fallback chains
@@ -46,6 +46,17 @@
 | Gemini 2.5 Flash | 1M | $0.15 | $0.60 | Yes | Yes | Via gemini_local | Best value; 201 tok/sec; thinking mode |
 | Gemini 2.5 Flash-Lite | 1M | $0.075 | $0.30 | Yes | No | Via gemini_local | Ultra-cheap; simple tasks |
 | ~~Gemini 2.0 Flash~~ | — | — | — | — | — | — | **DEPRECATED — shutting down June 1, 2026. Do not use.** |
+
+---
+
+### Google — Gemma (open-weights, local via Ollama)
+
+| Model | Context | Input /M | Output /M | Vision | Reasoning | OpenAI-compat | Notes |
+|-------|---------|---------|---------|--------|-----------|---------------|-------|
+| gemma4:12b (local) | 256K | FREE | FREE | Yes | No | Via ollama_local | **New — released 2026-06-03.** Multimodal (text/image/audio); ~8GB VRAM at Q4_K_M; tool calling; Apache 2.0. Faster/lighter than 26b. |
+| gemma4:26b (local) | 256K | FREE | FREE | Yes | No | Via ollama_local | Stronger local Gemma (MoE); ~17GB VRAM. Doc/Freud LOCAL-ONLY model. Emergency fallback for everyone else is gemma4:12b. |
+
+> Both run free on the RTX 4090 via the `ollama_local` adapter — private, on-device, always available. Prompt rules: see [MODEL-PROMPTING-GUIDELINES.md § Google — Gemma 4](./MODEL-PROMPTING-GUIDELINES.md). Gemma has **no system role** and enforces JSON via Ollama's `format` schema param (not Gemini's `response_schema`).
 
 ---
 
@@ -114,9 +125,9 @@
 | Qwen-Plus | 1M | $0.26 | $0.78 | No | No | Yes | 1M context; excellent value |
 | Qwen2.5 72B | 128K | $0.23 | $0.23 | No | No | Yes | ~1/10th GPT-4o cost; solid all-rounder |
 | Qwen-Turbo | 128K | $0.05 | $0.15 | No | No | Yes | Ultra-cheap; basic tasks |
-| Qwen2.5 (local via Ollama) | 128K | FREE | FREE | No | No | Yes | Run on RTX 4090; private |
+| qwen3.8:27b (local via Ollama) | 256K | FREE | FREE | Yes | Yes | Yes | Coding/agent local model on the RTX 4090. Replaces Qwen2.5 and Qwen3 32B. |
 
-> Qwen2.5-7B and 14B available locally via Ollama — free, private, runs on RTX 4090.
+> `qwen3.8:27b` is the local Qwen on this machine — free, private, about 18 GB. Run it on its own.
 
 ---
 
@@ -270,7 +281,7 @@ The `https://chatgpt.com/codex/settings/usage` page requires ChatGPT OAuth login
 | T7 Creative / video | Claude Sonnet (free) | Claude Opus (free) |
 | T8 Contrarian / debate | Grok-3-Mini ($0.30) | Grok-4 ($3) |
 | T9 Web / X research | Grok-4.1 ($0.20 + search) | Grok-4 ($3 + search) |
-| T10 Local / private | gemma4:26b (free, local) | gemma4:26b only |
+| T10 Local / private | gemma4:12b (free, local) | gemma4:26b (Doc/Freud) |
 
 ---
 

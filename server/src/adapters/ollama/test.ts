@@ -35,7 +35,7 @@ export async function testEnvironment(
   const checks: AdapterEnvironmentCheck[] = [];
   const config = parseObject(ctx.config);
   const baseUrl = asString(config.url, "http://localhost:11434");
-  const model = asString(config.model, "qwen2.5:32b");
+  const model = asString(config.model, "gemma4:12b");
   const apiKey = asString(config.apiKey ?? (config as Record<string, unknown>).apiKey, "").trim();
 
   // 1. Validate base URL

@@ -27,7 +27,7 @@ The primary technical systems in scope:
 
 ## Note on Codex Model
 
-This position uses gpt-5.3-codex when available (weekly quota finite). Falls back to MiniMax-M2.7 → gemma4:26b when quota is exhausted. Technical analysis quality should remain consistent regardless of underlying model.
+This position uses gpt-5.3-codex when available (weekly quota finite). Falls back to MiniMax-M2.7 → gemma4:12b when quota is exhausted. Technical analysis quality should remain consistent regardless of underlying model.
 
 ## Personality
 

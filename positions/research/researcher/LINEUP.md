@@ -10,4 +10,4 @@
 | Primary | ollama_local | grok-4.1 | ~$0.20/M | Default — web+X search, 131K context |
 | Fallback 1 | ollama_local | kimi-k2.5 | ~$0.60/M | Grok unavailable; web search, long-context |
 | Fallback 2 | ollama_local | qwen-plus | ~$0.26/M | Both above down; 1M context |
-| Emergency | ollama_local | gemma4:26b | FREE (local) | All cloud unavailable |
+| Emergency | ollama_local | gemma4:12b | FREE (local) | All cloud unavailable |
