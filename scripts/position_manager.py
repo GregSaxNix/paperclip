@@ -114,6 +114,7 @@ POSITION_MAP = {
     "CouncilEU":       ("council/eu",                 "Council EU",     "c02e9e21-2fc8-4cfb-998a-59cc1a1ce3b0"),
     "CouncilCH":       ("council/ch",                 "Council CH",     "bdb5860d-8bc6-46e1-b808-2307afd14b1c"),
     "CouncilTech":     ("council/tech",               "Council Tech",   "614bf0a2-5576-49c7-b993-525ffdb83698"),
+    "CyberSecurity":   ("technology/cyber-security",  "Sentry",         "a138bf13-e993-4037-a588-8b6a0248f978"),
 }
 
 # Local-only positions (hard privacy constraint -- never sub to cloud)
@@ -576,6 +577,16 @@ def _slot_chip(slot_dict: dict, is_active: bool) -> str:
     )
 
 
+def _fmt_reset(text: str) -> str:
+    """Format reset text: capital R, day abbreviations in ALL CAPS.
+    e.g. 'resets sat 9:00 am' → 'Resets SAT 9:00 am'"""
+    if not text:
+        return text
+    text = text[0].upper() + text[1:]
+    text = re.sub(r'\b(Mon|Tue|Wed|Thu|Fri|Sat|Sun)\b', lambda m: m.group(0).upper(), text, flags=re.IGNORECASE)
+    return text
+
+
 def _usage_banner() -> str:
     """Read claude-usage.json and render a usage banner if available."""
     usage_file = Path(__file__).parent.parent / "claude-usage.json"
@@ -597,7 +608,7 @@ def _usage_banner() -> str:
     labels = {"session": "Session (5hr window)", "all_models": "All Models (weekly)", "sonnet": "Sonnet (weekly)"}
     for key, info in meters.items():
         pct = info.get("pct", 0)
-        reset = info.get("reset_text", "")
+        reset = _fmt_reset(info.get("reset_text", ""))
         col = colours.get(key, "#94a3b8")
         warn_col = "#f59e0b" if pct >= 70 else col
         limit_col = "#ef4444" if pct >= 90 else warn_col
@@ -693,7 +704,7 @@ def generate_dashboard(state):
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <meta http-equiv="refresh" content="60">
+  <meta http-equiv="refresh" content="43200">
   <title>Life Admin &mdash; Agent Matrix</title>
   <style>
     * {{ box-sizing: border-box; }}
@@ -718,7 +729,7 @@ def generate_dashboard(state):
 </head>
 <body>
   <h1>Life Admin &mdash; Agent Matrix</h1>
-  <p class="subtitle">Updated: {last_updated_str} &nbsp;&bull;&nbsp; Auto-refreshes every 60s &nbsp;&bull;&nbsp;
+  <p class="subtitle">Updated: {last_updated_str} &nbsp;&bull;&nbsp; Auto-refreshes every 12 hours &nbsp;&bull;&nbsp;
     <a href="javascript:location.reload()">Refresh now</a> &nbsp;&bull;&nbsp;
     <a href="ops-hub.html">Ops Hub</a>
   </p>

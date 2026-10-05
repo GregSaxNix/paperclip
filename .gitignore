@@ -78,3 +78,7 @@ logs/
 
 # Misplaced / stray files
 youtube-brain.db
+
+# Rotation-temp secrets (never commit)
+.secrets/
+

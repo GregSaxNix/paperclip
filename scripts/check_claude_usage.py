@@ -200,11 +200,18 @@ def parse_usage_html(html: str) -> dict:
                 break
 
         # Extract reset text ("Resets in X hr", "Resets Sat 9:00 AM", etc.)
-        reset_match = re.search(
-            r'resets?\s+(in\s+[\w\s:]+|[A-Z][a-z]+\s+[\d:]+\s*[AP]M|[A-Z][a-z]+)',
-            ctx_text[-200:], re.IGNORECASE
+        # Use findall + take the LAST match — closest to the current bar, avoids
+        # picking up the previous meter's reset text from the shared context window.
+        # Tighten the "in" branch to only match digits + time unit (not arbitrary words).
+        reset_pattern = re.compile(
+            r'resets?\s+(?:'
+            r'in\s+\d+\s*(?:hr|hour|min|minute|sec|second)s?(?:\s+\d+\s*(?:hr|hour|min|minute|sec|second)s?)?'
+            r'|[A-Za-z]{2,9}\s+\d{1,2}:\d{2}\s*[AP]M'
+            r')',
+            re.IGNORECASE
         )
-        reset_text = reset_match.group(0).strip() if reset_match else None
+        reset_matches = reset_pattern.findall(ctx_text[-400:])
+        reset_text = reset_matches[-1].strip() if reset_matches else None
 
         result["meters"][label] = {
             "pct": pct,
