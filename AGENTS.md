@@ -138,7 +138,11 @@ When adding endpoints:
 - Use company selection context for company-scoped pages
 - Surface failures clearly; do not silently ignore API errors
 
-## 10. Definition of Done
+## 10. Local model changes
+
+Changing an installed Ollama model, or a pin that calls one, is not done until the docs and dashboards that name that tag match what is installed. Follow `.cursor/rules/local-model-updates.mdc`. That includes this repo's lineup files and the other D: projects that pin the same model. Name `gemma4:12b` or `gemma4:26b` explicitly. Bare `gemma4` is the small E4B.
+
+## 11. Definition of Done
 
 A change is done when all are true:
 

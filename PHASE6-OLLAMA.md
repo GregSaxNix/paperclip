@@ -1,6 +1,6 @@
 # Phase 6: Ollama/4090 Private Agent for Life Admin
 
-Current local default (2026-09-29): `gemma4:12b`. Doc and Freud stay on `gemma4:26b`. The pull commands later in this note are the original phase instructions.
+Current local default (2026-09-29): `gemma4:12b`. Doc and Freud stay on `gemma4:26b`. Do not pull `llama3.1` or `deepseek-coder-v2`; those weights were removed from this machine.
 
 Paste everything below this line into the Paperclip Cursor session.
 
@@ -28,18 +28,16 @@ Set up Ollama running on Greg's NVIDIA 4090 GPU, create an HTTP webhook adapter 
 - Verify it starts and the API is accessible at `http://localhost:11434`
 
 ### 2. Pull a Suitable Model
-- For a 4090 (24GB VRAM), good options:
-  - `ollama pull llama3.1:70b-instruct-q4_K_M` (if VRAM allows — test first)
-  - `ollama pull llama3.1:8b-instruct` (safe choice, fast, fits easily)
-  - `ollama pull deepseek-coder-v2:16b` (good for coding tasks)
-  - `ollama pull mistral:7b-instruct` (general purpose, very fast)
-- Start with `llama3.1:8b-instruct` for testing, upgrade later if needed
-- Verify with: `ollama run llama3.1:8b-instruct "Hello, are you working?"`
+- For this 4090 (24GB VRAM), use the models already chosen for the machine:
+  - `ollama pull gemma4:12b` — daily local model and emergency slot (~8 GB)
+  - `ollama pull gemma4:26b` — Doc and Freud only (~18 GB; run one large model at a time)
+- Do not pull `llama3.1:8b`, `llama3.1:70b`, `deepseek-coder-v2:16b`, or bare `gemma4` (that tag is the small E4B, not the 12B).
+- Verify with: `ollama run gemma4:12b "Hello, are you working?"`
 
 ### 3. Create HTTP Webhook Adapter in Paperclip
 - Configure an adapter that sends requests to Ollama's OpenAI-compatible API:
   - Endpoint: `http://localhost:11434/v1/chat/completions`
-  - Model: whatever was pulled in step 2
+  - Model: `gemma4:26b` for the health agent; `gemma4:12b` for general local fallback
   - No API key needed (local)
 - Check Paperclip's adapter documentation for how HTTP/webhook adapters are configured
 
@@ -70,11 +68,11 @@ Set up Ollama running on Greg's NVIDIA 4090 GPU, create an HTTP webhook adapter 
 
 ## Important Notes
 
-- The 4090 has 24GB VRAM — more than enough for 8B-13B parameter models, possibly 70B quantised
+- The 4090 has 24GB VRAM. `gemma4:12b` fits beside another modest model. `gemma4:26b` and `qwen3.8:27b` should run one at a time.
 - Ollama runs as a background service — it doesn't interfere with Paperclip
 - Greg accesses everything through the same Paperclip dashboard — no separate UI needed
 - If Ollama isn't working or the model is too slow, fall back to Skippy (Claude) for non-health tasks and flag health tasks as "pending local agent"
 
 ## What to Do First
 
-Check if Ollama is installed, install it if not, pull a model, test it works, then configure the Paperclip adapter and agent. Ask Greg for the agent name preference before creating it.
+Check if Ollama is installed, install it if not, pull `gemma4:12b`, test it works, then configure the Paperclip adapter and agent. Ask Greg for the agent name preference before creating it.

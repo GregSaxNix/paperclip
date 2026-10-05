@@ -1,0 +1,27 @@
+---
+description: When a local Ollama model changes, update every pin, doc, and dashboard that names it
+alwaysApply: true
+---
+
+# Keep local model references current
+
+A local model change is not done until every place that names the old or new tag matches what is installed. Do this in the same change as the pin or `ollama pull` / `ollama rm`.
+
+## In this repo
+
+- `LLM-MATRIX.md`, `LLM-PLAYBOOK.md`, `MODEL-RESEARCH.md`, `PHASE6-OLLAMA.md`, and `MODEL-PROMPTING-GUIDELINES.md` when that model has a prompting section
+- Position `LINEUP.md` / `PD.md` / `SOUL.md`, `positions/POSITIONS.md`, and `positions/positions.json`
+- `scripts/lineup_dashboard.html` (emergency chips and Council Local) and `scripts/llm-matrix.html` (current-model cells and the emergency sentence)
+- `server/src/adapters/ollama` defaults and `ui/src/adapters/ollama-local` placeholder
+
+## Other projects on D: that pin local models
+
+Update their pins and the docs that repeat the tag: youtube-brain, second-brain, assistant-os, TravelPlanner, carecost-app, TalentMap, Tech-Stocks, Music-Generator.
+
+## Do not
+
+- Leave a plan, research note, comment, or pull command pointing at a tag that is not installed.
+- Write bare `gemma4`. That tag is the small E4B. Use `gemma4:12b` or `gemma4:26b`.
+- Move Doc and Freud off `gemma4:26b` unless that policy is explicitly changed.
+- Retarget TalentMap `tools/glm_duty_generator.py` (`glm4.5-air` is an uninstalled A/B pin).
+- Remove or retag `nomic-embed-text` unless embeddings are being reindexed.

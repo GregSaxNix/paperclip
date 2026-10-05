@@ -11,6 +11,8 @@
 > - [MODEL-PROMPTING-GUIDELINES.md](./MODEL-PROMPTING-GUIDELINES.md) — per-model prompt-engineering rules (URL, JSON mechanism, delimiters, temperature, worked example, anti-patterns).
 >
 > Both companions are refreshed in the same weekly Researcher run.
+>
+> **When a local model is added, removed, or retagged:** update this file, the companions, the position lineups, `scripts/lineup_dashboard.html`, `scripts/llm-matrix.html`, and every other D: project that pins the tag, in the same change. See `.cursor/rules/local-model-updates.mdc`.
 
 ---
 

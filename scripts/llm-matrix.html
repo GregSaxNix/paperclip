@@ -398,9 +398,9 @@
         </tr>
         <tr>
           <td><strong>Council Local</strong> <span class="badge local">LOCAL ONLY</span></td>
-          <td><code style="font-size:0.8em">gemma4:26b</code></td>
-          <td><span class="slot-chip" title="Gemma 4 26B - score 6.60" style="background:#fef9c3;color:#78350f;font-weight:700">#1 Gemma4:26b</span></td>
-          <td><span class="badge warn">⚠️ Gemma 4 26B better fit</span></td>
+          <td><code style="font-size:0.8em">gemma4:12b</code></td>
+          <td><span class="slot-chip" title="Gemma 4 12B - appointed 2026-06-07 for VRAM headroom" style="background:#fef9c3;color:#78350f;font-weight:700">#1 Gemma4:12b</span></td>
+          <td><span class="badge ok">✅ gemma4:12b (26b stays on Doc/Freud)</span></td>
         </tr>
         <tr>
           <td><strong>Council EU</strong></td>
@@ -631,7 +631,7 @@
   <div id="tab-hiring" class="tab-panel">
     <div class="hire-bar">
       <span>Last hiring round: <strong>run <code>python update_llm_matrix.py --hire</code> to see full report</strong></span>
-      <span style="margin-left:auto;color:#94a3b8;font-size:0.8em">Emergency slot is always gemma4:26b (availability guarantee, not merit)</span>
+      <span style="margin-left:auto;color:#94a3b8;font-size:0.8em">Emergency slot is always gemma4:12b (Doc/Freud stay on gemma4:26b)</span>
     </div>
 
     <div class="card">
@@ -797,12 +797,12 @@
         </tr>
         <tr>
           <td><strong>Council Local</strong></td>
-          <td><code style="font-size:0.8em">gemma4:26b</code></td>
-          <td><strong>Gemma 4 26B</strong><br><span style="font-size:0.75em;color:#64748b">6.60 · FREE (local GPU)</span></td>
+          <td><code style="font-size:0.8em">gemma4:12b</code></td>
+          <td><strong>Gemma 4 12B</strong><br><span style="font-size:0.75em;color:#64748b">FREE (local GPU)</span></td>
           <td>—</td>
           <td>—</td>
           <td><span class="badge local">local</span></td>
-          <td><span class="badge warn">⚠️ Change available</span></td>
+          <td><span class="badge ok">✅ gemma4:12b</span></td>
         </tr>
         <tr>
           <td><strong>Council EU</strong></td>
@@ -850,7 +850,7 @@
         Each position has a <strong>task weight profile</strong> in <code>llm-matrix-data.json</code> (e.g. CEO = 30% reasoning, 25% research, 20% writing...).
         The algorithm scores every model by computing <em>sum(task_score × weight)</em> across all task dimensions.
         The highest-scoring model becomes the recommended Primary; next two become Fallback 1 and Fallback 2.
-        Emergency is always <strong>gemma4:26b</strong> — it is the always-available local fallback regardless of score.
+        Emergency is always <strong>gemma4:12b</strong> — it is the always-available local fallback regardless of score. Doc and Freud stay on gemma4:26b.
         <br><br>
         Local-only positions (Doc, Freud, Council Local) only consider models where <code>local_only: true</code>.
         If a better model is released or pricing drops significantly, re-run <code>--hire</code> to see if lineup changes are warranted.
