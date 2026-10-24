@@ -15,17 +15,20 @@ _Your reference for everything. Greg, if you can't remember how something works,
 | View monitor log | `python scripts\auto_monitor.py --log` |
 | Sub agent to fallback | `python scripts\position_manager.py sub CEO fallback1` |
 | Restore agent to primary | `python scripts\position_manager.py restore CEO` |
-| Access Paperclip remotely | Open `https://greg-shinedesktop.tail4ef50.ts.net` on any device |
+| Access Paperclip remotely | Open `https://greg-shinedesktop.tail4ef50.ts.net` on any device signed in to Greg's Tailscale |
 
 ---
 
 ## Accessing Paperclip from Your Laptop (while away)
 
-Tailscale Funnel is already set up. Nothing to install on the laptop.
+Tailscale **Serve** shares Paperclip with Greg's own Tailscale devices only (changed from public Funnel on 24 October 2026 on Greg's word: Paperclip runs in `local_trusted` mode with no login, so it must never be on the public internet). The laptop needs Tailscale running and signed in to Greg's account.
 
-1. Make sure the desktop is on and not asleep
+1. Make sure the desktop is on and not asleep, and Tailscale is connected on the laptop
 2. On your laptop browser, go to: **https://greg-shinedesktop.tail4ef50.ts.net**
-3. Full Paperclip UI — works anywhere in the world
+3. Full Paperclip UI, from anywhere, on your Tailscale devices only
+4. If the page says "Blocked request. This host is not allowed", the Vite dev server's `server.allowedHosts` needs `greg-shinedesktop.tail4ef50.ts.net` added (seen 24 October 2026)
+
+Never turn Funnel back on for this port (`tailscale funnel status` should list nothing public).
 
 **If the server isn't running** (Paperclip won't load):
 - You need RDP to restart it (see Remote Desktop section below)
