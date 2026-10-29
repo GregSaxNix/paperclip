@@ -257,7 +257,7 @@ Two options: Python script (more features) or web-based HTML (zero-install, work
 
 Greg wants this as primary input method long-term.
 
-Prior Work: Greg has a working WhisperTranscribe project at D:\WhisperTranscribe — a Flask web UI + worker scripts for local Whisper transcription. Includes Flask server (web_app.py), chunk worker (chunk_worker.py), standalone CLI transcription (transcribe_app.py), auto-start scripts. Uses Python 3.10+ and ffmpeg. This existing work may be useful as a foundation or reference.
+Prior Work: Greg has a working Shine Transcribe project (formerly WhisperTranscribe) at D:\ShineTranscribe — a Flask web UI + worker scripts for local Whisper transcription. Includes Flask server (web_app.py), chunk worker (chunk_worker.py), standalone CLI transcription (transcribe_app.py), auto-start scripts. Uses Python 3.10+ and ffmpeg. This existing work may be useful as a foundation or reference.
 
 **NOTE:** Greg is currently using Windows Win+H for voice input which partially solves this. The faster-whisper skill is installed. Claude Code CLI also has /voice command in the terminal. This issue is about a more integrated push-to-talk solution — assess whether the existing options are sufficient or if a custom build is still needed.
 

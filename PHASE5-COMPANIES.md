@@ -19,7 +19,7 @@ The migration phases 0-4 are done. Now we need to set up the two-company structu
 - Website (check `D:\` and `D:\VS Code Projects\` for exact path)
 - Waybook clone (check `D:\` and `D:\VS Code Projects\`)
 - MS 365 clone (not started yet — only desktop chat history exists, no repo)
-- Whisper Transcribe (check `D:\` and `D:\VS Code Projects\`)
+- Shine Transcribe, formerly Whisper Transcribe (`D:\ShineTranscribe`)
 - VoiceClone (check `D:\` and `D:\VS Code Projects\`)
 - Digital Twin (check `D:\` and `D:\VS Code Projects\`)
 - Client Recruitment (general recruitment work)
