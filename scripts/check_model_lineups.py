@@ -30,8 +30,9 @@ import urllib.request
 from datetime import datetime, timezone
 from pathlib import Path
 
-# Force UTF-8 output on Windows
-if sys.stdout.encoding != "utf-8":
+# Force UTF-8 output on Windows. Under pythonw.exe (the scheduled task) there is
+# no console, so sys.stdout is None and print() is a no-op.
+if sys.stdout is not None and sys.stdout.encoding != "utf-8":
     sys.stdout.reconfigure(encoding="utf-8", errors="replace")
 
 SCRIPTS_DIR = Path(__file__).parent
