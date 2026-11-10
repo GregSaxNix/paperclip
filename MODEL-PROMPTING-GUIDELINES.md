@@ -16,162 +16,271 @@
 
 | Provider | Model versions | Section | Status |
 |----------|----------------|---------|--------|
-| Anthropic | Claude Opus 4.6, Sonnet 4.6, Haiku 4.5 | [§ Anthropic Claude](#anthropic--claude-opus-46--sonnet-46--haiku-45) | Filled 2026-05-18 |
-| Google | Gemini 3.5 Flash, 3.1 Flash-Lite, 3.1 Pro (preview) | [§ Google Gemini 3.x](#google--gemini-35-flash--31-flash-lite--31-pro-preview) | Filled 2026-05-20 |
-| Google | Gemini 2.5 Pro, Flash, Flash-Lite | [§ Google Gemini 2.5](#google--gemini-25-pro--flash--flash-lite) | Filled 2026-05-18 |
+| Anthropic | Claude Opus 5.5, Sonnet 5.5, Haiku 5.5, Fable 5.2 (legacy notes for 4.6 / 4.5) | [§ Anthropic Claude](#anthropic--claude-opus-55--sonnet-55--haiku-55--fable-52) | Filled 2026-11-10 |
+| Google | Gemini 4 Argon, 3.8 Flash, 3.6 Flash, 3.5 Flash-Lite | [§ Google Gemini 4 / 3.8 / 3.6](#google--gemini-4-argon--38-flash--36-flash--35-flash-lite) | Filled 2026-11-10 |
+| Google | Gemini 3.5 Flash (now routes to 3.6), 3.1 Flash-Lite, 3.1 Pro (preview) | [§ Google Gemini 3.x](#google--gemini-35-flash--31-flash-lite--31-pro-preview) | Filled 2026-05-20; status note 2026-11-10 |
+| Google | Gemini 2.5 Pro, Flash, Flash-Lite (deprecated / legacy) | [§ Google Gemini 2.5](#google--gemini-25-pro--flash--flash-lite) | Filled 2026-05-18; status note 2026-11-10 |
 | Google | Gemma 4 12B / 26B (local via Ollama) | [§ Google Gemma 4](#google--gemma-4-12b--26b-local-via-ollama) | Filled 2026-06-07 |
-| DeepSeek | V3.2, V4, R1 | [§ DeepSeek](#deepseek--v32--v4--r1) | Filled 2026-05-18 |
-| Moonshot | Kimi K2.5 | [§ Kimi K2.5](#moonshot--kimi-k25) | Filled 2026-05-18 |
-| xAI | Grok-4, Grok-4.1, Grok-3, Grok-Code-Fast-1 | [§ xAI Grok](#xai--grok-4--grok-41--grok-3) | Filled 2026-05-18 |
-| OpenAI | GPT-5.3 Codex, GPT-4o, o3/o4-mini | [§ OpenAI](#openai--gpt-53-codex--gpt-4o--o-series) | Filled 2026-06-13 (Codex focus) |
-| Mistral | Large 3, Small 4, Codestral, Magistral 1.2 | [§ Mistral](#mistral--large-3--small-4--codestral) | Stub — pending weekly agent |
-| Alibaba | Qwen 2.5-Max, Qwen-Plus, Qwen-Turbo | [§ Qwen](#alibaba--qwen-25-max--qwen-plus--qwen-turbo) | Stub — pending weekly agent |
-| Zhipu AI | GLM-5, GLM-4.7, GLM-4.7-Flash | [§ GLM](#zhipu-ai--glm-5--glm-47--glm-47-flash) | Stub — pending weekly agent |
-| MiniMax | MiniMax-M2.7 | [§ MiniMax](#minimax--m27) | Stub — pending weekly agent |
-
+| DeepSeek | V4.1 Flash (`deepseek-flash`), V4 Pro | [§ DeepSeek](#deepseek--v41-flash--v4-pro) | Filled 2026-11-10 |
+| Moonshot | Kimi K3.1 Pro, K3 (K2 series retiring) | [§ Kimi](#moonshot--kimi-k31-pro--k3) | Filled 2026-11-10 |
+| xAI | Grok 4.7, 4.6, 4.5, 4.3, Build 0.1 | [§ xAI Grok](#xai--grok-47--46--45--43--build-01) | Filled 2026-11-10 |
+| OpenAI | GPT-6 Astra, 6.1 Sol, 6.1 Terra, 6 Luna (API and Codex) | [§ OpenAI](#openai--gpt-6-astra--61-sol--61-terra--6-luna-api-and-codex) | Filled 2026-11-10 |
+| Mistral | Large 4, Small 4, Ministral 3, Codestral | [§ Mistral](#mistral--large-4--small-4--ministral-3--codestral) | Filled 2026-11-10 |
+| Alibaba | Qwen3.8-Max, Qwen3.7-Plus, Qwen3.8-Flash | [§ Qwen](#alibaba--qwen38-max--qwen37-plus--qwen38-flash) | Filled 2026-11-10 |
+| Zhipu AI | GLM-5.3, GLM-5.3-Flash, GLM-4.7 | [§ GLM](#zhipu-ai--glm-53--glm-53-flash--glm-47) | Filled 2026-11-10 |
+| MiniMax | MiniMax-M3.1-Flash, M3 | [§ MiniMax](#minimax--m31-flash--m3) | Filled 2026-11-10 |
 ---
 
-## Anthropic — Claude Opus 4.6 / Sonnet 4.6 / Haiku 4.5
+## Anthropic — Claude Opus 5.5 / Sonnet 5.5 / Haiku 5.5 / Fable 5.2
 
-**Provider docs URL:** https://docs.anthropic.com/en/docs/build-with-claude/prompt-engineering
-**Date captured:** 2026-05-18
-**Applies to model IDs:** `claude-opus-4-6`, `claude-sonnet-4-6`, `claude-haiku-4-5`
+**Provider docs URL:** https://platform.claude.com/docs/en/build-with-claude/prompt-engineering/claude-prompting-best-practices + https://platform.claude.com/docs/en/build-with-claude/structured-outputs + https://platform.claude.com/docs/en/build-with-claude/effort
+**Date captured:** 2026-11-10
+**Applies to model IDs:** `claude-opus-5-5`, `claude-sonnet-5-5`, `claude-haiku-5-5`, `claude-fable-5-2`. Legacy notes cover `claude-opus-4-6`, `claude-sonnet-4-6` and `claude-haiku-4-5-20251001`.
+
+Each current model also has its own prompting page, which lists where it differs from the general guide: [Opus 5.5](https://platform.claude.com/docs/en/build-with-claude/prompt-engineering/prompting-claude-opus-5-5), [Sonnet 5.5](https://platform.claude.com/docs/en/build-with-claude/prompt-engineering/prompting-claude-sonnet-5-5), [Haiku 5.5](https://platform.claude.com/docs/en/build-with-claude/prompt-engineering/prompting-claude-haiku-5-5), [Fable 5.2](https://platform.claude.com/docs/en/build-with-claude/prompt-engineering/prompting-claude-fable-5-2). Read the one for your model first.
+
+**What changed since the 18 May 2026 capture:** prefill is gone (400 error from Claude 4.6 onwards), `temperature`, `top_p` and `top_k` were removed in API version `2026-10-21`, `budget_tokens` thinking returns a 400 error from Claude 4.7 onwards, and JSON now has a GA structured-outputs parameter. The old advice to set `temperature=0` and to prefill `{` no longer works.
 
 ### 1. Prompt structure recommendations
 
-Anthropic explicitly prefers a layered prompt with strong delimiting. Recommended order:
+1. **System prompt:** the role. Anthropic: "Setting a role in the system prompt focuses Claude's behavior and tone for your use case. Even a single sentence makes a difference."
+2. **Long data first.** For inputs of 20K+ tokens, put documents "near the top of your prompt, above your query, instructions, and examples". Anthropic reports "Queries at the end can improve response quality by up to 30 percent in tests". Wrap each document in `<document>` with `<source>` and `<document_content>` subtags inside `<documents>`.
+3. **`<instructions>`:** numbered steps when order or completeness matters. Explain why a rule exists; "Claude can generalize from the explanation."
+4. **`<examples>`:** "Include 3–5 examples for best results", each in its own `<example>` tag, relevant and varied.
+5. **`<input>`:** the item to process.
+6. **The ask, last.**
 
-1. **System message** — role, persona, high-level rules (`"You are an HR document classifier..."`). Goes in the SDK's `system` parameter, NOT in the first user message.
-2. **User message** opens with **task description** in plain language.
-3. **`<context>...</context>`** — any reference data the model needs (long docs, schema definitions, examples of prior decisions).
-4. **`<instructions>...</instructions>`** — numbered list of what to do.
-5. **`<examples>...</examples>`** — 2–5 worked examples (multishot). For Opus 4.6, even 2 examples lifts extraction accuracy materially.
-6. **`<input>...</input>`** — the actual data being processed (the document to classify, the text to summarise).
-7. **`<output_format>...</output_format>`** — exact schema, with field names and types.
-8. **Closing call to action** — "Now produce the classification."
-
-Putting the *question* AFTER the *data* matters less for Claude than for Gemini, but putting data inside XML tags matters more.
+Other current rules:
+- "Tell Claude what to do instead of what not to do."
+- Set the system prompt once per conversation. On the 5.5 models and Fable 5.2, editing earlier messages or rebuilding `system` or `tools` between requests invalidates later thinking blocks, and resending them can return a 400 error. Put new instructions in the newest turn or a mid-conversation system message, and keep history append-only.
+- Opus 5.5: mark text the user pasted from elsewhere with `<pasted_content id="...">` tags plus the system-prompt note Anthropic gives on the Opus 5.5 page, so instructions inside pasted text are not followed.
+- Give a search-enabled model today's date ("The current date is {{current_date}}.").
 
 ### 2. JSON output mechanism
 
-**Two options, preferred order:**
+1. **Structured outputs (preferred):** `output_config.format` with `type: "json_schema"`. GA, no beta header. Supported on all current models, Opus 4.5 to 4.8, Sonnet 4.5 and 4.6, and Haiku 4.5. The old `output_format` parameter is deprecated and needs the `structured-outputs-2025-11-13` beta header.
+   - Not supported (400 error): numeric constraints (`minimum`, `maximum`), string length constraints, recursive schemas, and `additionalProperties` other than `false`. Use `enum` for bounded values.
+   - Check `stop_reason`: `"max_tokens"` can give truncated JSON and `"refusal"` can give non-matching output. Treat both as failures and retry.
+   - Enum values may differ only in letter case, so compare case-insensitively.
+   - The first request with a new schema is slower (compiled grammars are cached for 24 hours). Changing the schema invalidates the prompt cache.
+2. **A tool with an enum field:** Anthropic's prefill migration note says "For classification tasks, use either tools with an enum field containing your valid labels or structured outputs." Add `strict: true` on the tool to validate its inputs.
+3. **No prefill.** "Starting with Claude 4.6 models ... prefilled responses ... on the last assistant turn are no longer supported. Requests with prefilled assistant messages to these models return a 400 error."
 
-1. **Tool use with `input_schema`** (best for strict JSON). Define a tool with a JSON Schema; pass `tool_choice: {type: "tool", name: "classify"}`. Claude is forced to call the tool and the tool args ARE your structured output. Zero parsing errors.
-
-   ```python
-   tools=[{
-       "name": "classify_clause",
-       "description": "Return the structured classification.",
-       "input_schema": {
-           "type": "object",
-           "properties": {
-               "clause_type": {"type": "string", "enum": ["indemnification", "termination", ...]},
-               "risk_score": {"type": "integer", "minimum": 1, "maximum": 5}
-           },
-           "required": ["clause_type", "risk_score"]
-       }
-   }]
-   tool_choice={"type": "tool", "name": "classify_clause"}
-   ```
-
-2. **Response prefill** (lighter weight). Add an `assistant` message ending with `{` and stop sequences `["}"]` — Claude continues from `{`, producing JSON. Use when you don't need schema enforcement.
-
-**Avoid:** Asking Claude in prose to "respond in JSON only with no markdown" — works but ~95% reliable. Tool use is 100%.
+Model quirks:
+- **Haiku 5.5, thinking off, plus JSON output:** it may skip a tool call it needs. Keep adaptive thinking, remove `output_config.format` when a tool must be called, or force the call with `tool_choice`.
+- **Sonnet 5.5, JSON answers that need working out (totals, rules, ranking):** with adaptive thinking, end the system prompt with "Think the problem through before you answer." Do not use `between_tools` for these requests.
 
 ### 3. Delimiter preferences
 
-**XML tags are strongly preferred** over markdown headers or plain text. Anthropic's docs say: "Claude has been specifically trained to pay attention to XML tags." Tag names are flexible — `<doc>`, `<source>`, `<example>` all work; consistency within a prompt matters more than the specific tag name.
-
-Markdown headers work for short prompts but degrade for prompts >2k tokens.
+**XML tags.** "Wrapping each type of content in its own tag (for example, `<instructions>`, `<context>`, `<input>`) reduces misinterpretation." Use consistent, descriptive names and nest when content has a hierarchy.
 
 ### 4. Classification task framing
 
-Frame classification as **multiple-choice with enumerated candidates**, surfaced in two places:
-- In `<instructions>`: "Choose exactly one value from the candidate set below."
-- In `<output_format>` or the tool's `input_schema`: `enum: [...]`.
-
-For risk-scoring (graded labels), provide an **anchor description per level** ("1 = boilerplate, low impact; 5 = catastrophic, mandatory escalation"). Claude calibrates much better with anchors than with a bare 1-5 scale.
-
-For multi-label tasks, ask for an array AND explicitly state "include all that apply" — Claude defaults to picking one even on multi-label tasks otherwise.
+- Put the allowed labels in a schema `enum` (structured outputs) or a strict tool's enum. Anthropic positions Haiku 5.5 "For high-volume, latency-sensitive tasks such as classification, extraction, and routing."
+- Describe each label and each score level in the system prompt. (Anchor descriptions per level carried over from the May 2026 capture; not re-verified this pass.)
+- For multi-label tasks, use an array of enum values and say "include all that apply" (carried over from the May 2026 capture).
 
 ### 5. Temperature default & quirks
 
-- **Default for structured extraction:** `temperature=0`.
-- **Default for creative writing:** `temperature=1.0`.
-- **Extended thinking** (Opus 4.6, Sonnet 4.6 only — NOT Haiku): set `thinking={"type": "enabled", "budget_tokens": 10000}`. When thinking is enabled, **temperature MUST be 1.0** (the API rejects other values). Thinking shows real CoT in `thinking` content blocks — log them, don't reply with them.
-- **Caching:** add `cache_control: {type: "ephemeral"}` to long static blocks (system message, examples). 5-min TTL by default; 90% cost reduction on cache hits. Always cache the system message and any examples block longer than ~1k tokens.
+- **No sampling parameters.** `temperature`, `top_p` and `top_k` were removed in API version `2026-10-21` and return a 400 error. Earlier API versions return a 400 when they are set to non-default values on Claude 4.7 and later. Steer with the prompt and with effort.
+- **Effort is the main control:** `output_config.effort` with `low`, `medium`, `high`, `xhigh` or `max`. Defaults: Fable 5.2 `high`, Opus 5.5 `medium`, Sonnet 5.5 `high`, Haiku 5.5 `medium`. Anthropic says lowering effort reduces thinking "more reliably than prompt instructions do".
+- **Thinking is adaptive.** Opus 5.5 and Fable 5.2: always on (`thinking: {type: "disabled"}` returns 400 on Opus 5.5). Sonnet 5.5: the lowest setting is `thinking: {type: "between_tools"}`, accepted at `high` effort or below. Haiku 5.5: can be turned off at `low`, `medium` and `high` only.
+- **`max_tokens` must leave room for thinking**, which counts toward it even when not shown. For agentic coding Anthropic suggests 128,000 with streaming.
+- Changing top-level effort between requests invalidates the prompt cache; a per-message effort change (beta) keeps it.
+- Pass thinking blocks back unchanged in multi-turn and tool use. Read responses by block type; the first block may be `thinking`.
+- **Refusals:** safety classifiers return `stop_reason: "refusal"` with `stop_details.category`. Do not ask the model to write out its reasoning in the reply; that invites `reasoning_extraction` refusals. Use `display: "summarized"` thinking instead.
+- **Caching:** cache hits cost 5% of base input on Opus 5.5 and Sonnet 5.5, 10% on Haiku 5.5.
+- **Legacy:** `budget_tokens` still works on Opus 4.6 and Sonnet 4.6 but is deprecated. Haiku 4.5 predates effort levels.
 
 ### 6. Worked example
 
 ```python
+import json
 import anthropic
 
 client = anthropic.Anthropic()
 
+CLAUSE_TYPES = ["indemnification", "limitation_of_liability", "termination",
+                "confidentiality", "ip_ownership", "payment_terms", "warranty",
+                "data_protection", "non_compete", "force_majeure",
+                "governing_law", "auto_renewal", "other"]
+
 response = client.messages.create(
-    model="claude-haiku-4-5",
-    max_tokens=1024,
-    temperature=0,
+    model="claude-haiku-5-5",
+    max_tokens=4096,                      # thinking counts toward this; leave room
     system=(
-        "You are a contract clause classifier. You categorise clauses by type "
-        "and assess risk on a 1–5 scale where 1 is boilerplate and 5 requires "
-        "escalation to a partner."
+        "You are a contract clause classifier for a legal review team. "
+        "Risk levels: 1 = boilerplate, 2 = mildly unusual, 3 = noteworthy, "
+        "4 = material exposure, 5 = escalate to a partner."
     ),
-    tools=[{
-        "name": "classify_clause",
-        "description": "Return the structured classification of a single clause.",
-        "input_schema": {
-            "type": "object",
-            "properties": {
-                "clause_type": {
-                    "type": "string",
-                    "enum": ["indemnification", "limitation_of_liability", "termination",
-                             "confidentiality", "ip_ownership", "payment_terms",
-                             "warranty", "data_protection", "non_compete",
-                             "force_majeure", "governing_law", "auto_renewal", "other"]
+    output_config={
+        "effort": "low",                  # high-volume classification
+        "format": {
+            "type": "json_schema",
+            "schema": {
+                "type": "object",
+                "properties": {
+                    "clause_type": {"type": "string", "enum": CLAUSE_TYPES},
+                    "risk_score": {"type": "integer", "enum": [1, 2, 3, 4, 5]},
+                    "rationale": {"type": "string"},
                 },
-                "risk_score": {"type": "integer", "minimum": 1, "maximum": 5},
-                "rationale": {"type": "string"}
+                "required": ["clause_type", "risk_score", "rationale"],
+                "additionalProperties": False,
             },
-            "required": ["clause_type", "risk_score", "rationale"]
-        }
-    }],
-    tool_choice={"type": "tool", "name": "classify_clause"},
+        },
+    },
     messages=[{
         "role": "user",
         "content": (
-            "<task>Classify the clause below.</task>\n"
             "<instructions>\n"
             "1. Read the clause inside <input>.\n"
-            "2. Choose exactly one clause_type from the enum.\n"
-            "3. Score risk 1 (boilerplate) – 5 (escalate).\n"
+            "2. Choose exactly one clause_type.\n"
+            "3. Score risk using the levels in your instructions.\n"
             "4. Give a one-sentence rationale.\n"
             "</instructions>\n"
             "<examples>\n"
             "<example><input>Either party may terminate with 30 days notice.</input>"
-            "<output>{\"clause_type\": \"termination\", \"risk_score\": 2,"
-            " \"rationale\": \"Mutual 30-day termination is standard.\"}</output></example>\n"
-            "<example><input>Supplier indemnifies Customer for ALL losses including"
-            " consequential and indirect damages without cap.</input>"
-            "<output>{\"clause_type\": \"indemnification\", \"risk_score\": 5,"
-            " \"rationale\": \"Uncapped indemnity including consequentials requires escalation.\"}</output></example>\n"
+            "<output>{\"clause_type\": \"termination\", \"risk_score\": 2, "
+            "\"rationale\": \"Mutual 30-day termination is standard.\"}</output></example>\n"
+            "<example><input>Supplier indemnifies Customer for ALL losses including "
+            "consequential and indirect damages without cap.</input>"
+            "<output>{\"clause_type\": \"indemnification\", \"risk_score\": 5, "
+            "\"rationale\": \"Uncapped indemnity including consequentials needs escalation.\"}</output></example>\n"
             "</examples>\n"
-            "<input>Customer indemnifies Supplier against any third-party IP claims arising from Customer's modifications to the Software.</input>"
-        )
-    }]
+            "<input>Customer indemnifies Supplier against any third-party IP claims "
+            "arising from Customer's modifications to the Software.</input>\n"
+            "Classify the clause in <input>."
+        ),
+    }],
 )
 
-# response.content[0].input is your structured output dict
+if response.stop_reason in ("max_tokens", "refusal"):
+    raise RuntimeError(f"Classification failed: {response.stop_reason}")
+text = next(block.text for block in response.content if block.type == "text")
+result = json.loads(text)
 ```
 
 ### 7. Known anti-patterns
 
-- **Don't** stuff context into plain prose without XML tags — accuracy drops sharply above ~2k tokens.
-- **Don't** ask for JSON in prose when you can use tool use — schema enforcement is free.
-- **Don't** set `temperature` to anything other than 1.0 when `thinking` is enabled — the API errors.
-- **Don't** send long static blocks (system, examples) without `cache_control` — costs 10× more.
-- **Don't** mix "you are a helpful assistant" with a specialist role in the system prompt — overrides the specialist framing. Be specific OR be general, not both.
-- **Don't** use Haiku 4.5 for extended thinking — Haiku doesn't support it. Use Sonnet/Opus.
+- **Don't** send `temperature`, `top_p` or `top_k`: 400 error on API version `2026-10-21`.
+- **Don't** prefill the assistant turn: 400 error from Claude 4.6 onwards.
+- **Don't** use `thinking.budget_tokens` on Claude 4.7 or later (400), or `thinking: disabled` on Opus 5.5 (400), or `between_tools` at `xhigh`/`max` on Sonnet 5.5 (400).
+- **Don't** size `max_tokens` as if there were no thinking; replies get cut off.
+- **Don't** try to cut thinking with "answer directly" instructions; lower effort instead.
+- **Don't** ask for the reasoning in the reply text; it can trigger `reasoning_extraction` refusals.
+- **Don't** edit earlier turns, or rebuild `system` or `tools`, partway through a conversation.
+- **Don't** put `minimum`/`maximum` or `minLength`/`maxLength` in a structured-outputs schema (400).
+- **Don't** put user text inside a `tool_result` block; the 5.5 models may treat it as a prompt injection.
+- **Don't** leave long documents untagged or after the question.
+
+---
+
+## Google — Gemini 4 Argon / 3.8 Flash / 3.6 Flash / 3.5 Flash-Lite
+
+**Provider docs URL:** https://aistudio.google.com/docs/prompting-strategies + https://aistudio.google.com/docs/structured-output + https://aistudio.google.com/docs/thinking
+**Date captured:** 2026-11-10
+**Applies to model IDs:** `gemini-4-argon`, `gemini-3.8-flash`, `gemini-3.6-flash`, `gemini-3.5-flash-lite`. Also `gemini-3.1-pro-preview` and `gemini-3.1-flash-lite` where noted.
+
+Google's Gemini docs moved from ai.google.dev to aistudio.google.com (old links redirect). Gemini 2.5 Pro and 2.5 Flash route to 3.8 Flash and 3.5 Flash-Lite on 1 December 2026, so prompts written for 2.5 will start running on these models whether or not the code changes.
+
+### 1. Prompt structure recommendations
+
+- **Long inputs: context first, question last.** Google: "supply all the context first. Place your specific instructions or questions at the very *end* of the prompt."
+- Put essential constraints, persona and output format at the start of the system instruction or user prompt.
+- After a large context block, use a transition phrase that links it to the question (for example "Based on the information above, ...").
+- **Few-shot:** "We recommend to always include few-shot examples in your prompts." Use a few varied examples with identical structure (same tags, whitespace and newlines). Too many examples can make the model overfit. If the examples are clear, drop instructions they make redundant.
+- Avoid "unnecessary or overly persuasive language".
+
+### 2. JSON output mechanism
+
+**`generateContent` (the `google-genai` SDK):** `config={"response_mime_type": "application/json", "response_json_schema": Model.model_json_schema()}`. In REST the same settings sit under `generationConfig.responseFormat.text` (`mimeType`, `schema`). The current page does not mention `response_schema`; treat it as the older name.
+
+**Interactions API:** `response_format={"type": "text", "mime_type": "application/json", "schema": Model.model_json_schema()}`, read from `interaction.output_text`.
+
+Limits:
+- `minLength`, `maxLength`, `minProperties`, `maxProperties`, `uniqueItems`, `contains`, `minContains` and `maxContains` are silently stripped, not enforced. `minItems` and `maxItems` are enforced. Validate in code (for example Pydantic `model_validate_json`).
+- Large or deeply nested schemas can be rejected with `400 INVALID_ARGUMENT`.
+- Structured outputs plus built-in tools is a preview feature on Gemini 3 series models only.
+
+### 3. Delimiter preferences
+
+"XML-style tags (e.g., `<context>`, `<task>`) or Markdown headings are effective." Pick one style and keep it consistent within a prompt.
+
+### 4. Classification task framing
+
+- Put the allowed labels in the schema as an `enum` (via a Pydantic `Literal`); `enum` is not on the list of stripped keywords.
+- Use few-shot examples to fix the format, phrasing and scope of the label; Google says examples are most useful for exactly that.
+
+### 5. Temperature default & quirks
+
+- **Gemini 4 and Gemini 3.6+ ignore `temperature`, `top_p` and `top_k`.** Remove them from requests; Google says sending them will return 400 errors in a future release.
+- Gemini 3 models below 3.6 (by version number: 3.1 Pro preview, 3.1 Flash-Lite, 3 Flash preview, 3.5 Flash-Lite): keep these at their defaults "to avoid degraded reasoning performance".
+- **Thinking is set with `thinking_level`.** Defaults and allowed values: Argon and 3.8 Flash on at `medium` (low, medium, high); 3.6 Flash on at `medium` (minimal to high); 3.5 Flash-Lite on at `minimal` (minimal to high); 3.1 Pro preview on at `high` (low, medium, high). The current Thinking page does not document `thinking_budget`.
+- Do not ask for explicit reasoning steps by default; the model already reasons internally. For hard problems a cue such as "Think very hard before answering" adds thinking tokens.
+- Leave head-room in `max_output_tokens` for thinking. (TalentMap finding from 20 May 2026 on 3.5 Flash: 800 tokens truncated 5 to 10% of JSON replies, 8000 fixed it. In-house result, not Google guidance.)
+- **Price changes are scheduled:** Argon doubles on 1 December 2026; 3.8 Flash and 3.6 Flash double on 1 January 2027. See MODEL-RESEARCH.md.
+
+### 6. Worked example
+
+```python
+from typing import Literal
+from google import genai
+from pydantic import BaseModel
+
+class ClauseClassification(BaseModel):
+    clause_type: Literal["indemnification", "limitation_of_liability", "termination",
+                         "confidentiality", "ip_ownership", "payment_terms", "warranty",
+                         "data_protection", "non_compete", "force_majeure",
+                         "governing_law", "auto_renewal", "other"]
+    risk_score: Literal[1, 2, 3, 4, 5]
+    rationale: str
+
+client = genai.Client()
+
+prompt = """<examples>
+<example>
+<clause>Either party may terminate with 30 days notice.</clause>
+<answer>{"clause_type": "termination", "risk_score": 2, "rationale": "Mutual 30-day termination is standard."}</answer>
+</example>
+<example>
+<clause>Supplier indemnifies Customer for ALL losses without cap.</clause>
+<answer>{"clause_type": "indemnification", "risk_score": 5, "rationale": "Uncapped indemnity needs escalation."}</answer>
+</example>
+</examples>
+
+<clause>
+Customer indemnifies Supplier against any third-party IP claims arising from
+Customer's modifications to the Software.
+</clause>
+
+Based on the clause above, choose one clause_type, score its risk, and give a one-sentence rationale."""
+
+response = client.models.generate_content(
+    model="gemini-3.5-flash-lite",
+    contents=prompt,
+    config={
+        "system_instruction": (
+            "You are a contract clause classifier. Risk: 1 = boilerplate, "
+            "2 = mildly unusual, 3 = noteworthy, 4 = material exposure, 5 = escalate."
+        ),
+        "response_mime_type": "application/json",
+        "response_json_schema": ClauseClassification.model_json_schema(),
+        "max_output_tokens": 8000,       # head-room for thinking
+    },
+)
+result = ClauseClassification.model_validate_json(response.text)
+```
+
+### 7. Known anti-patterns
+
+- **Don't** send `temperature`, `top_p` or `top_k` to Gemini 4 or 3.6+ models; they are ignored now and will error later.
+- **Don't** change sampling settings on earlier Gemini 3 models; keep the defaults.
+- **Don't** mix XML and Markdown delimiters in one prompt, or format few-shot examples inconsistently.
+- **Don't** pile on examples; too many cause overfitting.
+- **Don't** rely on `minLength`, `maxLength` or similar schema keywords; they are stripped without an error.
+- **Don't** use stop sequences that could appear in normal output.
+- **Don't** repeat a failed tool call with the same arguments in an agent; change strategy after a non-transient error.
+- **Don't** assume code pinned to `gemini-2.5-flash` or `gemini-2.5-pro` behaves the same after 1 December 2026; re-test on the routing targets.
 
 ---
 
@@ -180,6 +289,8 @@ response = client.messages.create(
 **Provider docs URL:** https://ai.google.dev/gemini-api/docs/prompting-strategies (Gemini 3 section) + https://ai.google.dev/gemini-api/docs/structured-output
 **Date captured:** 2026-05-20
 **Applies to model IDs:** `gemini-3.5-flash` (stable), `gemini-3.1-flash-lite` (stable), `gemini-3.1-pro-preview` (preview), `gemini-3-flash-preview` (preview)
+
+**Status, 10 November 2026 (section not refreshed):** `gemini-3.5-flash` now routes automatically to `gemini-3.6-flash`. `gemini-3.1-flash-lite` shuts down on 7 May 2027. The temperature rule in section 5 does not apply to Gemini 3.6 and later, which ignore `temperature`, `top_p` and `top_k`. The prices in section 6 are from 20 May 2026. For new work use [§ Google Gemini 4 / 3.8 / 3.6 / 3.5 Flash-Lite](#google--gemini-4-argon--38-flash--36-flash--35-flash-lite). The TalentMap findings below are kept as history.
 
 ### 1. Prompt structure — same as 2.5 (context-first, question-last) but stricter
 
@@ -254,6 +365,8 @@ For comparison: 2.5 Flash is $0.30/$2.50, 2.5 Flash-Lite is $0.10/$0.40. **3.5 F
 **Provider docs URL:** https://ai.google.dev/gemini-api/docs/prompting-strategies + https://ai.google.dev/gemini-api/docs/structured-output
 **Date captured:** 2026-05-18
 **Applies to model IDs:** `gemini-2.5-pro`, `gemini-2.5-flash`, `gemini-2.5-flash-lite`
+
+**Status, 10 November 2026 (section not refreshed):** `gemini-2.5-pro` and `gemini-2.5-flash` are deprecated; on 1 December 2026 their requests route to `gemini-3.8-flash` and `gemini-3.5-flash-lite`. `gemini-2.5-flash-lite` is served only to existing users. Google's current structured-output page names the schema field `response_json_schema`; the `response_schema` used below is the older name. For new work use [§ Google Gemini 4 / 3.8 / 3.6 / 3.5 Flash-Lite](#google--gemini-4-argon--38-flash--36-flash--35-flash-lite).
 
 ### 1. Prompt structure recommendations
 
@@ -516,373 +629,157 @@ result = ClassifiedClause.model_validate_json(resp["message"]["content"])
 
 ---
 
-## DeepSeek — V3.2 / V4 / R1
+## DeepSeek — V4.1 Flash / V4 Pro
 
-**Provider docs URL:** https://api-docs.deepseek.com/guides/json_mode + https://api-docs.deepseek.com/guides/reasoning_model
-**Date captured:** 2026-05-18
-**Applies to model IDs:** `deepseek-chat` (V3.2/V4), `deepseek-reasoner` (R1)
+**Provider docs URL:** https://api-docs.deepseek.com/guides/thinking_mode + https://api-docs.deepseek.com/guides/json_mode + https://api-docs.deepseek.com/quick_start/pricing
+**Date captured:** 2026-11-10
+**Applies to model IDs:** `deepseek-flash` (served by DeepSeek-V4.1-Flash-1017), `deepseek-v4-pro` (DeepSeek-V4-Pro-0813)
+
+**What changed since the 18 May 2026 capture:** DeepSeek's API docs now list only `deepseek-flash` and `deepseek-v4-pro`. The `deepseek-v4-flash` names are retired but still accepted (served by V4.1 Flash). `deepseek-chat` and `deepseek-reasoner` are no longer mentioned (third-party reports say they were retired on 24 July 2026). Thinking is now a switch on both models rather than a separate R1 model. The May 2026 rules about R1, `<think>` tags, all-caps section headers, numbered enum lists and "early tokens weigh more" are not in DeepSeek's current docs and have been dropped.
 
 ### 1. Prompt structure recommendations
 
-DeepSeek weights early tokens more heavily than Gemini does. Recommended order:
-
-1. **Role** — `"You are a..."` (in system message).
-2. **Task** — single, concrete task statement.
-3. **Context** — reference data.
-4. **Constraints** — explicit rules ("answer must be < 50 words", "do not invent fields").
-5. **Output format** — exact schema, before examples.
-6. **Examples** — 1–3 worked examples LAST.
-
-This is the **opposite order** to Gemini's context-first / question-last pattern. Same prompt with reordered sections produces materially different results across these two providers.
+DeepSeek does not publish a prompt-structure guide. Its JSON Output example shows the shape to follow: a system prompt that states the task and then gives a sample input and the exact JSON it expects ("EXAMPLE INPUT:" then "EXAMPLE JSON OUTPUT:"), with the real item in the user message.
 
 ### 2. JSON output mechanism
 
-Set `response_format={"type": "json_object"}` on the API call. **Critical:** the prompt MUST include the literal word `json` somewhere in the system or user content, or DeepSeek will silently return prose. The docs are explicit about this requirement.
-
-```python
-from openai import OpenAI  # DeepSeek is OpenAI-compatible
-
-client = OpenAI(api_key="...", base_url="https://api.deepseek.com")
-
-response = client.chat.completions.create(
-    model="deepseek-chat",
-    messages=[
-        {"role": "system", "content": "You are a contract clause classifier. Output JSON."},
-        {"role": "user", "content": "..."}
-    ],
-    response_format={"type": "json_object"},
-    temperature=0,
-)
-```
-
-**Strict schema enforcement is NOT yet available** in DeepSeek's JSON mode — you must validate post-hoc (Pydantic, jsonschema). For tasks where schema violations would be expensive, fall back to function calling via `tools=[{...}]` which has tighter constraint behaviour.
+- Set `response_format={"type": "json_object"}`. This is the only documented JSON option; there is no `json_schema` mode, so validate in code.
+- The prompt must include the word "json" and an example of the JSON structure you want.
+- Set `max_tokens` high enough that the JSON is not cut off.
+- If the output is not valid JSON, the API returns spaces instead, so `content` can look empty even with `finish_reason` `stop`. Check for blank content and retry.
+- Parse `content`, not `reasoning_content`.
 
 ### 3. Delimiter preferences
 
-DeepSeek's docs lean **plain-text sections with all-caps headers** (`ROLE:`, `TASK:`, `CONTEXT:`, `CONSTRAINTS:`, `OUTPUT FORMAT:`, `EXAMPLES:`). Markdown headers also work. XML tags work but provide no measurable lift on DeepSeek the way they do on Claude.
+Not documented. The official example uses plain labelled lines (`EXAMPLE INPUT:`, `EXAMPLE JSON OUTPUT:`).
 
 ### 4. Classification task framing
 
-Single-task framing only. **DeepSeek degrades significantly on multi-question prompts** — the docs explicitly recommend splitting "classify this AND extract that AND score this" into three separate API calls.
-
-For classification, provide enum as a numbered list:
-
-```
-OUTPUT FORMAT:
-clause_type: one of
-  1. indemnification
-  2. termination
-  3. confidentiality
-  ...
-risk_score: integer 1-5
-```
-
-Numbered lists work better than comma-separated enums on V3.2 — surprising but consistent in our testing.
+List the allowed labels in the system prompt next to the JSON example, then check the returned label against the allowed set in code, because JSON mode does not enforce a schema.
 
 ### 5. Temperature default & quirks
 
-- **`deepseek-chat` (V3.2 / V4):** default `temperature=1.0`. For code/extraction set `temperature=0.0`.
-- **`deepseek-reasoner` (R1):** **DOES NOT accept `temperature`, `top_p`, `presence_penalty`, or `frequency_penalty`** — the API silently ignores them. R1 always runs at its trained sampling settings.
-- **R1 zero-shot vs few-shot:** DeepSeek's docs are explicit — **R1 performs better zero-shot**. Few-shot examples DEGRADE R1 output by leaking reasoning patterns from the examples. Use few-shot on `deepseek-chat`, never on `deepseek-reasoner`.
-- **R1 returns `<think>...</think>` blocks** in the response content. Strip them before downstream parsing, or use `reasoning_content` field if the SDK exposes it.
+- **Thinking is on by default.** OpenAI format: `extra_body={"thinking": {"type": "enabled"}}` or `"disabled"`. Anthropic and Responses formats: `reasoning.effort`, where `none` turns thinking off.
+- **Effort:** `reasoning_effort` `low`, `high` or `max`; default `high`. Other names are mapped (`minimal` to `low`; `medium` and `xhigh` to `high`; `ultra` to `max`).
+- `temperature`, `presence_penalty` and `frequency_penalty` are accepted in thinking mode but have no effect. `top_p` has model-specific floors (for `deepseek-flash`, 0.95 to 1.0 in thinking mode, fixed at 1.0 without thinking).
+- The chain of thought comes back in `reasoning_content`. Without tools, earlier turns' `reasoning_content` is ignored. **With tools, you must pass back the `reasoning_content` of all previous turns, or the API returns 400.**
+- Context 1M tokens; maximum output 384K. Vision on `deepseek-flash` only.
+- **Off-peak prices are half of peak.** Peak is 01:00 to 04:00 and 06:00 to 10:00 UTC on weekdays (11:00 am to 2:00 pm and 4:00 pm to 8:00 pm Brisbane). Schedule batch jobs outside those hours.
+- OpenAI-compatible base URL `https://api.deepseek.com`; Anthropic-compatible `https://api.deepseek.com/anthropic`.
 
 ### 6. Worked example
 
 ```python
+import json
+import os
 from openai import OpenAI
 
 client = OpenAI(api_key=os.environ["DEEPSEEK_API_KEY"], base_url="https://api.deepseek.com")
 
-system = """ROLE: Contract clause classifier.
+ALLOWED = {"indemnification", "limitation_of_liability", "termination", "confidentiality",
+           "ip_ownership", "payment_terms", "warranty", "data_protection", "non_compete",
+           "force_majeure", "governing_law", "auto_renewal", "other"}
 
-TASK: Classify a single clause by type and assess risk 1-5.
+system = """You classify one contract clause and reply in json.
+clause_type must be one of: indemnification, limitation_of_liability, termination,
+confidentiality, ip_ownership, payment_terms, warranty, data_protection, non_compete,
+force_majeure, governing_law, auto_renewal, other.
+risk_score is an integer from 1 (boilerplate) to 5 (escalate to a partner).
 
-CONSTRAINTS:
-- Output valid JSON only, no prose.
-- Do not invent fields outside the schema.
-- Rationale must be < 30 words.
-
-OUTPUT FORMAT (json):
-{
-  "clause_type": one of
-    1. indemnification
-    2. limitation_of_liability
-    3. termination
-    4. confidentiality
-    5. ip_ownership
-    6. payment_terms
-    7. warranty
-    8. data_protection
-    9. non_compete
-    10. force_majeure
-    11. governing_law
-    12. auto_renewal
-    13. other,
-  "risk_score": integer 1-5 (1=boilerplate, 5=escalate),
-  "rationale": short string
-}
-
-EXAMPLES:
-Input: "Either party may terminate with 30 days notice."
-Output: {"clause_type": "termination", "risk_score": 2, "rationale": "Mutual 30-day termination is standard."}
-
-Input: "Supplier indemnifies Customer for ALL losses without cap."
-Output: {"clause_type": "indemnification", "risk_score": 5, "rationale": "Uncapped indemnity requires escalation."}
-"""
+EXAMPLE INPUT: Either party may terminate with 30 days notice.
+EXAMPLE JSON OUTPUT:
+{"clause_type": "termination", "risk_score": 2, "rationale": "Mutual 30-day termination is standard."}"""
 
 response = client.chat.completions.create(
-    model="deepseek-chat",
+    model="deepseek-flash",
     messages=[
         {"role": "system", "content": system},
-        {"role": "user", "content": "Classify this clause: Customer indemnifies Supplier against any third-party IP claims arising from Customer's modifications to the Software."}
+        {"role": "user", "content": "Customer indemnifies Supplier against any third-party "
+                                    "IP claims arising from Customer's modifications to the Software."},
     ],
     response_format={"type": "json_object"},
-    temperature=0,
+    max_tokens=1024,
+    extra_body={"thinking": {"type": "disabled"}},   # simple classification; enable for harder tasks
 )
+
+content = response.choices[0].message.content
+if not content or not content.strip():
+    raise RuntimeError("Blank JSON reply; retry")
+result = json.loads(content)
+if result.get("clause_type") not in ALLOWED or result.get("risk_score") not in range(1, 6):
+    raise ValueError(f"Out-of-schema reply: {result}")
 ```
 
 ### 7. Known anti-patterns
 
-- **Don't** omit the literal word `json` from the prompt when using `response_format` — DeepSeek returns prose silently.
-- **Don't** combine "classify AND extract AND score" in one prompt — split into separate calls.
-- **Don't** use few-shot examples on `deepseek-reasoner` — they degrade output. Few-shot only on `deepseek-chat`.
-- **Don't** rely on schema validation in JSON mode — DeepSeek's JSON mode is shape-only, not schema-enforced. Validate post-hoc.
-- **Don't** set `temperature` on R1 — silently ignored.
-- **Don't** stuff context into the middle of the prompt — DeepSeek attends most heavily to the start.
+- **Don't** use `deepseek-chat`, `deepseek-reasoner` or `deepseek-v4-flash` in new code; use `deepseek-flash` or `deepseek-v4-pro`.
+- **Don't** leave the word "json" and a JSON example out of the prompt when using JSON mode.
+- **Don't** trust JSON mode to enforce a schema; validate.
+- **Don't** treat a blank or all-spaces `content` as success.
+- **Don't** drop `reasoning_content` from history in tool-calling conversations (400 error).
+- **Don't** tune `temperature` in thinking mode; it has no effect.
+- **Don't** run large batch jobs in Brisbane peak hours if cost matters.
 
 ---
 
-## Moonshot — Kimi K2.5
+## Moonshot — Kimi K3.1 Pro / K3
 
-**Provider docs URL:** https://platform.moonshot.ai/docs/guide/agentic-prompting + https://platform.moonshot.ai/docs/guide/prompt-engineering
-**Date captured:** 2026-05-18
-**Applies to model IDs:** `kimi-k2.5`, `moonshot-v1-128k`, `moonshot-v1-32k` (current K2-series naming)
+**Provider docs URL:** https://platform.kimi.ai/docs/guide/kimi-k3-1-pro-quickstart + https://platform.kimi.ai/docs/pricing/chat
+**Date captured:** 2026-11-10
+**Applies to model IDs:** `kimi-k3.1-pro`, `kimi-k3.1-pro-highspeed`, `kimi-k3`. The K2 series (`kimi-k2.7-code`, `kimi-k2.6`) retires by the end of December 2026; `kimi-k2.5` is no longer on the price list.
+
+**What changed since the 18 May 2026 capture:** Moonshot's developer site moved to platform.kimi.ai. The old agentic-prompting and prompt-engineering links now open quick-start pages with no prompting guide. The May 2026 rules (identity warning, Markdown beats XML above 50K tokens, `temperature=0.3`, `source_quote` anti-hallucination pattern) are no longer in Moonshot's docs and are dropped. Sampling is now fixed, so the old temperature advice cannot be applied.
 
 ### 1. Prompt structure recommendations
 
-Kimi expects an explicit **identity declaration at the top** of the system prompt:
-
-> "You are Kimi, an AI assistant developed by Moonshot AI."
-
-The docs warn that omitting this OR substituting a different identity ("you are Greg's classifier") changes Kimi's safety/refusal behaviour unpredictably. Best practice: start with the canonical identity, then layer the specialist role.
-
-Recommended order:
-
-1. **Identity declaration** — `"You are Kimi, an AI assistant developed by Moonshot AI."`
-2. **Specialist role layer** — `"For this conversation you act as a contract clause classifier."`
-3. **Citation/sourcing rules** — explicit instructions to quote source text for any claim (mitigates Kimi's tendency to hallucinate when context is long).
-4. **Task & instructions.**
-5. **Context** (the long doc / clause / data).
-6. **Output format.**
-7. **Examples** (optional — Kimi handles zero-shot well on K2.5).
+Moonshot publishes no structure guide for K3. Its examples use a `system` message that opens "You are Kimi, an AI assistant provided by Moonshot AI." followed by the task in a `user` message. Keeping that opening and adding the specialist role after it matches the official examples.
 
 ### 2. JSON output mechanism
 
-OpenAI-compatible — `response_format={"type": "json_object"}` works.
-
-```python
-client = OpenAI(api_key=os.environ["MOONSHOT_API_KEY"], base_url="https://api.moonshot.ai/v1")
-response = client.chat.completions.create(
-    model="kimi-k2.5",
-    messages=[...],
-    response_format={"type": "json_object"},
-    temperature=0.3,
-)
-```
-
-Kimi K2.5 also supports **structured outputs with JSON Schema** via `response_format={"type": "json_schema", "json_schema": {...}}` — same shape as OpenAI's strict mode. Use this for any schema-critical task; the schema is enforced.
+- `response_format={"type": "json_schema", "json_schema": {...}, "strict": True}` style structured output (OpenAI-compatible).
+- **Parse only `message.content`, never `reasoning_content`.**
 
 ### 3. Delimiter preferences
 
-For long-context tasks (Kimi's specialty — 200K+ context window), **markdown headers** (`## Context`, `## Instructions`) outperform XML. Moonshot's docs explicitly recommend markdown for >50k token prompts.
-
-For short prompts, either works.
+Not documented.
 
 ### 4. Classification task framing
 
-Kimi handles **open-ended classification** noticeably better than DeepSeek does, but multiple-choice with enum is still safer. For long-document classification (Kimi's sweet spot), require the model to **quote the source span** that justifies the classification — reduces hallucination materially:
-
-```
-OUTPUT FORMAT:
-{
-  "clause_type": "...",
-  "source_quote": "<verbatim text from the input that justifies the classification>",
-  "rationale": "..."
-}
-```
-
-If the model can't produce a verbatim quote, it shouldn't classify. This pattern is from Moonshot's own anti-hallucination guide.
+Labels in a schema `enum`. Lower the reasoning effort for simple, high-volume labels.
 
 ### 5. Temperature default & quirks
 
-- **Default:** `temperature=0.3` (Moonshot's recommended default — lower than other providers' 1.0).
-- **For extraction:** `temperature=0` works fine.
-- **For long-context with citations:** keep `temperature=0` and set `top_p=0.9` — Kimi cites more accurately at constrained sampling.
-- **Tool calls:** Kimi K2.5 supports OpenAI-compatible tools. **Avoid over-prescribing tool usage** in the prompt — Kimi decides autonomously and over-applies tool guidance if you specify it. The docs say "trust the model to choose tools."
-- **Web search:** built-in via `tools=[{"type": "web_search"}]`, $0.005/call. Cheap; useful for Researcher role.
-- **Caching:** prompt caching reduces input cost to ~$0.15/M on cache hits. Cache the system message and any static context.
+- **Sampling is fixed:** `temperature=1.0`, `top_p=0.95`, `n=1`, `presence_penalty=0`, `frequency_penalty=0`. Leave them out of requests.
+- **Thinking is always on** for K3.1 Pro and cannot be turned off. Set top-level `reasoning_effort` to `low`, `high` or `max`; the default is `max`. Moonshot suggests `low` if responses are too slow.
+- `max_completion_tokens` defaults to 131,072 and can go to 1,048,576.
+- Keep the **full assistant message** in history in multi-turn and tool flows, not just `content`.
+- Tools: `tool_choice="required"` forces a call on the first turn. Dynamically added tools must be resent each request (the server does not store them). Moonshot says its web search is not recommended for production.
+- **Caching is automatic** (5-minute TTL by default, 1 hour via `prompt_cache_options.ttl`); cache writes carry a one-time charge. Batch inference costs 60% of standard.
+- Vision: `content` must be an array; public image URLs are not supported (use base64 or `ms://<file-id>`).
+- Base URL `https://api.moonshot.ai/v1` with the OpenAI SDK.
 
 ### 6. Worked example
 
 ```python
-from openai import OpenAI
+import json
 import os
+from openai import OpenAI
 
 client = OpenAI(api_key=os.environ["MOONSHOT_API_KEY"], base_url="https://api.moonshot.ai/v1")
 
-system = """You are Kimi, an AI assistant developed by Moonshot AI.
-
-For this conversation you act as a contract clause classifier. You categorise clauses by type, assess risk on a 1-5 scale, and ALWAYS quote the verbatim source span that justifies your classification.
-
-## Sourcing rules
-- Every classification MUST include a `source_quote` field containing text copied verbatim from the input.
-- If you cannot find a verbatim quote that justifies the classification, set `clause_type` to "other" and `source_quote` to "".
-- Do not paraphrase the source quote.
-
-## Risk anchors
-1 = boilerplate, no negotiation needed
-2 = mildly unusual but acceptable
-3 = noteworthy, flag in summary
-4 = material exposure, recommend redline
-5 = catastrophic, escalate to partner
-"""
-
 response = client.chat.completions.create(
-    model="kimi-k2.5",
-    messages=[
-        {"role": "system", "content": system},
-        {"role": "user", "content": (
-            "## Input clause\n\n"
-            "Customer indemnifies Supplier against any third-party IP claims arising "
-            "from Customer's modifications to the Software.\n\n"
-            "## Task\n\n"
-            "Classify the clause above. Return JSON with clause_type, risk_score, "
-            "source_quote (verbatim), and rationale."
-        )}
-    ],
-    response_format={
-        "type": "json_schema",
-        "json_schema": {
-            "name": "classified_clause",
-            "strict": True,
-            "schema": {
-                "type": "object",
-                "properties": {
-                    "clause_type": {"type": "string", "enum": [
-                        "indemnification", "limitation_of_liability", "termination",
-                        "confidentiality", "ip_ownership", "payment_terms", "warranty",
-                        "data_protection", "non_compete", "force_majeure",
-                        "governing_law", "auto_renewal", "other"
-                    ]},
-                    "risk_score": {"type": "integer", "minimum": 1, "maximum": 5},
-                    "source_quote": {"type": "string"},
-                    "rationale": {"type": "string"}
-                },
-                "required": ["clause_type", "risk_score", "source_quote", "rationale"],
-                "additionalProperties": False
-            }
-        }
-    },
-    temperature=0,
-)
-```
-
-### 7. Known anti-patterns
-
-- **Don't** omit the "You are Kimi" identity declaration — changes safety behaviour unpredictably.
-- **Don't** over-specify tool usage in the prompt — Kimi over-applies. Trust the model to choose.
-- **Don't** rely on classification without `source_quote` for long-doc tasks — Kimi hallucinates more than Gemini/Claude on >50k contexts.
-- **Don't** use XML tags for prompts >50k tokens — markdown headers outperform.
-- **Don't** set `temperature=1.0` for extraction — Kimi's recommended default is 0.3, and structured tasks want 0.
-- **Don't** skip caching on long static contexts — Kimi caching gives ~75% input cost reduction.
-
----
-
-## xAI — Grok-4 / Grok-4.1 / Grok-3
-
-**Provider docs URL:** https://docs.x.ai/docs/guides/prompt-engineering + https://docs.x.ai/docs/guides/structured-outputs + https://docs.x.ai/docs/guides/live-search
-**Date captured:** 2026-05-18
-**Applies to model IDs:** `grok-4`, `grok-4.1`, `grok-3`, `grok-3-mini`, `grok-code-fast-1`
-
-### 1. Prompt structure recommendations
-
-Grok is OpenAI-compatible and behaves similarly to GPT-4o on prompt structure. Recommended order:
-
-1. **System message** — role, rules, tone (especially important for Grok-3 because it defaults to "edgy" — explicitly set tone if you want it sober).
-2. **User message** — task, then context, then question (Grok handles both context-first and question-first, with a slight preference for question-first for short prompts).
-3. **For reasoning tasks (Grok-4)**: state the reasoning depth required explicitly — `"Think step by step before answering"` lifts accuracy by ~5-10pp on hard problems even though Grok-4 has internal reasoning.
-
-### 2. JSON output mechanism
-
-Two options:
-
-1. **`response_format={"type": "json_object"}`** — shape-only, like DeepSeek. Prompt must mention "JSON" somewhere.
-2. **`response_format={"type": "json_schema", "json_schema": {...}}`** — strict mode (Grok-3 onwards). Schema is enforced; missing/extra fields are impossible. **Use this for all production extraction.**
-
-```python
-from openai import OpenAI
-
-client = OpenAI(api_key=os.environ["XAI_API_KEY"], base_url="https://api.x.ai/v1")
-
-response = client.chat.completions.create(
-    model="grok-4.1",
-    messages=[...],
-    response_format={
-        "type": "json_schema",
-        "json_schema": {
-            "name": "classified_clause",
-            "strict": True,
-            "schema": { ... }
-        }
-    },
-    temperature=0,
-)
-```
-
-### 3. Delimiter preferences
-
-Markdown headers and plain text both work. XML tags work but provide no documented lift. xAI's docs lean towards **markdown for readability**, no strong stance on delimiter type.
-
-### 4. Classification task framing
-
-Multiple-choice with enum, same as everyone else. Grok handles graded scales (1-5) well without explicit anchors but anchors make it more consistent across runs.
-
-**For contrarian/debate tasks** (Council Contrarian role): Grok-3 is purpose-built for this. You DO NOT need to instruct it to be contrarian — that's its default voice. Instead, if you want a neutral/sober Grok, you must explicitly say `"Provide a balanced, non-adversarial response."` Otherwise it leans hot.
-
-### 5. Temperature default & quirks
-
-- **Default for chat:** `temperature=1.0`.
-- **For extraction:** `temperature=0`.
-- **Grok-4 reasoning effort:** set `reasoning_effort="low"|"medium"|"high"`. Defaults to `high` which is expensive — drop to `low` for simple tasks. Grok-4.1 does NOT support `reasoning_effort` (it's not a reasoning model in the same way).
-- **Live Search** (Grok's web/X search): set `search_parameters={"mode": "on"|"auto", "sources": [{"type": "web"}, {"type": "x"}]}`. Costs $2.50–$5 per 1K calls. Do NOT hardcode "use web search" in prompts when this parameter is available — the API is the right place.
-- **Grok-Code-Fast-1:** purpose-built for code. Skip rich prose context; lead with the code/task. Reasoning effort not supported.
-
-### 6. Worked example
-
-```python
-from openai import OpenAI
-import os
-
-client = OpenAI(api_key=os.environ["XAI_API_KEY"], base_url="https://api.x.ai/v1")
-
-response = client.chat.completions.create(
-    model="grok-4.1",
+    model="kimi-k3.1-pro",
+    reasoning_effort="low",               # default is max; no sampling parameters
     messages=[
         {"role": "system", "content": (
-            "You are a contract clause classifier. You categorise clauses by type "
-            "and assess risk on a 1–5 scale. Provide a balanced, professional tone — "
-            "no editorialising."
+            "You are Kimi, an AI assistant provided by Moonshot AI. "
+            "For this task you classify contract clauses. Risk: 1 = boilerplate, "
+            "2 = mildly unusual, 3 = noteworthy, 4 = material exposure, 5 = escalate."
         )},
         {"role": "user", "content": (
-            "## Task\nClassify the clause below by type and risk.\n\n"
-            "## Risk anchors\n"
-            "1 = boilerplate, 2 = mildly unusual, 3 = noteworthy, "
-            "4 = material exposure, 5 = escalate.\n\n"
-            "## Clause\n"
-            "Customer indemnifies Supplier against any third-party IP claims arising "
-            "from Customer's modifications to the Software.\n\n"
-            "Return JSON matching the schema."
-        )}
+            "Classify this clause: Customer indemnifies Supplier against any third-party "
+            "IP claims arising from Customer's modifications to the Software."
+        )},
     ],
     response_format={
         "type": "json_schema",
@@ -896,72 +793,203 @@ response = client.chat.completions.create(
                         "indemnification", "limitation_of_liability", "termination",
                         "confidentiality", "ip_ownership", "payment_terms", "warranty",
                         "data_protection", "non_compete", "force_majeure",
-                        "governing_law", "auto_renewal", "other"
-                    ]},
-                    "risk_score": {"type": "integer", "minimum": 1, "maximum": 5},
-                    "rationale": {"type": "string"}
+                        "governing_law", "auto_renewal", "other"]},
+                    "risk_score": {"type": "integer", "enum": [1, 2, 3, 4, 5]},
+                    "rationale": {"type": "string"},
                 },
                 "required": ["clause_type", "risk_score", "rationale"],
-                "additionalProperties": False
-            }
-        }
+                "additionalProperties": False,
+            },
+        },
     },
-    temperature=0,
+)
+result = json.loads(response.choices[0].message.content)   # never reasoning_content
+```
+
+### 7. Known anti-patterns
+
+- **Don't** set `temperature`, `top_p`, `n` or the penalties; they are fixed.
+- **Don't** strip the assistant message down to `content` in multi-turn or tool flows.
+- **Don't** parse `reasoning_content` for structured output.
+- **Don't** assume dynamically loaded tools persist on the server.
+- **Don't** rely on Kimi web search in production.
+- **Don't** send public image URLs or a serialised string as vision `content`.
+- **Don't** start new work on K2 models; they retire by the end of December 2026.
+
+---
+
+## xAI — Grok 4.7 / 4.6 / 4.5 / 4.3 / Build 0.1
+
+**Provider docs URL:** https://docs.x.ai/developers/model-capabilities/text/best-practices + https://docs.x.ai/docs/guides/structured-outputs + https://docs.x.ai/developers/model-capabilities/text/reasoning
+**Date captured:** 2026-11-10
+**Applies to model IDs:** `grok-4.7`, `grok-4.6`, `grok-4.5`, `grok-4.3`, `grok-build-0.1`
+
+**URL change:** the old `https://docs.x.ai/docs/guides/prompt-engineering` page returns 404 (checked 10 November 2026). xAI's guidance now lives on the best-practices and reasoning pages above. Grok-4, Grok-4.1 Fast, Grok-3 and Grok-Code-Fast-1 were retired on 15 May 2026; their slugs redirect to Grok 4.3 or Build 0.1 and are billed at those prices. xAI publishes no prompt guide for Build 0.1.
+
+### 1. Prompt structure recommendations
+
+- "Grok reasoning models reason before they answer, so state the task, constraints, and output format directly."
+- **Static content first:** "System prompts, few-shot examples, and reference documents at the start of the input form a stable prefix" that the cache can reuse. Put the variable item last.
+- "Only append to the conversation." Editing, removing or reordering earlier items breaks the cached prefix.
+- For model-as-judge prompts: "give it a specific rubric with examples of each score".
+
+### 2. JSON output mechanism
+
+- **Chat Completions:** `response_format={"type": "json_schema", "json_schema": {"name": "...", "schema": {...}, "strict": True}}`.
+- **Responses API:** `text={"format": {"type": "json_schema", "name": "...", "schema": {...}, "strict": True}}`.
+- **xAI SDK:** `client.chat.create(model="grok-4.7", response_format=PydanticModel)`, then `chat.parse(Model)` for a parsed object.
+- `json_object` (any well-formed JSON) also exists; prefer `json_schema`.
+- Schema rules: `additionalProperties` defaults to `false`; fields not in `required` are optional; nullable fields need a type array or `anyOf` with `null`. Enforced string formats: `date`, `time`, `date-time`, `email`, `uuid`, `ipv4`, `ipv6`, `uri`. Guaranteed limits: `minLength`/`maxLength` up to 2,048, `minItems`/`maxItems` up to 256. `not`, `if`/`then`/`else` and multi-part `allOf` are best-effort only.
+
+### 3. Delimiter preferences
+
+Not covered by xAI's current pages. Keep one consistent style.
+
+### 4. Classification task framing
+
+Put the labels in a schema `enum`. For graded scores, give a rubric with an example of each score (xAI's advice for judge prompts).
+
+### 5. Temperature default & quirks
+
+- **Sampling:** "Set `temperature` to 0.7 and `top_p` to 0.95, and don't deviate far from these values." "Grok models don't respond well to other sampling settings, and quality usually drops when you change them." This replaces the May 2026 advice to use `temperature=0` for extraction.
+- **Reasoning effort:** "Set the effort explicitly on every request so a default never decides your result," and log it with each result. `grok-4.7` and `grok-4.6`: `low`, `medium`, `high`, `xhigh`, default `high`, cannot be turned off. `grok-4.5`: `low` to `high` (`xhigh` treated as `high`). `grok-4.3`: defaults to `low` and also accepts `none`.
+- `presencePenalty`, `frequencyPenalty` and `stop` cannot be used with reasoning models (error).
+- **Caching:** give each conversation its own `prompt_cache_key` and reuse it every turn.
+- **Multi-turn and tools:** send encrypted reasoning back unchanged. Use the Responses API for multi-turn or tool-calling work; Chat Completions has no field for encrypted reasoning.
+- **Web search:** the `web_search` tool runs through the Responses API (`https://api.x.ai/v1/responses`), with `allowed_domains` / `excluded_domains` filters (up to 5 each).
+
+### 6. Worked example
+
+```python
+import os
+from openai import OpenAI
+
+client = OpenAI(api_key=os.environ["XAI_API_KEY"], base_url="https://api.x.ai/v1")
+
+SYSTEM = (
+    "You are a contract clause classifier. State one clause_type and a risk score.\n"
+    "Risk rubric with examples:\n"
+    "1 = boilerplate (e.g. standard governing-law clause)\n"
+    "2 = mildly unusual (e.g. mutual 30-day termination)\n"
+    "3 = noteworthy (e.g. one-sided auto-renewal)\n"
+    "4 = material exposure (e.g. liability cap below fees paid)\n"
+    "5 = escalate (e.g. uncapped indemnity including consequential loss)"
+)
+
+response = client.chat.completions.create(
+    model="grok-4.3",
+    reasoning_effort="low",               # set explicitly every time
+    temperature=0.7,
+    top_p=0.95,
+    messages=[
+        {"role": "system", "content": SYSTEM},          # static prefix first
+        {"role": "user", "content": (
+            "Clause: Customer indemnifies Supplier against any third-party IP claims "
+            "arising from Customer's modifications to the Software."
+        )},
+    ],
+    response_format={
+        "type": "json_schema",
+        "json_schema": {
+            "name": "classified_clause",
+            "strict": True,
+            "schema": {
+                "type": "object",
+                "properties": {
+                    "clause_type": {"type": "string", "enum": [
+                        "indemnification", "limitation_of_liability", "termination",
+                        "confidentiality", "ip_ownership", "payment_terms", "warranty",
+                        "data_protection", "non_compete", "force_majeure",
+                        "governing_law", "auto_renewal", "other"]},
+                    "risk_score": {"type": "integer", "enum": [1, 2, 3, 4, 5]},
+                    "rationale": {"type": "string"},
+                },
+                "required": ["clause_type", "risk_score", "rationale"],
+            },
+        },
+    },
 )
 ```
 
 ### 7. Known anti-patterns
 
-- **Don't** hardcode "use web search" / "search X for..." in prompts when `search_parameters` API exists — the parameter is the supported path; prompt-level instructions are unreliable.
-- **Don't** use Grok-3 for sober/professional output without explicitly setting tone — defaults to edgy/contrarian.
-- **Don't** leave `reasoning_effort` at default `high` on Grok-4 for trivial tasks — costs 3-5× more for no quality lift.
-- **Don't** send long prose context to Grok-Code-Fast-1 — it's tuned for code-in / code-out; prose context wastes budget.
-- **Don't** rely on `json_object` mode for production — use `json_schema` (strict) instead. `json_object` is shape-only.
+- **Don't** keep retired slugs (`grok-4-0709`, `grok-4-1-fast-*`, `grok-3`, `grok-code-fast-1`) pinned; they still answer but run a different model at Grok 4.3 or Build 0.1 prices.
+- **Don't** move `temperature` or `top_p` far from 0.7 and 0.95.
+- **Don't** leave reasoning effort to the default; `grok-4.7` defaults to `high`.
+- **Don't** send `presencePenalty`, `frequencyPenalty` or `stop` to reasoning models.
+- **Don't** edit, reorder or filter output items before sending them back, or rebuild the conversation in a different format between turns.
+- **Don't** extract `output_text` and append it as a plain assistant message; that drops the reasoning and function-call items.
+- **Don't** use Chat Completions for multi-turn or tool-calling work.
 
 ---
 
-## OpenAI — GPT-5.3 Codex / GPT-4o / o-series
+## OpenAI — GPT-6 Astra / 6.1 Sol / 6.1 Terra / 6 Luna (API and Codex)
 
-**Provider docs URL:** [Codex prompting guide](https://developers.openai.com/cookbook/examples/gpt-5/codex_prompting_guide) · [Codex best practices](https://developers.openai.com/codex/learn/best-practices) · [AGENTS.md for Codex](https://developers.openai.com/codex/guides/agents-md) · [GPT-5 prompting guide](https://cookbook.openai.com/examples/gpt-5/gpt-5_prompting_guide)
-**Date captured:** 2026-06-13 (filled for the Shine CRM project — Codex as independent code-review gate)
+**Provider docs URL:** [Using GPT-6](https://developers.openai.com/api/docs/guides/latest-model) · [Structured Outputs](https://developers.openai.com/api/docs/guides/structured-outputs) · [Codex models](https://learn.chatgpt.com/docs/models) · [Codex best practices](https://developers.openai.com/codex/learn/best-practices) · [AGENTS.md for Codex](https://developers.openai.com/codex/guides/agents-md) · [Codex prompting guide](https://developers.openai.com/cookbook/examples/gpt-5/codex_prompting_guide)
+**Date captured:** 2026-11-10
+**Applies to model IDs:** `gpt-6-astra`, `gpt-6.1-sol`, `gpt-6.1-terra`, `gpt-6-luna` (API and Codex). `gpt-5.3-codex` is deprecated: already in Codex when signed in with ChatGPT, and on the API from 1 April 2027.
 
-**Scope note:** Two distinct surfaces. **(A) Codex** = the *agentic coding/review tool* (CLI / IDE / GitHub), powered by `gpt-5.3-codex`, driven by natural-language tasks + repo `AGENTS.md`, NOT by JSON-output API calls. This is what Greg uses for code review. **(B) the OpenAI API** (GPT-5.x chat, o-series) for programmatic calls. The two are prompted differently; §1–6 below cover Codex (the live use case), §7 notes API differences.
+**Scope note:** Two distinct surfaces. **(A) Codex** is the agentic coding and review tool (CLI, IDE, GitHub), driven by natural-language tasks and the repo's `AGENTS.md`, not by JSON API calls. This is what Greg uses for code review, signed in with ChatGPT Plus. **(B) the OpenAI API** for programmatic calls. Codex now offers `gpt-6-astra` (most demanding work), `gpt-6.1-sol` (lower cost for repeated, long-running work), `gpt-6.1-terra` (writing and visual tasks; needs Codex CLI 0.159.0 or later) and `gpt-6-luna` (focused, high-volume tasks). Codex's config example sets `model = "gpt-6.1-sol"`. Update any script, config file or `codex exec --model` call that still names `gpt-5.3-codex` or `gpt-5.2`.
 
-### 1. Prompt structure recommendations (Codex)
+The Codex review-gate guidance in sections 1, 3, 4 and the first worked example is from the 13 June 2026 capture. Those Codex pages were still live on 10 November 2026 but were not re-read this pass.
 
-Codex wants four elements, in this order — **Goal → Context → Constraints → Done-when**:
-- **Goal:** one line — what to do (e.g. "review slice N for correctness + security").
-- **Context:** the specific files/dirs/docs, `@`-mentioned or path-listed. Point at the acceptance criteria and the spec it must conform to. Don't make Codex hunt.
-- **Constraints:** standards, what NOT to touch, review-only vs edit, safety.
-- **Done-when:** explicit completion + verification criteria ("tests run and pasted; verdict PASS/CONDITIONAL/FAIL").
+### 1. Prompt structure recommendations
 
-Codex is **autonomous and persistent by default** — it gathers context, plans, implements, tests and refines end-to-end in one turn. Two consequences: (a) do NOT ask for an upfront plan/preamble — it causes premature stopping; (b) for review, explicitly say **review-only, do not modify code**, or its default bias to *implement* will make it start editing.
+**Codex (13 June 2026 capture):** four elements, in order: **Goal, Context, Constraints, Done-when.**
+- **Goal:** one line, what to do.
+- **Context:** the specific files, directories and docs, with the acceptance criteria and the spec to conform to.
+- **Constraints:** standards, what not to touch, review-only or edit, safety.
+- **Done-when:** completion and verification criteria.
+- Codex is autonomous and persistent by default. Do not ask for an upfront plan or preamble (it causes premature stopping). For review, say **review-only, do not modify code**.
+- Durable rules belong in `AGENTS.md` (nearest file wins), with a `CODE_REVIEW.md` referenced from it; keep each task prompt short.
 
-**Durable rules belong in `AGENTS.md`, not the prompt.** Codex auto-loads `AGENTS.md` (nearest file to each changed file wins). The official review pattern: keep a `CODE_REVIEW.md` (durable standards) referenced from `AGENTS.md`, and keep each task prompt lean — "review X against the standards." This is also the cheapest pattern on a limited plan (ChatGPT Plus): durable context loads from the repo, the prompt stays short.
+**GPT-6 family (10 November 2026, "Using GPT-6"):**
+- "Prompt the model to ask for approval only after preparing a concrete, reviewable result." Do the authorised work first so approval is the last step.
+- The model should "persist until the user's intended goal is complete" unless an action is destructive or irreversible.
+- "If explicit user instructions conflict with a skill's instructions, prioritize the user's instructions." Audit skills and `AGENTS.md` for conflicting or silent guidance; it can make Astra pause.
+- State each "ask first" rule once; repeated approval rules cause approval requests for safe actions.
+- For prose: "Default to using clear, concise paragraphs, each developing one main idea." Use lists only for parallel or sequential content. Astra tends toward detailed, formatted answers.
 
-### 2. JSON / structured output
+### 2. JSON output mechanism
 
-Codex (the tool) is **not** a JSON-output surface — it returns prose review findings + edits, not a parsed object. If you need machine-readable review output, specify the exact output contract in the prompt (e.g. "end with a line `VERDICT: PASS|CONDITIONAL|FAIL`"). For the **API** path (not Codex), use Structured Outputs: `response_format={"type":"json_schema","json_schema":{...,"strict":true}}` — schema-enforced.
+- **Responses API (recommended):** `text: {format: {type: "json_schema", name: "...", schema: {...}, strict: true}}`. In the Python SDK, `client.responses.parse(..., text_format=Model)` returns `response.output_parsed`.
+- **Chat Completions:** `response_format: {type: "json_schema", ...}`.
+- The examples list every property in `required` and set `"additionalProperties": false`.
+- Astra, Sol and Terra accept Chat Completions, but **tool calling with reasoning needs the Responses API**.
+- Codex (the tool) is not a JSON surface. For machine-readable review output, set an output contract in the prompt (for example a final line `VERDICT: PASS|CONDITIONAL|FAIL`).
 
 ### 3. Delimiter & formatting preferences
 
-- **Markdown**, lightly: headings only where they aid scanning; **bullets (`-`), 4–6 per list, ordered by importance**, not deep-nested hierarchies.
-- **Backticks** for paths, commands, env vars, identifiers; **fenced code blocks** with an info string for multi-line snippets.
-- **File references as `path/to/file.ts:42`** (clickable in Codex surfaces) — Codex emits and expects this form.
-- Avoid heavy ANSI/decorative formatting.
+The GPT-6 page gives no delimiter rule; its GPT-5.6 example uses an XML-tagged block. Codex conventions (13 June 2026 capture): light Markdown, bullets ordered by importance, backticks for paths and commands, fenced code blocks, file references as `path/to/file.ts:42`.
 
-### 4. Code-review task framing (the live use case)
+### 4. Classification and code-review framing
 
-When the task says **"review"**, Codex adopts a review mindset: *"Prioritise identifying bugs, risks, behavioural regressions, and missing tests. Findings must be the primary focus."* Output is **findings-first, ordered by severity, with `file:line` references**; assumptions/summaries are secondary. *"If no issues found, state that explicitly and note residual testing gaps."* This maps cleanly onto a PASS/CONDITIONAL/FAIL gate. Reinforce: tell it to **actually run the tests/checks and paste output** ("run the relevant checks, confirm the result") — Codex's verify loop is built for this; don't accept eyeballed claims.
+- **API classification:** put labels in the schema (`Literal` or `enum`) and use Structured Outputs.
+- **Codex review (13 June 2026 capture):** when the task says "review", Codex puts findings first, ordered by severity, with `file:line` references, and says explicitly when it finds nothing. Tell it to run the tests and checks and paste the output.
+- GPT-6: "Do not write tests for reversible, low-impact changes that mirror the implementation."
 
-### 5. reasoning_effort & params (no temperature for reasoning models)
+### 5. reasoning.effort and parameters
 
-`gpt-5.3-codex`: **`medium` reasoning_effort** is the all-round default (balances depth/speed); use **`high` / `xhigh`** for hard or high-stakes tasks (security, data-integrity, migration review). reasoning_effort is the real quality knob — **temperature is ignored** on reasoning models; don't try to tune via temperature. Supports long/multi-hour reasoning with compaction. Lower effort (`low`/`minimal`) = less exploration, faster, cheaper — fine for mechanical reviews, too shallow for security gates.
+| Model | `reasoning.effort` values | Default |
+|---|---|---|
+| `gpt-6-astra` | no `none` (use `low`) | not stated |
+| `gpt-6.1-sol` | `low`, `medium`, `high`, `xhigh`, `max` | `medium` |
+| `gpt-6.1-terra` | `none`, `low`, `medium`, `high`, `xhigh`, `max` | `medium` |
+| `gpt-6-luna` | supports `none` | not stated |
 
-### 6. Worked example (a review-gate prompt in Codex shape)
+- "When reasoning effort is not `none`, remove `temperature`, `top_p`, and `top_logprobs`." Sampling settings only apply at `none`.
+- If old code used `minimal`, start with `low` and compare.
+- **Pro mode:** `reasoning.mode: "pro"` on the same model (no separate slug). No need to ask for "think harder" or several candidate answers in the prompt.
+- **Verbosity:** `text.verbosity` (`low`, `medium`, `high`) sets the default detail (documented in the GPT-5.6 section of the same page); give task-specific length in the prompt.
+- **Caching:** from GPT-5.5 or earlier, replace `prompt_cache_retention` with `prompt_cache_options.ttl` set to `"30m"`. To change effort mid-conversation, send a `configuration_update` input item and keep request-level `reasoning.effort` unchanged so the prefix stays cacheable.
+- Message roles: put durable instructions in the `developer` message (13 June 2026 capture).
+
+### 6. Worked examples
+
+**Codex review gate:**
 
 ```text
-Goal: Independently review Slice 2 (DB schema, RLS, audit) of the Shine CRM. Review only — do NOT modify code.
+Goal: Independently review Slice 2 (DB schema, RLS, audit) of the Shine CRM. Review only; do NOT modify code.
 
 Context:
 - Standards: ./CODE_REVIEW.md (durable review rules; auto-loaded via AGENTS.md)
@@ -977,59 +1005,389 @@ Constraints:
 Done when: you output numbered findings (sev-ordered) + a final line `VERDICT: PASS | CONDITIONAL (with must-fix list) | FAIL`, with pasted test output as evidence. PASS only if every crm table has RLS + grants in-migration, policies match the role matrix, and tests are green.
 ```
 
-### 7. API path differences (GPT-5.x / o-series, not Codex tool)
+**API classification:**
 
-- Message hierarchy: **developer** message (instructions) > **user** > **assistant**; `system` is treated as `developer`. Put durable instructions in the developer message.
-- GPT-5.x is **sensitive to contradictory instructions** — it burns reasoning reconciling them. Keep the prompt internally consistent (the GPT-5 guide calls this out explicitly).
-- "Eagerness" is tunable: for thorough work, instruct persistence ("keep going until fully resolved, don't hand back early"); for latency, lower reasoning_effort.
-- Reasoning models (o-series, GPT-5 reasoning): no temperature/top_p tuning — use reasoning_effort.
+```python
+from typing import Literal
+from openai import OpenAI
+from pydantic import BaseModel
 
-### 8. Known anti-patterns
+class ClauseClassification(BaseModel):
+    clause_type: Literal["indemnification", "limitation_of_liability", "termination",
+                         "confidentiality", "ip_ownership", "payment_terms", "warranty",
+                         "data_protection", "non_compete", "force_majeure",
+                         "governing_law", "auto_renewal", "other"]
+    risk_score: Literal[1, 2, 3, 4, 5]
+    rationale: str
 
-- **Overloading the prompt with durable rules** → move them to `AGENTS.md` / `CODE_REVIEW.md`.
-- **Asking for an upfront plan or status preamble** → causes premature stopping; let it work, or use the plan tool for genuinely multi-step tasks.
-- **Forgetting "review-only"** on a review → Codex starts editing (its default is to implement).
-- **Tuning temperature** on `gpt-5.3-codex`/o-series → ignored; use reasoning_effort.
-- **One long thread per project** instead of one thread per task → context bloat; start a fresh task per gate.
-- **Broad try/catch / success-shaped fallbacks** in code it writes, and **destructive git** (`reset --hard`, `checkout --`) → it's trained to avoid these; don't instruct them.
+client = OpenAI()
+
+response = client.responses.parse(
+    model="gpt-6-luna",
+    reasoning={"effort": "low"},          # no temperature when effort is not "none"
+    input=[
+        {"role": "developer", "content": (
+            "You classify one contract clause. Risk: 1 = boilerplate, "
+            "2 = mildly unusual, 3 = noteworthy, 4 = material exposure, 5 = escalate. "
+            "Give a one-sentence rationale."
+        )},
+        {"role": "user", "content": (
+            "Customer indemnifies Supplier against any third-party IP claims arising "
+            "from Customer's modifications to the Software."
+        )},
+    ],
+    text_format=ClauseClassification,
+)
+result = response.output_parsed
+```
+
+### 7. Known anti-patterns
+
+- **Don't** keep `gpt-5.3-codex` in Codex config or scripts; it is deprecated in Codex already.
+- **Don't** send `temperature`, `top_p` or `top_logprobs` when reasoning effort is not `none`.
+- **Don't** send `none` to Astra or 6.1 Sol; use `low`.
+- **Don't** repeat "ask first" or "wait for approval" rules; state each once.
+- **Don't** write broad "be concise" rules; say what a short answer must still include.
+- **Don't** add unsolicited warnings, disclaimers or approval flows for hypothetical risks, or stock phrases such as "delve" and "leverage".
+- **Don't** give vague tool routing ("use Programmatic Tool Calling efficiently"); name the stage, tools and output schema.
+- Codex (13 June 2026 capture): don't overload the prompt with durable rules (move them to `AGENTS.md`), don't ask for an upfront plan, don't forget "review-only", and start a fresh task per review gate rather than one long thread.
 
 ---
 
-## Mistral — Large 3 / Small 4 / Codestral
+## Mistral — Large 4 / Small 4 / Ministral 3 / Codestral
 
-**Provider docs URL:** _pending — populated on next weekly run_
-**Date captured:** _pending — flagged for population by the weekly model-research agent_
+**Provider docs URL:** https://docs.mistral.ai/studio-api/conversations/chat-completion/prompting + https://docs.mistral.ai/inference/conversations/structured-output/custom + https://docs.mistral.ai/studio-api/conversations/reasoning
+**Date captured:** 2026-11-10
+**Applies to model IDs:** `mistral-large-4-0` (Large 4), `mistral-small-2603` (Small 4), Ministral 3 (`ministral-8b-latest` in Mistral's example), Codestral
 
-**Stub.** Mistral is not currently in active use across Paperclip agents (per LLM-MATRIX.md). Will be populated when first agent assignment lands or on weekly research run.
+Not yet used by any Paperclip agent. Filled from the stub on 10 November 2026 because the lineup changed (Large 4 and Ministral 3 are new; Large 3 and Medium 3.5 are deprecated; Magistral and Nemo are retired).
 
-Expected coverage: Mistral's `prefix=True` assistant message trick for JSON forcing, Codestral's code-specific patterns, Magistral 1.2's reasoning interface.
+### 1. Prompt structure recommendations
+
+- "The **`system` prompt** is provided at the beginning of the conversation" and is normally developer-managed. If you cannot control it, put the context and instructions in the `user` prompt.
+- Open with a role and a task: "You are a <role>, your task is to <task>."
+- "The prompt should be clear and complete." Write as if the reader has no prior context.
+- Few-shot examples can go in the prompt or as artificial user and assistant turns in the history.
+
+### 2. JSON output mechanism
+
+- **Custom structured output (recommended by Mistral as more reliable):** `client.chat.parse(model=..., messages=..., response_format=PydanticModel)`.
+- **JSON mode:** enforces JSON only. You must also tell the model in the prompt to output JSON and give the format.
+
+### 3. Delimiter preferences
+
+"**Markdown** and/or **XML-style tags** are ideal" (readable, parsable, familiar to the models).
+
+### 4. Classification task framing
+
+- Either ask for the label alone ("a single word or string"; fast, cheap, less flexible) or ask for a JSON object ("more reliable and flexible").
+- **Rating scales:** "use a worded scale for better performance" rather than a numeric one.
+- Avoid vague quantities ("too long", "many"); give objective measures. Use decision trees for conditional logic, because long system prompts drift into contradictions.
+
+### 5. Temperature default & quirks
+
+- **Reasoning effort:** Large 4 accepts `low`, `medium` and `high` (not `none`, `minimal`, `xhigh` or `max`); Mistral recommends starting with `high`. Small 4 accepts `high` or `none`. No default is documented.
+- With reasoning on, `message.content` is a list of chunks: a `ThinkChunk` (`type: "thinking"`) and a `TextChunk` with the answer. With `none` it is a plain string. Append the full assistant message, including the `ThinkChunk`, in multi-turn conversations.
+- Temperature: the prompting page gives no rule; Mistral's structured-output example uses `temperature=0`.
+- "Models are faster at ingesting tokens than generating them," so ask only for the output you need.
+- Re-test prompts when models or versions change.
+
+### 6. Worked example
+
+```python
+import os
+from typing import Literal
+from mistralai.client import Mistral
+from pydantic import BaseModel
+
+class ClauseClassification(BaseModel):
+    clause_type: Literal["indemnification", "limitation_of_liability", "termination",
+                         "confidentiality", "ip_ownership", "payment_terms", "warranty",
+                         "data_protection", "non_compete", "force_majeure",
+                         "governing_law", "auto_renewal", "other"]
+    risk: Literal["boilerplate", "mildly_unusual", "noteworthy",
+                  "material_exposure", "escalate"]          # worded scale, per Mistral
+    rationale: str
+
+client = Mistral(api_key=os.environ["MISTRAL_API_KEY"])
+
+response = client.chat.parse(
+    model="mistral-small-2603",
+    messages=[
+        {"role": "system", "content": (
+            "You are a contract clause classifier, your task is to label one clause.\n"
+            "## Risk levels\n"
+            "- boilerplate: standard wording, no action\n"
+            "- mildly_unusual: acceptable but not standard\n"
+            "- noteworthy: flag in the summary\n"
+            "- material_exposure: recommend a redline\n"
+            "- escalate: send to a partner"
+        )},
+        {"role": "user", "content": (
+            "Customer indemnifies Supplier against any third-party IP claims arising "
+            "from Customer's modifications to the Software."
+        )},
+    ],
+    response_format=ClauseClassification,
+    temperature=0,
+)
+```
+
+### 7. Known anti-patterns
+
+- **Don't** use blurry quantities or let a long system prompt contradict itself.
+- **Don't** ask the model to count words; pass counts in as input.
+- **Don't** request more output than you need.
+- **Don't** use numeric rating scales where a worded one fits.
+- **Don't** strip the `ThinkChunk` from history.
+- **Don't** send `none` or `xhigh` to Large 4.
+- **Don't** start new work on Mistral Large 3 or Medium 3.5; both retire 30 April 2027.
 
 ---
 
-## Alibaba — Qwen 2.5-Max / Qwen-Plus / Qwen-Turbo
+## Alibaba — Qwen3.8-Max / Qwen3.7-Plus / Qwen3.8-Flash
 
-**Provider docs URL:** _pending — populated on next weekly run_
-**Date captured:** _pending — flagged for population by the weekly model-research agent_
+**Provider docs URL:** https://www.alibabacloud.com/help/en/model-studio/prompt-engineering-guide + https://www.alibabacloud.com/help/en/model-studio/qwen-structured-output + https://www.alibabacloud.com/help/en/model-studio/deep-thinking
+**Date captured:** 2026-11-10
+**Applies to model IDs:** `qwen3.8-max`, `qwen3.7-plus`, `qwen3.8-flash` (cloud, International region). The local `qwen3.8:27b` on Ollama is a different deployment; this section covers the cloud API.
 
-**Stub.** Qwen is OpenAI-compatible via DashScope. Expected coverage: Qwen-Plus 1M context strategies, local Qwen2.5 via Ollama prompt differences, Qwen-Max enterprise tuning notes.
+Not yet used by any Paperclip agent in the cloud. Filled from the stub on 10 November 2026 because the lineup moved to Qwen3.7 and 3.8.
+
+### 1. Prompt structure recommendations
+
+Model Studio's text prompt guide gives a framework of six elements, in this order: **Context, Objective, Style, Tone, Audience, Response.** Add or remove elements to fit the task. For multi-step work, give explicit steps, or split the task across several calls (prompt chaining, which the guide says "performs better and has higher accuracy" but is harder to build).
+
+### 2. JSON output mechanism
+
+- **JSON Object mode:** `response_format={"type": "json_object"}`. The system or user message **must contain the word "JSON"** or the API returns an error. Supported on most Qwen models, including the 3.8-Max, 3.7-Plus and 3.8-Flash series.
+- **JSON Schema mode:** `response_format={"type": "json_schema", "json_schema": {..., "strict": True}}` on the Qwen3.7-Plus, 3.7-Flash, 3.7-Max, 3.8-Max and 3.8-Flash series. **But the page says Singapore region models do not yet support JSON Schema mode**, so on the International endpoint use JSON Object mode and validate.
+- The Responses API uses `text.format` with the same values.
+- The guide calls a format template plus sample data "the most effective optimization approach" for structured output.
+
+### 3. Delimiter preferences
+
+Separators that are "rare in natural language text", such as `###`, `===` or `>>>`, around each block of content.
+
+### 4. Classification task framing
+
+Give an explicit output format with a template and a filled-in sample. Avoid ambiguous terms (the guide's example replaces "language" with "language type").
+
+### 5. Temperature default & quirks
+
+- All three models are hybrid thinking models with **thinking on by default**. Turn it off with `enable_thinking: False` (in the OpenAI Python SDK, inside `extra_body`). `thinking_budget` caps reasoning tokens. Reasoning arrives in `reasoning_content`.
+- Thinking tokens are billed as output. On Qwen3.7-Plus they can be over 60% of output tokens, so turning thinking off for simple tasks cuts cost and time.
+- `preserve_thinking` controls whether earlier `reasoning_content` is read in later turns (listed for 3.8-Max and 3.7, not 3.8-Flash).
+- Temperature and `top_p` guidance was not on the pages read; leave them at their defaults.
+- International base URL: `https://{WorkspaceId}.ap-southeast-1.maas.aliyuncs.com/compatible-mode/v1`, key in `DASHSCOPE_API_KEY`.
+
+### 6. Worked example
+
+```python
+import json
+import os
+from openai import OpenAI
+
+client = OpenAI(
+    api_key=os.environ["DASHSCOPE_API_KEY"],
+    base_url="https://{WorkspaceId}.ap-southeast-1.maas.aliyuncs.com/compatible-mode/v1",  # replace {WorkspaceId}
+)
+
+system = """### Context
+You label contract clauses for a legal review team.
+### Objective
+Choose one clause_type and one risk_score for the clause you are given.
+clause_type is one of: indemnification, limitation_of_liability, termination,
+confidentiality, ip_ownership, payment_terms, warranty, data_protection, non_compete,
+force_majeure, governing_law, auto_renewal, other.
+risk_score is 1 (boilerplate) to 5 (escalate to a partner).
+### Response
+Return JSON only, in this template:
+{"clause_type": "<value>", "risk_score": <1-5>, "rationale": "<one sentence>"}
+Sample:
+{"clause_type": "termination", "risk_score": 2, "rationale": "Mutual 30-day termination is standard."}"""
+
+response = client.chat.completions.create(
+    model="qwen3.8-flash",
+    messages=[
+        {"role": "system", "content": system},
+        {"role": "user", "content": "### Clause\nCustomer indemnifies Supplier against any "
+                                    "third-party IP claims arising from Customer's "
+                                    "modifications to the Software.\n###"},
+    ],
+    response_format={"type": "json_object"},       # "JSON" appears in the system prompt
+    extra_body={"enable_thinking": False},          # simple task; saves output tokens
+)
+result = json.loads(response.choices[0].message.content)
+```
+
+### 7. Known anti-patterns
+
+- **Don't** send JSON Object mode without the word "JSON" in the messages; the API rejects it.
+- **Don't** assume JSON Schema mode works on the Singapore (International) endpoint yet.
+- **Don't** leave thinking on for simple, high-volume calls; it is billed as output.
+- **Don't** send one-line, vague requests or long unlabelled blocks of text.
+- **Don't** leave the output format open when another system will read the result.
 
 ---
 
-## Zhipu AI — GLM-5 / GLM-4.7 / GLM-4.7-Flash
+## Zhipu AI — GLM-5.3 / GLM-5.3-Flash / GLM-4.7
 
-**Provider docs URL:** _pending — populated on next weekly run_
-**Date captured:** _pending — flagged for population by the weekly model-research agent_
+**Provider docs URL:** https://docs.z.ai/guides/llm/glm-5.3 + https://docs.z.ai/guides/capabilities/struct-output
+**Date captured:** 2026-11-10
+**Applies to model IDs:** `glm-5.3`, GLM-5.3-Flash, `glm-5`, `glm-4.7`, `glm-4.6`; free `GLM-4.7-Flash` and `GLM-4.5-Flash`
 
-**Stub.** GLM uses Zhipu's proprietary API (open.bigmodel.cn), not OpenAI-compatible. Populated when first agent assignment lands.
+Not yet used by any Paperclip agent. Filled from the stub on 10 November 2026. **Correction to the stub:** Z.ai's international API is OpenAI-compatible (`https://api.z.ai/api/paas/v4/`) and also has an Anthropic-compatible endpoint (`https://api.z.ai/api/anthropic`).
+
+### 1. Prompt structure recommendations
+
+Z.ai's model pages publish no prompt-structure guide. Their examples use a `system` message that sets the role, then the request in a `user` message. For JSON, Z.ai says to describe the expected JSON structure and field rules in the system message and put the user's request in the user message.
+
+### 2. JSON output mechanism
+
+- `response_format={"type": "json_object"}`. Documented for `glm-5`, `glm-4.7` and `glm-4.6` "etc."; a `json_schema` type is not documented, so validate in code.
+- Z.ai's own SDK is `zai-sdk` (`from zai import ZaiClient`); the OpenAI SDK also works with the base URL above.
+
+### 3. Delimiter preferences
+
+Not documented.
+
+### 4. Classification task framing
+
+Put the allowed values and field rules in the system message next to the JSON shape, then check the reply against the allowed set in code.
+
+### 5. Temperature default & quirks
+
+- **GLM-5.3 always reasons.** `thinking.type` accepts only `enabled` (the default); `disabled` is not supported. When moving older code to `glm-5.3`, change `"disabled"` to `"enabled"` and set `reasoning_effort` to `low`, or the request fails.
+- `reasoning_effort`: `low`, `high` or `max`; default `max`. "For complex tasks such as coding, we recommend using `max`." Use `low` for simple classification.
+- GLM-5.3: 1M context, 128K maximum output, text input only.
+- Temperature: Z.ai's examples set `temperature=1.0` but do not state a default.
+- Through Mistral's API, GLM 5.3 is `zai-glm-5-3` (effort `low`, `high`, `max`; no `none`) and always returns content as a chunk list.
+
+### 6. Worked example
+
+```python
+import json
+import os
+from openai import OpenAI
+
+client = OpenAI(api_key=os.environ["ZAI_API_KEY"], base_url="https://api.z.ai/api/paas/v4/")
+
+ALLOWED = {"indemnification", "limitation_of_liability", "termination", "confidentiality",
+           "ip_ownership", "payment_terms", "warranty", "data_protection", "non_compete",
+           "force_majeure", "governing_law", "auto_renewal", "other"}
+
+system = """You are a contract clause classifier. Reply only with JSON in this shape:
+{
+  "clause_type": "one of: indemnification | limitation_of_liability | termination | confidentiality | ip_ownership | payment_terms | warranty | data_protection | non_compete | force_majeure | governing_law | auto_renewal | other",
+  "risk_score": "integer 1 (boilerplate) to 5 (escalate)",
+  "rationale": "one sentence"
+}"""
+
+response = client.chat.completions.create(
+    model="glm-4.7",                      # JSON mode documented for this model
+    messages=[
+        {"role": "system", "content": system},
+        {"role": "user", "content": "Classify: Customer indemnifies Supplier against any "
+                                    "third-party IP claims arising from Customer's "
+                                    "modifications to the Software."},
+    ],
+    response_format={"type": "json_object"},
+)
+result = json.loads(response.choices[0].message.content)
+if result.get("clause_type") not in ALLOWED:
+    raise ValueError(f"Out-of-schema reply: {result}")
+```
+
+### 7. Known anti-patterns
+
+- **Don't** send `thinking: {"type": "disabled"}` to `glm-5.3`; it fails.
+- **Don't** leave `reasoning_effort` at its `max` default for simple, high-volume work.
+- **Don't** assume schema enforcement; JSON mode guarantees JSON only.
+- **Don't** rely on the old note that GLM is not OpenAI-compatible; that referred to the open.bigmodel.cn API.
 
 ---
 
-## MiniMax — M2.7
+## MiniMax — M3.1-Flash / M3
 
-**Provider docs URL:** _pending — populated on next weekly run_
-**Date captured:** _pending — flagged for population by the weekly model-research agent_
+**Provider docs URL:** https://platform.minimax.io/docs/guides/text-generation + https://platform.minimax.io/docs/api-reference/text-anthropic-api
+**Date captured:** 2026-11-10
+**Applies to model IDs:** `MiniMax-M3.1-Flash`, `MiniMax-M3`
 
-**Stub.** MiniMax is a fallback for Engineer when Codex quota is exhausted (per LLM-MATRIX.md). Section will be populated on next weekly run.
+Filled from the stub on 10 November 2026. LLM-MATRIX.md still names `MiniMax-M2.7` as the Engineer fallback, but M2.7 is no longer on MiniMax's price list; this section covers the current models.
+
+### 1. Prompt structure recommendations
+
+MiniMax publishes no prompt-structure guide on the pages read. It recommends its **Anthropic-compatible endpoint** (`https://api.minimax.io/anthropic`), so prompts go in the usual Anthropic shape: role and rules in `system`, the task in the user message. An OpenAI-compatible endpoint is at `https://api.minimax.io/v1`.
+
+### 2. JSON output mechanism
+
+- **No structured-output parameter is documented.** The Anthropic-compatible reference lists only `output_config.effort`, not `output_config.format`.
+- `tool_choice` supports only `auto`, so a tool call cannot be forced.
+- So: describe the JSON shape in the system prompt, parse the final text block, and validate in code. (A third-party framework, Agno, also says MiniMax has no native `json_schema` mode; not confirmed by MiniMax.)
+
+### 3. Delimiter preferences
+
+Not documented.
+
+### 4. Classification task framing
+
+List the allowed labels and the JSON shape in the system prompt; validate the label in code.
+
+### 5. Temperature default & quirks
+
+- **`temperature` is ignored** (always 1) and **`top_p` is ignored** (always 0.95). `stop_sequences` are ignored too.
+- **Thinking is always on** and "cannot be turned off". Sending `thinking: {"type": "disabled"}` or effort `none` returns a 400 error. Lower `effort` instead: `low`, `medium`, `high`, `xhigh` or `max` (default `max` on M3.1-Flash). Anthropic-compatible: `output_config.effort`; OpenAI-compatible: `reasoning_effort` (thinking in `reasoning_content`); OpenAI Responses: `reasoning.effort`.
+- **Thinking counts toward `max_tokens`.** A small value can end with `stop_reason: "max_tokens"` and no text.
+- Both models have a 1M context window and accept text, image and video.
+- MiniMax-M3 has a Priority tier at 1.5 times the price (`service_tier: "priority"`).
+
+### 6. Worked example
+
+```python
+import json
+import os
+import anthropic
+
+client = anthropic.Anthropic(api_key=os.environ["MINIMAX_API_KEY"],
+                             base_url="https://api.minimax.io/anthropic")
+
+ALLOWED = {"indemnification", "limitation_of_liability", "termination", "confidentiality",
+           "ip_ownership", "payment_terms", "warranty", "data_protection", "non_compete",
+           "force_majeure", "governing_law", "auto_renewal", "other"}
+
+response = client.messages.create(
+    model="MiniMax-M3.1-Flash",
+    max_tokens=4096,                      # leave room for thinking
+    output_config={"effort": "low"},      # thinking cannot be disabled; lower effort instead
+    system=(
+        "You are a contract clause classifier. Reply with one JSON object only: "
+        '{"clause_type": <one of indemnification, limitation_of_liability, termination, '
+        "confidentiality, ip_ownership, payment_terms, warranty, data_protection, "
+        "non_compete, force_majeure, governing_law, auto_renewal, other>, "
+        '"risk_score": <integer 1 (boilerplate) to 5 (escalate)>, '
+        '"rationale": <one sentence>}'
+    ),
+    messages=[{"role": "user", "content": (
+        "Customer indemnifies Supplier against any third-party IP claims arising "
+        "from Customer's modifications to the Software."
+    )}],
+)
+
+if response.stop_reason == "max_tokens":
+    raise RuntimeError("Ran out of tokens while thinking; raise max_tokens")
+text = [block.text for block in response.content if block.type == "text"][-1]
+result = json.loads(text)
+if result.get("clause_type") not in ALLOWED:
+    raise ValueError(f"Out-of-schema reply: {result}")
+```
+
+### 7. Known anti-patterns
+
+- **Don't** send `thinking: disabled` or effort `none` (400 error).
+- **Don't** tune `temperature`, `top_p` or `stop_sequences`; they are ignored.
+- **Don't** set a small `max_tokens`; thinking can use it all and leave no answer.
+- **Don't** expect `tool_choice` to force a tool; only `auto` works.
+- **Don't** keep `MiniMax-M2.7` as a fallback without checking it still answers; it is off the price list.
 
 ---
 
@@ -1082,4 +1440,4 @@ This file is owned by the **Researcher agent** ([positions/research/researcher/S
 
 ---
 
-_Last updated: 2026-06-13 — OpenAI/Codex section filled (Codex-as-code-review focus, for the Shine CRM project) from OpenAI's official Codex prompting guide + best-practices docs. Remaining stubs: Mistral, Qwen, GLM, MiniMax._
+_Last updated: 2026-11-10. Weekly pass: refreshed Anthropic (Claude 5 family), OpenAI (GPT-6 family and Codex), xAI (old prompt-engineering URL now 404), DeepSeek (V4.1 Flash, V4 Pro) and Kimi (K3.1 Pro, K3); added a section for Gemini 4 Argon, 3.8 Flash, 3.6 Flash and 3.5 Flash-Lite; filled the Mistral, Qwen, GLM and MiniMax stubs; added status notes to the Gemini 3.x and 2.5 sections. Gemma 4 unchanged (quarterly local review). Previous update 2026-06-13._
