@@ -1,5 +1,5 @@
 {
-  "last_updated": "2026-06-07T00:01:16.091371+00:00",
+  "last_updated": "2026-11-10T04:36:16.658038+00:00",
   "positions": {
     "CEO": {
       "agent_id": "297d6a61-9900-4e31-9e7e-8ec3fa93c7a3",
@@ -135,11 +135,11 @@
       "agent_id": "66de6564-88df-4a0c-b918-299d2d6619ea",
       "character": "Travel Agent",
       "dept_path": "travel/travel-agent",
-      "active_slot": "Fallback 1",
-      "active_adapter": "ollama_local",
-      "active_model": "kimi-k2.5",
+      "active_slot": "Primary",
+      "active_adapter": "claude_local",
+      "active_model": "claude-sonnet-4-6",
       "local_only": false,
-      "last_sub": "2026-04-06T09:39:41.458729+00:00"
+      "last_sub": "2026-11-10T04:36:16.658027+00:00"
     },
     "Researcher": {
       "agent_id": "9d589490-af2a-4717-b7a8-b61c60059765",
