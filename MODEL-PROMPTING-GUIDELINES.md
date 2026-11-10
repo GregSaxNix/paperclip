@@ -4,7 +4,7 @@
 
 **Cross-reference:** Global rule at `C:\Users\Administrator\.claude\CLAUDE.md` Part 15 (Per-Model Prompt Engineering). Companion files: [MODEL-RESEARCH.md](./MODEL-RESEARCH.md), [LLM-MATRIX.md](./LLM-MATRIX.md).
 
-**Update cadence:** Weekly, in the same Monday pass as `MODEL-RESEARCH.md`. Task Scheduler `Model Lineup Monitor` (Monday 9:00 AM) posts the Researcher issue that starts the pass. The Researcher re-validates URLs, flags sections >6 months old, and adds sections for any newly-released model versions. See [Maintenance contract](#maintenance-contract) at the bottom.
+**Update cadence:** Weekly, in the same Monday pass as `MODEL-RESEARCH.md`. Task Scheduler `Model Lineup Monitor` (Monday 9:00 AM) posts the Researcher issue that starts the pass. Since 10 November 2026 Task Scheduler `Paperclip Weekly Guidelines Refresh` (Monday 10:00 AM, `scripts/weekly_guidelines_refresh.py`) runs Claude Code to do the refresh and closes that issue. The refresh re-validates URLs, flags sections >6 months old, and adds sections for any newly-released model versions. See [Maintenance contract](#maintenance-contract) at the bottom.
 
 **Refresh threshold:** Any section with a `Date captured` older than 6 months is auto-flagged stale by `python scripts/update_llm_matrix.py --guidelines-stale`.
 
@@ -1393,7 +1393,7 @@ if result.get("clause_type") not in ALLOWED:
 
 ## Maintenance contract
 
-This file is owned by the **Researcher agent** ([positions/research/researcher/SOUL.md](./positions/research/researcher/SOUL.md)). On every weekly model-research run, Researcher MUST:
+This file is owned by the **Researcher position** ([positions/research/researcher/SOUL.md](./positions/research/researcher/SOUL.md)). Since 10 November 2026 the weekly run is done by Claude Code via `scripts/weekly_guidelines_refresh.py`, because the Researcher agent's adapter cannot search the web or edit files. On every weekly model-research run, the refresh MUST:
 
 1. **For each filled section:**
    - Re-validate the `Provider docs URL` is still live (HTTP 200 / not 404). If broken, mark the section header with `⚠️ URL stale — needs refresh` and search for the new URL.

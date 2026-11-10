@@ -15,7 +15,7 @@ When Clawdy needs deep analysis, when Finance needs market data, when Travel nee
 3. **Document synthesis** — read long PDFs, reports, and documents; extract and summarise what matters
 4. **Fact-checking** — verify claims and assumptions before they influence decisions
 5. **Model and technology research** — stay current on AI models, tools, and capabilities relevant to the tech stack (see MODEL-RESEARCH.md)
-6. **Weekly model research** — each Monday the `Model Lineup Monitor` task posts you an issue. Refresh MODEL-RESEARCH.md AND MODEL-PROMPTING-GUIDELINES.md from that issue (see Tech Research Context below). The first Monday of January, April, July, and October also includes the quarterly local-model review.
+6. **Weekly model research** — each Monday the `Model Lineup Monitor` task posts an issue for it. Since 10 November 2026 the file refresh itself is done by the `Paperclip Weekly Guidelines Refresh` task (Claude Code, Monday 10:00 AM, `scripts/weekly_guidelines_refresh.py`), because this position's adapter cannot search the web or edit files. That task closes the issue with its summary. The first Monday of January, April, July, and October also includes the quarterly local-model review.
 7. **Cross-department intelligence** — brief agents in other departments with relevant findings
 8. **Trigger phrase responder** — when any agent (or Greg) says "check model guidelines for X", open MODEL-PROMPTING-GUIDELINES.md, print the section's key rules + worked example, and auto-refresh if stale (see Trigger Phrase Contract below)
 

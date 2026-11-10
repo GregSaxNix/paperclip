@@ -1,7 +1,7 @@
 # Life Admin — Model Research Database
 
 **Purpose:** Comprehensive matrix of all available AI models × all agent task types. Used to inform and update LLM-MATRIX.md.  
-**Update cadence:** Weekly provider and pricing pass, every Monday 9:00 AM AEST, via Task Scheduler task `Model Lineup Monitor` (`scripts/check_model_lineups.py`). That run posts an issue to the Researcher. Local weights on this PC are reviewed quarterly, on the first Monday of January, April, July, and October (next: January 2027).  
+**Update cadence:** Weekly provider and pricing pass, every Monday 9:00 AM AEST, via Task Scheduler task `Model Lineup Monitor` (`scripts/check_model_lineups.py`). That run posts an issue to the Researcher, and at 10:00 AM Task Scheduler `Paperclip Weekly Guidelines Refresh` (Monday 10:00 AM, `scripts/weekly_guidelines_refresh.py`) runs Claude Code to do the refresh and closes that issue. Local weights on this PC are reviewed quarterly, on the first Monday of January, April, July, and October (next: January 2027).  
 **Last updated:** 2026-11-10 (full provider and pricing pass from official provider pages; gemma4:12b/26b local entries added 2026-06-07; schedule corrected 2026-10-06)
 
 ### Changes in the 10 November 2026 pass
@@ -376,7 +376,7 @@ Based on this matrix, some original recommendations can be improved:
 
 ## Update Schedule
 
-`Model Lineup Monitor` runs every Monday at 9:00 AM and posts the weekly research issue to the Researcher. The task used to be every four weeks, so this file stopped being refreshed. Refresh this file in that Monday pass, alongside [MODEL-PROMPTING-GUIDELINES.md](./MODEL-PROMPTING-GUIDELINES.md). The issue prompt is:
+`Model Lineup Monitor` runs every Monday at 9:00 AM and posts the weekly research issue to the Researcher. The task used to be every four weeks, so this file stopped being refreshed. The Monday 10:00 AM `Paperclip Weekly Guidelines Refresh` task (Claude Code) refreshes this file in that pass, alongside [MODEL-PROMPTING-GUIDELINES.md](./MODEL-PROMPTING-GUIDELINES.md). The issue prompt is:
 > "Research all major AI providers (Anthropic, OpenAI, Google, xAI, Mistral, DeepSeek, Moonshot, MiniMax, Qwen, GLM) for new models and pricing changes in the past 7 days. Update MODEL-RESEARCH.md AND MODEL-PROMPTING-GUIDELINES.md."
 
 Track: new model releases, pricing changes, free tier changes, context window updates, new capabilities.
