@@ -1,8 +1,8 @@
 # Life Admin — Model Research Database
 
 **Purpose:** Comprehensive matrix of all available AI models × all agent task types. Used to inform and update LLM-MATRIX.md.  
-**Update cadence:** Weekly — re-run model research agent to capture pricing/model changes.  
-**Last updated:** 2026-04-06 (gemma4:12b/26b local entries added 2026-06-07)
+**Update cadence:** Weekly provider and pricing pass, every Monday 9:00 AM AEST, via Task Scheduler task `Model Lineup Monitor` (`scripts/check_model_lineups.py`). That run posts an issue to the Researcher. Local weights on this PC are reviewed quarterly, on the first Monday of January, April, July, and October (next: January 2027).  
+**Last updated:** 2026-04-06 (gemma4:12b/26b local entries added 2026-06-07; schedule corrected 2026-10-06)
 
 **Companion files:**
 - [LLM-MATRIX.md](./LLM-MATRIX.md) — position assignments and fallback chains
@@ -305,9 +305,11 @@ Based on this matrix, some original recommendations can be improved:
 
 ## Update Schedule
 
-This file should be refreshed weekly, alongside [MODEL-PROMPTING-GUIDELINES.md](./MODEL-PROMPTING-GUIDELINES.md). Run the model research agent with prompt:
+`Model Lineup Monitor` runs every Monday at 9:00 AM and posts the weekly research issue to the Researcher. The task used to be every four weeks, so this file stopped being refreshed. Refresh this file in that Monday pass, alongside [MODEL-PROMPTING-GUIDELINES.md](./MODEL-PROMPTING-GUIDELINES.md). The issue prompt is:
 > "Research all major AI providers (Anthropic, OpenAI, Google, xAI, Mistral, DeepSeek, Moonshot, MiniMax, Qwen, GLM) for new models and pricing changes in the past 7 days. Update MODEL-RESEARCH.md AND MODEL-PROMPTING-GUIDELINES.md."
 
 Track: new model releases, pricing changes, free tier changes, context window updates, new capabilities.
+
+The first Monday of January, April, July, and October adds the quarterly local-model review (RTX 4090, 24 GB). That review checks whether a newly released open model should replace `gemma4:12b`, `gemma4:26b`, `qwen3.8:27b`, `gpt-oss:20b`, or `llama3.2`. Leave `nomic-embed-text` installed.
 
 **For every new model added here, the same weekly run MUST add a section to MODEL-PROMPTING-GUIDELINES.md** (provider docs URL, JSON mechanism, delimiter prefs, temperature, worked example, anti-patterns). Use `python scripts/update_llm_matrix.py --guidelines-stale` to verify nothing is missed.

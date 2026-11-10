@@ -16,9 +16,14 @@ Reuses:
     update_llm_matrix.py  -- compute_rankings(), load_data()
     position_manager.py   -- POSITION_MAP, LOCAL_ONLY
 
-Schedule: Task Scheduler "Model Lineup Monitor" -- 1st of each month, 9:00 AM
+Schedule: Task Scheduler "Model Lineup Monitor" -- every Monday, 9:00 AM AEST
 Log:      D:\paperclip\scripts\model-lineups.log
 State:    D:\paperclip\scripts\check_model_lineups_state.json
+
+The same Monday run posts one issue to the Researcher. That issue is the weekly
+provider and pricing refresh of MODEL-RESEARCH.md and MODEL-PROMPTING-GUIDELINES.md.
+On the first Monday of January, April, July, and October the issue also asks for
+the quarterly local-model review (RTX 4090, 24 GB).
 """
 
 import argparse
@@ -59,6 +64,13 @@ SCORE_THRESHOLD = 0.3
 
 # Positions to skip (hard privacy constraint + standalone utility agents)
 SKIP_POSITIONS = LOCAL_ONLY | {"Gemini"}
+RESEARCHER_AGENT_ID = POSITION_MAP["Researcher"][2]
+WEEKLY_RESEARCH_PROMPT = (
+    "Research all major AI providers (Anthropic, OpenAI, Google, xAI, Mistral, "
+    "DeepSeek, Moonshot, MiniMax, Qwen, GLM) for new models and pricing changes "
+    "in the past 7 days. Update MODEL-RESEARCH.md AND MODEL-PROMPTING-GUIDELINES.md."
+)
+QUARTERLY_MONTHS = {1, 4, 7, 10}
 
 logging.basicConfig(
     filename=str(LOG_FILE),
@@ -357,6 +369,80 @@ def print_table(all_results: list, recs: list) -> None:
     print()
 
 
+def _is_quarterly_local_review(now: datetime) -> bool:
+    """First Monday of January, April, July, and October."""
+    return now.month in QUARTERLY_MONTHS and now.day <= 7 and now.weekday() == 0
+
+
+def _request_weekly_research(args) -> None:
+    """Post the Monday research issue and wake the Researcher.
+
+    The lineup comparison above this only reads the saved matrix. It does not
+    search for new models. This issue is what keeps MODEL-RESEARCH.md current.
+    """
+    now = datetime.now()
+    week_key = now.strftime("%G-W%V")
+    quarterly = _is_quarterly_local_review(now)
+    state = load_state()
+    prev = state.get("__weekly_research__", {})
+    if not args.force and prev.get("week") == week_key:
+        print(f"  Weekly research already requested for {week_key} -- skipping")
+        log.info("Weekly research already requested for %s", week_key)
+        return
+
+    lines = [
+        WEEKLY_RESEARCH_PROMPT,
+        "",
+        "Checklist (positions/research/researcher/SOUL.md):",
+        "1. Update D:\\paperclip\\MODEL-RESEARCH.md with new models and pricing.",
+        "2. Run: python D:\\paperclip\\scripts\\update_llm_matrix.py --guidelines-stale",
+        "3. Refresh stale or broken sections in MODEL-PROMPTING-GUIDELINES.md.",
+        "4. Add a guidelines section for every new model.",
+        "5. Flag LLM-MATRIX.md only if a position's recommended model should change. Do not apply lineup changes.",
+        "6. Comment on this issue with what changed, then mark it done.",
+    ]
+    title = f"Weekly model research ({week_key})"
+    if quarterly:
+        title = f"Weekly model research + quarterly local review ({week_key})"
+        lines.extend([
+            "",
+            "This week is also the quarterly local-model review (RTX 4090, 24 GB).",
+            "Installed tags: gemma4:12b, gemma4:26b, qwen3.8:27b, gpt-oss:20b, llama3.2, nomic-embed-text.",
+            "Check whether a new open model that fits in 24 GB beats qwen3.8:27b, or a new Gemma, Qwen, or gpt-oss size should replace a current pin.",
+            "Leave nomic-embed-text installed. Leave Doc and Freud on gemma4:26b. Do not retarget TalentMap tools/glm_duty_generator.py.",
+            "Do not run position_manager.py sync all.",
+            "If a tag changes, update every pin and doc named in .cursor/rules/local-model-updates.mdc in the same change.",
+        ])
+
+    print(f"\nWeekly research: {title}")
+    if args.dry_run:
+        print("(dry-run: research issue not posted)")
+        log.info("Dry-run weekly research for %s quarterly=%s", week_key, quarterly)
+        return
+
+    resp = paperclip_post(f"/api/companies/{COMPANY_ID}/issues", {
+        "title": title,
+        "description": "\n".join(lines),
+        "status": "todo",
+        "assigneeAgentId": RESEARCHER_AGENT_ID,
+        "priority": "medium",
+    })
+    if "id" not in resp:
+        print(f"  Failed to post weekly research issue: {resp.get('error')}")
+        log.error("Failed to post weekly research issue: %s", resp)
+        return
+
+    state["__weekly_research__"] = {
+        "week": week_key,
+        "posted_at": now.strftime("%Y-%m-%d"),
+        "issue_id": resp["id"],
+        "quarterly": quarterly,
+    }
+    save_state(state)
+    print(f"  Weekly research issue posted: {resp['id'][:8]} (assignee wakes on create)")
+    log.info("Posted weekly research issue %s quarterly=%s", resp["id"], quarterly)
+
+
 # ── Main ──────────────────────────────────────────────────────────────────────
 
 def main() -> None:
@@ -381,6 +467,9 @@ def main() -> None:
         log.error("Could not reach Paperclip API: %s", e)
         print(f"ERROR: Could not reach Paperclip at {PAPERCLIP_BASE}: {e}")
         sys.exit(1)
+
+    if not args.json:
+        _request_weekly_research(args)
 
     # Build recommendations
     recs, all_results = build_recommendations(data, rankings, live_models)

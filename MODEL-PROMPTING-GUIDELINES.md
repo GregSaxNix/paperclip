@@ -4,7 +4,7 @@
 
 **Cross-reference:** Global rule at `C:\Users\Administrator\.claude\CLAUDE.md` Part 15 (Per-Model Prompt Engineering). Companion files: [MODEL-RESEARCH.md](./MODEL-RESEARCH.md), [LLM-MATRIX.md](./LLM-MATRIX.md).
 
-**Update cadence:** Weekly, in the same pass as `MODEL-RESEARCH.md`. The Researcher agent re-validates URLs, flags sections >6 months old, and adds sections for any newly-released model versions. See [Maintenance contract](#maintenance-contract) at the bottom.
+**Update cadence:** Weekly, in the same Monday pass as `MODEL-RESEARCH.md`. Task Scheduler `Model Lineup Monitor` (Monday 9:00 AM) posts the Researcher issue that starts the pass. The Researcher re-validates URLs, flags sections >6 months old, and adds sections for any newly-released model versions. See [Maintenance contract](#maintenance-contract) at the bottom.
 
 **Refresh threshold:** Any section with a `Date captured` older than 6 months is auto-flagged stale by `python scripts/update_llm_matrix.py --guidelines-stale`.
 
