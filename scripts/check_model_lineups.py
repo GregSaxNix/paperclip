@@ -338,6 +338,9 @@ def post_guidelines_issue(audit: dict) -> dict:
         "title": title,
         "description": "\n".join(lines),
         "status": "todo",
+        # Without an assignee nobody is woken and the issue sits in todo forever
+        # (LA-357 sat unassigned from 2 August to 10 November 2026).
+        "assigneeAgentId": RESEARCHER_AGENT_ID,
     })
 
 
