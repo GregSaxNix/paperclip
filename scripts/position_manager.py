@@ -90,6 +90,94 @@ def get_ollama_price_config(model, pricing):
         }
     return {}
 
+
+# ─── Adapter config builder ──────────────────────────────────────────────────
+# Cloud providers reached through ollama_local (OpenAI-compatible endpoints).
+# (model-id prefixes, base url, .env variable holding the key)
+CLOUD_PROVIDERS = [
+    (("grok",),                "https://api.x.ai",          "XAI_API_KEY"),
+    (("deepseek",),            "https://api.deepseek.com",  "DEEPSEEK_API_KEY"),
+    (("kimi", "moonshot"),     "https://api.moonshot.ai",   "MOONSHOT_API_KEY"),
+    (("minimax",),             "https://api.minimax.io",    "MINIMAX_API_KEY"),
+    (("mistral", "codestral"), "https://api.mistral.ai",    "MISTRAL_API_KEY"),
+    (("qwen-",),               "https://dashscope-intl.aliyuncs.com/compatible-mode", "DASHSCOPE_API_KEY"),
+]
+
+# Fields this script sets itself; everything else on the agent is kept.
+MANAGED_FIELDS = {"model", "instructionsFilePath", "inputTokenPriceUsd",
+                  "outputTokenPriceUsd", "url", "apiKey"}
+# Fields that still apply when the adapter type changes.
+KEEP_ACROSS_ADAPTERS = {"paperclipSkillSync", "instructionsRootPath",
+                        "instructionsEntryFile", "instructionsBundleMode"}
+
+ENV_FILE = Path(__file__).parent.parent / ".env"
+
+
+def load_env():
+    """Return os.environ merged over key=value lines from D:\\paperclip\\.env."""
+    env = {}
+    if ENV_FILE.exists():
+        for line in ENV_FILE.read_text(encoding="utf-8").splitlines():
+            line = line.strip()
+            if line and not line.startswith("#") and "=" in line:
+                k, v = line.split("=", 1)
+                env[k.strip()] = v.strip().strip('"').strip("'")
+    env.update(os.environ)
+    return env
+
+
+def provider_for_model(model):
+    """Return (url, env_var) for a cloud model, or None for a local Ollama model.
+    Raises ValueError for a cloud-looking model with no known provider."""
+    if ":" in model or model.lower().startswith("gemma"):
+        return None  # local Ollama tag, e.g. gemma4:12b
+    m = model.lower()
+    for prefixes, url, env_var in CLOUD_PROVIDERS:
+        if m.startswith(prefixes):
+            return url, env_var
+    raise ValueError(f"no provider known for model '{model}': add it to CLOUD_PROVIDERS")
+
+
+def build_adapter_config(current_type, current_config, slot, soul_path, pricing, env):
+    """Build the full adapterConfig for a slot without losing the agent's other settings.
+
+    Keeps every field this script does not manage (instruction bundle, skill sync,
+    env, codex flags). For a cloud ollama_local model, sets the provider url and key:
+    the agent's own key when it is already on that provider, otherwise the key from .env.
+    Raises ValueError rather than return a config that would silently hit local Ollama.
+    """
+    current_config = current_config or {}
+    if slot["adapterType"] == current_type:
+        config = {k: v for k, v in current_config.items() if k not in MANAGED_FIELDS}
+    else:
+        config = {k: v for k, v in current_config.items() if k in KEEP_ACROSS_ADAPTERS}
+    config["model"] = slot["model"]
+    config["instructionsFilePath"] = soul_path
+
+    if slot["adapterType"] == "ollama_local":
+        config.update(get_ollama_price_config(slot["model"], pricing))
+        provider = provider_for_model(slot["model"])
+        if provider:
+            url, env_var = provider
+            key = None
+            if (current_config.get("url") or "").rstrip("/") == url:
+                key = current_config.get("apiKey")
+            key = key or env.get(env_var)
+            if not key:
+                raise ValueError(f"no API key for {url}: add {env_var} to {ENV_FILE}")
+            config["url"] = url
+            config["apiKey"] = key
+    return config
+
+
+def fetch_agent_config(agent_id):
+    """Return (adapterType, adapterConfig) for an agent, or None if it can't be read."""
+    agent = get_agent(agent_id)
+    if not agent:
+        return None
+    data = agent.get("agent", agent)
+    return data.get("adapterType"), data.get("adapterConfig") or {}
+
 # ─── Position map: key -> (dept/position, character, agent_id) ────────────────
 
 POSITION_MAP = {
@@ -198,7 +286,8 @@ def parse_lineup(position_key):
         slots.append({
             "slot": slot_name,
             "adapterType": parts[1],
-            "model": parts[2],
+            # strip notes like "deepseek-reasoner (R1)" -> "deepseek-reasoner"
+            "model": re.sub(r"\s*\(.*\)\s*$", "", parts[2]),
             "cost": parts[3],
             "when": parts[4] if len(parts) > 4 else "",
         })
@@ -355,14 +444,16 @@ def cmd_sub(args):
         print(f"  Subbing {key} -> {slot['slot']} ({slot['adapterType']} / {slot['model']})...")
         dept_path = POSITION_MAP[key][0]
         soul_path = str(POSITIONS_DIR / dept_path / "SOUL.md").replace("\\", "/")
-        adapter_config = {
-            "model": slot["model"],
-            "instructionsFilePath": soul_path,
-        }
-        # Add per-token pricing for API-backed ollama models
-        if slot["adapterType"] == "ollama_local":
-            pricing = load_pricing()
-            adapter_config.update(get_ollama_price_config(slot["model"], pricing))
+        current = fetch_agent_config(agent_id)
+        if current is None:
+            print(f"    FAILED -- could not read {key}'s current settings, nothing changed")
+            continue
+        try:
+            adapter_config = build_adapter_config(current[0], current[1], slot, soul_path,
+                                                  load_pricing(), load_env())
+        except ValueError as e:
+            print(f"    FAILED -- {e}; nothing changed")
+            continue
 
         result = patch_agent(agent_id, {
             "adapterType": slot["adapterType"],
@@ -456,14 +547,17 @@ def cmd_sync(args):
         if not result:
             print(f"  WARNING: Failed to upload SOUL.md for {key}")
 
-        # 4. Update adapter + model + reportsTo (with pricing for ollama API-backed models)
-        adapter_config = {
-            "model": primary["model"],
-            "instructionsFilePath": soul_path_fwd,
-        }
-        if primary["adapterType"] == "ollama_local":
-            pricing = load_pricing()
-            adapter_config.update(get_ollama_price_config(primary["model"], pricing))
+        # 4. Update adapter + model + reportsTo, keeping the agent's other settings
+        current = fetch_agent_config(agent_id)
+        if current is None:
+            print(f"  WARNING: could not read {key}'s current settings, adapter not changed")
+            continue
+        try:
+            adapter_config = build_adapter_config(current[0], current[1], primary, soul_path_fwd,
+                                                  load_pricing(), load_env())
+        except ValueError as e:
+            print(f"  WARNING: {e}; adapter not changed")
+            continue
         patch_body = {
             "adapterType": primary["adapterType"],
             "adapterConfig": adapter_config,
