@@ -18,6 +18,8 @@
 |----------|----------------|---------|--------|
 | Anthropic | Claude Opus 5.5, Sonnet 5.5, Haiku 5.5, Fable 5.2 (legacy notes for 4.6 / 4.5) | [§ Anthropic Claude](#anthropic--claude-opus-55--sonnet-55--haiku-55--fable-52) | Filled 2026-11-10 |
 | Google | Gemini 4 Argon, 3.8 Flash, 3.6 Flash, 3.5 Flash-Lite | [§ Google Gemini 4 / 3.8 / 3.6](#google--gemini-4-argon--38-flash--36-flash--35-flash-lite) | Filled 2026-11-10 |
+| Google | Gemini 4 Carbon, Gemini 4 Hydrogen | [§ Google Gemini 4 Carbon / Hydrogen](#google--gemini-4-carbon--gemini-4-hydrogen) | Filled 2026-11-16 |
+| Google | Gemini Decision 1 (Decisions API: yes/no, choice, score) | [§ Google Gemini Decision 1](#google--gemini-decision-1-decisions-api) | Filled 2026-11-16 |
 | Google | Gemini 3.5 Flash (now routes to 3.6), 3.1 Flash-Lite, 3.1 Pro (preview) | [§ Google Gemini 3.x](#google--gemini-35-flash--31-flash-lite--31-pro-preview) | Filled 2026-05-20; status note 2026-11-10 |
 | Google | Gemini 2.5 Pro, Flash, Flash-Lite (deprecated / legacy) | [§ Google Gemini 2.5](#google--gemini-25-pro--flash--flash-lite) | Filled 2026-05-18; status note 2026-11-10 |
 | Google | Gemma 4 12B / 26B (local via Ollama) | [§ Google Gemma 4](#google--gemma-4-12b--26b-local-via-ollama) | Filled 2026-06-07 |
@@ -26,7 +28,7 @@
 | xAI | Grok 4.7, 4.6, 4.5, 4.3, Build 0.1 | [§ xAI Grok](#xai--grok-47--46--45--43--build-01) | Filled 2026-11-10 |
 | OpenAI | GPT-6 Astra, 6.1 Sol, 6.1 Terra, 6 Luna (API and Codex) | [§ OpenAI](#openai--gpt-6-astra--61-sol--61-terra--6-luna-api-and-codex) | Filled 2026-11-10 |
 | Mistral | Large 4, Small 4, Ministral 3, Codestral | [§ Mistral](#mistral--large-4--small-4--ministral-3--codestral) | Filled 2026-11-10 |
-| Alibaba | Qwen3.8-Max, Qwen3.7-Plus, Qwen3.8-Flash | [§ Qwen](#alibaba--qwen38-max--qwen37-plus--qwen38-flash) | Filled 2026-11-10 |
+| Alibaba | Qwen3.8-Max, Qwen3.7-Plus, Qwen3.8-Flash (note on Qwen4-Max-Preview) | [§ Qwen](#alibaba--qwen38-max--qwen37-plus--qwen38-flash) | Filled 2026-11-10; preview note 2026-11-16 |
 | Zhipu AI | GLM-5.3, GLM-5.3-Flash, GLM-4.7 | [§ GLM](#zhipu-ai--glm-53--glm-53-flash--glm-47) | Filled 2026-11-10 |
 | MiniMax | MiniMax-M3.1-Flash, M3 | [§ MiniMax](#minimax--m31-flash--m3) | Filled 2026-11-10 |
 ---
@@ -183,6 +185,8 @@ result = json.loads(text)
 
 Google's Gemini docs moved from ai.google.dev to aistudio.google.com (old links redirect). Gemini 2.5 Pro and 2.5 Flash route to 3.8 Flash and 3.5 Flash-Lite on 1 December 2026, so prompts written for 2.5 will start running on these models whether or not the code changes.
 
+Gemini 4 Carbon and Gemini 4 Hydrogen (released 10 and 12 November 2026) have their own section, [§ Gemini 4 Carbon / Hydrogen](#google--gemini-4-carbon--gemini-4-hydrogen), which lists where they differ from this one.
+
 ### 1. Prompt structure recommendations
 
 - **Long inputs: context first, question last.** Google: "supply all the context first. Place your specific instructions or questions at the very *end* of the prompt."
@@ -215,7 +219,7 @@ Limits:
 
 - **Gemini 4 and Gemini 3.6+ ignore `temperature`, `top_p` and `top_k`.** Remove them from requests; Google says sending them will return 400 errors in a future release.
 - Gemini 3 models below 3.6 (by version number: 3.1 Pro preview, 3.1 Flash-Lite, 3 Flash preview, 3.5 Flash-Lite): keep these at their defaults "to avoid degraded reasoning performance".
-- **Thinking is set with `thinking_level`.** Defaults and allowed values: Argon and 3.8 Flash on at `medium` (low, medium, high); 3.6 Flash on at `medium` (minimal to high); 3.5 Flash-Lite on at `minimal` (minimal to high); 3.1 Pro preview on at `high` (low, medium, high). The current Thinking page does not document `thinking_budget`.
+- **Thinking is set with `thinking_level`.** Defaults and allowed values: Argon and 3.8 Flash on at `medium` (low, medium, high); 3.6 Flash on at `medium` (minimal to high); 3.5 Flash-Lite on at `minimal` (minimal to high); 3.1 Pro preview on at `high` (low, medium, high). `thinking_budget` is deprecated on Gemini 4 (it maps to the nearest level with a warning, and a 400 error if sent with `thinking_level`); use `thinking_level` on Gemini 3 and 4 (Thinking page, re-read 16 November 2026).
 - Do not ask for explicit reasoning steps by default; the model already reasons internally. For hard problems a cue such as "Think very hard before answering" adds thinking tokens.
 - Leave head-room in `max_output_tokens` for thinking. (TalentMap finding from 20 May 2026 on 3.5 Flash: 800 tokens truncated 5 to 10% of JSON replies, 8000 fixed it. In-house result, not Google guidance.)
 - **Price changes are scheduled:** Argon doubles on 1 December 2026; 3.8 Flash and 3.6 Flash double on 1 January 2027. See MODEL-RESEARCH.md.
@@ -281,6 +285,210 @@ result = ClauseClassification.model_validate_json(response.text)
 - **Don't** use stop sequences that could appear in normal output.
 - **Don't** repeat a failed tool call with the same arguments in an agent; change strategy after a non-transient error.
 - **Don't** assume code pinned to `gemini-2.5-flash` or `gemini-2.5-pro` behaves the same after 1 December 2026; re-test on the routing targets.
+
+---
+
+## Google — Gemini 4 Carbon / Gemini 4 Hydrogen
+
+**Provider docs URL:** https://aistudio.google.com/docs/whats-new-gemini-4-carbon + https://aistudio.google.com/docs/whats-new-gemini-4-hydrogen + https://aistudio.google.com/docs/thinking
+**Date captured:** 2026-11-16
+**Applies to model IDs:** `gemini-4-carbon` (GA 10 November 2026), `gemini-4-hydrogen` (GA 12 November 2026)
+
+The general Gemini rules in [§ Gemini 4 Argon / 3.8 Flash](#google--gemini-4-argon--38-flash--36-flash--35-flash-lite) (context first and question last, consistent few-shot examples, `response_json_schema`, enum labels) apply to both models. This section lists only what differs. Neither model is used by a Paperclip agent yet.
+
+Which one: **Carbon** is Google's strongest reasoning model (complex debugging, architecture, proofs, security audits) and spends more thinking per turn than Argon. **Argon** stays the choice "where speed matters" at the same price. **Hydrogen** is the fast, cheaper Gemini 4 for everyday coding and agent work, and the only Gemini 4 on the free tier.
+
+### 1. Prompt structure recommendations
+
+- Same as the Argon section; Google's what's-new pages add no new prompt-structure guidance.
+- For multi-turn and tool-calling sessions, use `previous_interaction_id` (Interactions API) rather than rebuilding the history yourself.
+- In a client-managed `generateContent` history, send earlier model turns and thought signatures back unchanged on every turn, and do not copy a thought signature across parallel `functionCall` parts (Hydrogen page).
+
+### 2. JSON output mechanism
+
+- Both models list structured outputs as supported. Use the same settings as the Argon section: `response_mime_type="application/json"` plus `response_json_schema`.
+- Hydrogen: "Always declare tools natively" through function calling, or constrain JSON with structured outputs. Do not tell the model in the system instruction to write raw-text JSON tool calls; with no tools declared that can return `MALFORMED_FUNCTION_CALL`.
+
+### 3. Delimiter preferences
+
+Same as the Argon section: XML-style tags or Markdown headings, one style per prompt.
+
+### 4. Classification task framing
+
+- Labels as an `enum` in the schema, as in the Argon section.
+- Google: run your evaluations at every thinking level with a high `max_output_tokens`, "then pick the lowest `thinking_level` that meets your quality bar". For classification and extraction that is usually `low`, but test it.
+- For pure yes/no, pick-one or score decisions where you want calibrated probabilities rather than generated text, see [§ Gemini Decision 1](#google--gemini-decision-1-decisions-api).
+
+### 5. Temperature default & quirks
+
+- **Remove `temperature`, `top_p` and `top_k`.** Carbon ignores them. Hydrogen ignores in-range values, but **out-of-range values return a 400 error**.
+- **`thinking_level`:** Carbon `low`, `medium` (default), `high`. Hydrogen `low`, `medium`, `high` (**default**), `xhigh`; **`minimal` returns an error** on all Gemini 4 models. Hydrogen's default is higher than Carbon's and Argon's, so set the level explicitly.
+- **`xhigh`** (Hydrogen only): for hard, multi-step coding and agent problems where `high` falls short. Google warns it "can cause overthinking or exhaust `max_output_tokens` on simpler prompts such as text or JSON extraction".
+- **`thinking_budget` is deprecated on Gemini 4.** Sent alone it maps to the nearest level with a warning; sent with `thinking_level` it returns a 400 error.
+- **`max_output_tokens` covers thinking plus answer.** A synchronous response stops at 65,536. Carbon: Google recommends at least 32,768 when moving from Gemini 3 or earlier. Hydrogen: remove low caps or raise them to 65,536. To save cost, lower `thinking_level` instead of setting a small `max_output_tokens`, which can return truncated or empty output that is still billed.
+- **Long output** past 65,536: `background: true` with `max_output_tokens` set (without it the server stops at about 64K), then join the text of every `model_output` step.
+- **Timeouts:** hard Carbon prompts "can take several minutes"; use background execution or an HTTP timeout of at least 15 minutes.
+- **No explicit caching** (`cachedContents`, `caches.create`); remove `cached_content` fields. Implicit caching is on by default for prompts of at least 4,096 tokens.
+- Billing counts thinking tokens and, with grounding, Google's internal tool instructions and function declarations.
+- Prices: Carbon $2/$10 per 1M to 30 November 2026, then $4/$20, not on the free tier. Hydrogen $1.50/$7.50, free tier available. See MODEL-RESEARCH.md.
+
+### 6. Worked example
+
+```python
+from typing import Literal
+from google import genai
+from google.genai import types
+from pydantic import BaseModel
+
+class ClauseClassification(BaseModel):
+    clause_type: Literal["indemnification", "limitation_of_liability", "termination",
+                         "confidentiality", "ip_ownership", "payment_terms", "warranty",
+                         "data_protection", "non_compete", "force_majeure",
+                         "governing_law", "auto_renewal", "other"]
+    risk_score: Literal[1, 2, 3, 4, 5]
+    rationale: str
+
+client = genai.Client()
+
+prompt = """<clause>
+Customer indemnifies Supplier against any third-party IP claims arising from
+Customer's modifications to the Software.
+</clause>
+
+Based on the clause above, choose one clause_type, score its risk, and give a one-sentence rationale."""
+
+response = client.models.generate_content(
+    model="gemini-4-hydrogen",
+    contents=prompt,
+    config=types.GenerateContentConfig(
+        system_instruction=(
+            "You are a contract clause classifier. Risk: 1 = boilerplate, "
+            "2 = mildly unusual, 3 = noteworthy, 4 = material exposure, 5 = escalate."
+        ),
+        response_mime_type="application/json",
+        response_json_schema=ClauseClassification.model_json_schema(),
+        thinking_config=types.ThinkingConfig(thinking_level="low"),  # default is high on Hydrogen
+        max_output_tokens=32768,          # thinking + answer; do not cap low
+        # no temperature / top_p / top_k
+    ),
+)
+result = ClauseClassification.model_validate_json(response.text)
+```
+
+Add few-shot examples in the same `<example>` layout as the Argon section's example when the labels need anchoring.
+
+### 7. Known anti-patterns
+
+- **Don't** send `thinking_level="minimal"` to any Gemini 4 model, or `thinking_budget` together with `thinking_level` (both 400 errors).
+- **Don't** leave Hydrogen on its default `high` (or use `xhigh`) for simple classification or extraction without testing a lower level.
+- **Don't** send out-of-range `temperature`, `top_p` or `top_k` to Hydrogen (400 error); remove them for both models.
+- **Don't** keep a small hard-coded `max_output_tokens`; thinking can use it all.
+- **Don't** pass `cached_content` or create explicit caches.
+- **Don't** prompt for raw-text JSON tool calls; declare tools or use structured outputs.
+- **Don't** use a short HTTP timeout with Carbon.
+
+---
+
+## Google — Gemini Decision 1 (Decisions API)
+
+**Provider docs URL:** https://aistudio.google.com/docs/decisions-api
+**Date captured:** 2026-11-16
+**Applies to model IDs:** `gemini-decision-1` (released 11 November 2026), through the Decisions API on the Gemini Developer API (v1beta) only
+
+This is not a text generator. Each call sends shared input (text, JSON as text, PDF, image, audio or video) and up to 1,000 typed questions, and gets back **calibrated probabilities with zero output tokens** ($0.10 per 1M input tokens; free tier available). Google says to use it when you need "a yes/no probability, one option from a fixed set, or a rating on a fixed scale", and to use ordinary generation with structured outputs when you need generated text, extracted values, tool calls or multi-step reasoning. It could suit routing and classification jobs in Greg's apps; not yet used anywhere.
+
+### 1. Prompt structure recommendations
+
+- A request has `model`, `input` (shared by every question) and `questions`, a map of your own keys to question objects. Each question has `type`, `instructions` (text only) and, for choice and score, `criteria`.
+- "Write the full question in the instructions." **The model never sees question keys or option-key variable names**, only instructions and criteria.
+- Keep each question to one decision. Questions run in parallel and cannot see each other; combine answers in ordinary code (`if` statements, weights).
+- "Send only the fields the questions need. Unrelated content lowers accuracy."
+- Pass JSON as a serialised string in a text block and refer to fields by key path in the instructions. Adjacent text blocks are joined with no separator, so add your own `\n`.
+- Do number, date and duration comparisons in code and pass the result (or a named bucket) in the input.
+
+### 2. JSON output mechanism
+
+Not applicable: the answer is already typed. `noul` returns `noul` (probability of yes, always 0.01 to 0.99) and `confidence`; `choice` returns `choice`, `probabilities` (summing to 1) and `confidence`; `score` returns `score` (probability-weighted average of level indices, so it can fall between levels), `probabilities`, `legend` and `confidence`. Safety blocks return HTTP 400 with an `error.code`, not answers.
+
+### 3. Delimiter preferences
+
+Not documented. Structure comes from the request fields, not delimiters.
+
+### 4. Classification task framing
+
+- **Choice:** `criteria` maps each option key to a short description of when it applies (`""` if the key is self-explanatory). 2 to 255 options. Keys are **sorted alphabetically** before evaluation, and ties break to the first key.
+- Choice questions "always distribute probability across your options, even when none fits". Check `confidence` before acting, pair the choice with a yes/no scope check, or add a catch-all key such as `other` with a description. Avoid positional keys like `none_of_the_above`.
+- **Score:** `criteria` is a list of level descriptions from lowest to highest (2 to 10 recommended). Keep levels distinct and the scale linear.
+- **Yes/no:** add `criteria.true_description` and `false_description` when the question alone is ambiguous. Prefer positive phrasing ("Is the tier Gold?") and compute the negation in code.
+- Set confidence thresholds from labelled examples of your own traffic, weighing false positives against false negatives.
+- "Treat input as untrusted": user text can argue for its own classification. Write explicit criteria, test adversarial examples, and keep a human or second check on high-stakes actions.
+
+### 5. Temperature default & quirks
+
+- No temperature, thinking or output-length settings exist for this API.
+- Context window 262,144 tokens across the shared input and all questions. Shared input is billed once per request however many questions you ask.
+- No context caching, Batch, Flex or Priority; repeated input across requests is billed in full.
+- No conversation history, thought or tool-call blocks as input; serialise prior turns as text. No YouTube URLs or `gs://` URIs.
+- Needs `google-genai` 3.2 or later and `http_options={"api_version": "v1beta"}`.
+
+### 6. Worked example
+
+```python
+from google import genai
+
+client = genai.Client(http_options={"api_version": "v1beta"})
+
+clause = ("Customer indemnifies Supplier against any third-party IP claims arising "
+          "from Customer's modifications to the Software.")
+
+result = client.decisions.create(
+    model="gemini-decision-1",
+    input=clause,
+    questions={
+        "clause_type": {
+            "type": "choice",
+            "instructions": "Which type of contract clause is this text?",
+            "criteria": {
+                "indemnification": "One party covers the other's losses or claims.",
+                "limitation_of_liability": "Caps or excludes a party's liability.",
+                "termination": "How or when the agreement can end.",
+                "confidentiality": "Duties to keep information secret.",
+                "ip_ownership": "Who owns intellectual property.",
+                "payment_terms": "Fees, invoicing and payment timing.",
+                "other": "Any other kind of clause.",
+            },
+        },
+        "risk": {
+            "type": "score",
+            "instructions": "How much legal risk does this clause create for the Customer?",
+            "criteria": [
+                "Boilerplate: standard wording, no unusual exposure.",
+                "Mildly unusual: worth a note.",
+                "Noteworthy: should be reviewed.",
+                "Material exposure: needs negotiation.",
+                "Escalate: unacceptable without legal sign-off.",
+            ],
+        },
+    },
+)
+
+a = result.answers
+if a["clause_type"].confidence >= 0.7:
+    clause_type = a["clause_type"].choice
+else:
+    clause_type = "needs_human_review"
+risk_score = round(a["risk"].score) + 1   # score is 0-based; map to the 1-5 scale
+```
+
+### 7. Known anti-patterns
+
+- **Don't** use it for summaries, explanations, extracted values or tool calls; use a generative model with structured outputs.
+- **Don't** put the question only in the key name; the model never sees keys.
+- **Don't** act on a choice without checking `confidence`; it always picks something.
+- **Don't** use positional catch-all keys like `none_of_the_above`; keys are sorted alphabetically.
+- **Don't** ask negated questions ("Is X NOT ...?") or set a yes/no threshold above 0.99 (it never matches).
+- **Don't** use exponential score scales (1, 10, 100); the score averages level indices.
+- **Don't** send unrelated fields in the input, or rely on it for numeric or date comparisons.
 
 ---
 
@@ -927,7 +1135,7 @@ response = client.chat.completions.create(
 
 **Provider docs URL:** [Using GPT-6](https://developers.openai.com/api/docs/guides/latest-model) · [Structured Outputs](https://developers.openai.com/api/docs/guides/structured-outputs) · [Codex models](https://learn.chatgpt.com/docs/models) · [Codex best practices](https://developers.openai.com/codex/learn/best-practices) · [AGENTS.md for Codex](https://developers.openai.com/codex/guides/agents-md) · [Codex prompting guide](https://developers.openai.com/cookbook/examples/gpt-5/codex_prompting_guide)
 **Date captured:** 2026-11-10
-**Applies to model IDs:** `gpt-6-astra`, `gpt-6.1-sol`, `gpt-6.1-terra`, `gpt-6-luna` (API and Codex). `gpt-5.3-codex` is deprecated: already in Codex when signed in with ChatGPT, and on the API from 1 April 2027.
+**Applies to model IDs:** `gpt-6-astra`, `gpt-6.1-sol`, `gpt-6.1-terra`, `gpt-6-luna` (API and Codex). `gpt-5.3-codex` is deprecated: already in Codex when signed in with ChatGPT, and on the API from 1 April 2027. Not covered: `gpt-6-cyber` (5 November 2026), a specialist vulnerability-research model that needs OpenAI's Daybreak setup; follow that guide if it is ever used (noted 16 November 2026).
 
 **Scope note:** Two distinct surfaces. **(A) Codex** is the agentic coding and review tool (CLI, IDE, GitHub), driven by natural-language tasks and the repo's `AGENTS.md`, not by JSON API calls. This is what Greg uses for code review, signed in with ChatGPT Plus. **(B) the OpenAI API** for programmatic calls. Codex now offers `gpt-6-astra` (most demanding work), `gpt-6.1-sol` (lower cost for repeated, long-running work), `gpt-6.1-terra` (writing and visual tasks; needs Codex CLI 0.159.0 or later) and `gpt-6-luna` (focused, high-volume tasks). Codex's config example sets `model = "gpt-6.1-sol"`. Update any script, config file or `codex exec --model` call that still names `gpt-5.3-codex` or `gpt-5.2`.
 
@@ -1152,6 +1360,8 @@ response = client.chat.parse(
 **Applies to model IDs:** `qwen3.8-max`, `qwen3.7-plus`, `qwen3.8-flash` (cloud, International region). The local `qwen3.8:27b` on Ollama is a different deployment; this section covers the cloud API.
 
 Not yet used by any Paperclip agent in the cloud. Filled from the stub on 10 November 2026 because the lineup moved to Qwen3.7 and 3.8.
+
+**Qwen4-Max-Preview (`qwen4-max-preview`, added 11 November 2026) is deliberately not given its own section.** It is reachable only through a Token Plan key (pay-as-you-go keys are refused) and is retired after 24:00 on 25 November 2026 (UTC+8). Its page notes, for anyone trialling it before then: thinking is on by default and set with `reasoning_effort` (`low`, `medium`, or the default `xhigh`), never together with `thinking_budget`; `max_tokens` covers thinking plus answer (up to 393,216); JSON Object and JSON Schema modes are both supported; return earlier thinking in `reasoning_content`, not `content`. Base URL `https://token-plan.ap-southeast-1.maas.aliyuncs.com`. Source: [Qwen4-Max-Preview](https://www.alibabacloud.com/help/en/model-studio/qwen4-max-preview), read 16 November 2026.
 
 ### 1. Prompt structure recommendations
 
@@ -1440,4 +1650,6 @@ This file is owned by the **Researcher position** ([positions/research/researche
 
 ---
 
-_Last updated: 2026-11-10. Weekly pass: refreshed Anthropic (Claude 5 family), OpenAI (GPT-6 family and Codex), xAI (old prompt-engineering URL now 404), DeepSeek (V4.1 Flash, V4 Pro) and Kimi (K3.1 Pro, K3); added a section for Gemini 4 Argon, 3.8 Flash, 3.6 Flash and 3.5 Flash-Lite; filled the Mistral, Qwen, GLM and MiniMax stubs; added status notes to the Gemini 3.x and 2.5 sections. Gemma 4 unchanged (quarterly local review). Previous update 2026-06-13._
+_Last updated: 2026-11-16. Weekly pass: added sections for Gemini 4 Carbon / Hydrogen and Gemini Decision 1 (Decisions API); added a Qwen4-Max-Preview note to the Qwen section (Token Plan only, retires after 25 November 2026, so no full section); noted `gpt-6-cyber` as out of scope in the OpenAI section; corrected the `thinking_budget` note in the Gemini 4 Argon section. No section was stale or had a broken URL; no stubs remain. Other sections unchanged._
+
+_Previous update 2026-11-10. Weekly pass: refreshed Anthropic (Claude 5 family), OpenAI (GPT-6 family and Codex), xAI (old prompt-engineering URL now 404), DeepSeek (V4.1 Flash, V4 Pro) and Kimi (K3.1 Pro, K3); added a section for Gemini 4 Argon, 3.8 Flash, 3.6 Flash and 3.5 Flash-Lite; filled the Mistral, Qwen, GLM and MiniMax stubs; added status notes to the Gemini 3.x and 2.5 sections. Gemma 4 unchanged (quarterly local review). Previous update 2026-06-13._

@@ -2,7 +2,19 @@
 
 **Purpose:** Comprehensive matrix of all available AI models × all agent task types. Used to inform and update LLM-MATRIX.md.  
 **Update cadence:** Weekly provider and pricing pass, every Monday 9:00 AM AEST, via Task Scheduler task `Model Lineup Monitor` (`scripts/check_model_lineups.py`). That run posts an issue to the Researcher, and at 10:00 AM Task Scheduler `Paperclip Weekly Guidelines Refresh` (Monday 10:00 AM, `scripts/weekly_guidelines_refresh.py`) runs Claude Code to do the refresh and closes that issue. Local weights on this PC are reviewed quarterly, on the first Monday of January, April, July, and October (next: January 2027).  
-**Last updated:** 2026-11-10 (full provider and pricing pass from official provider pages; gemma4:12b/26b local entries added 2026-06-07; schedule corrected 2026-10-06)
+**Last updated:** 2026-11-16 (weekly pass from official provider pages; previous full pass 2026-11-10; gemma4:12b/26b local entries added 2026-06-07; schedule corrected 2026-10-06)
+
+### Changes in the 16 November 2026 pass
+
+Every figure added below was read from the provider's own pages on 16 November 2026.
+
+- **Google:** Gemini 4 Carbon (10 November) and Gemini 4 Hydrogen (12 November) added. Carbon is now Google's strongest reasoning model; Argon is repositioned as the faster, cheaper-per-turn Gemini 4. Hydrogen is on the free tier and adds an `xhigh` thinking level. Gemini Decision 1 (11 November) added: a zero-output-token model for yes/no, choice and score decisions through a new Decisions API.
+- **OpenAI:** GPT-6 Cyber (`gpt-6-cyber`, 5 November, missed last pass) added. o3's named replacement corrected to `gpt-6.1-sol`. No new general text models.
+- **Alibaba Qwen:** Qwen4-Max-Preview (11 November) added; Token Plan only, retires after 25 November 2026. Qwen-Plus International prices now read from the price list.
+- **Anthropic:** Fable 5.2 fast mode price added. No new models or deprecations since 10 November.
+- **DeepSeek:** web search, file input, URL reading and model safety checks now available through the existing APIs (13 November). Prices unchanged.
+- **GLM:** GLM-5.3-Flash vision confirmed from Z.ai's release notes. Prices unchanged.
+- **No change found:** xAI, Mistral, Moonshot Kimi, MiniMax (its 10 November release was an image model).
 
 ### Changes in the 10 November 2026 pass
 
@@ -32,7 +44,7 @@ Every price below was read from the provider's own pricing or models page on 10 
 
 | Model | Context | Input /M | Output /M | Vision | Reasoning | OpenAI-compat | Notes |
 |-------|---------|---------|---------|--------|-----------|---------------|-------|
-| Claude Fable 5.2 (`claude-fable-5-2`) | 1M | $8.00 | $40.00 | Yes | Yes (adaptive, always on) | Via claude_local | **New.** For demanding reasoning and long-horizon agentic work. Default effort `high`. Max output 128K. Retirement not sooner than 9 November 2027. |
+| Claude Fable 5.2 (`claude-fable-5-2`) | 1M | $8.00 | $40.00 | Yes | Yes (adaptive, always on) | Via claude_local | **New.** For demanding reasoning and long-horizon agentic work. Default effort `high`. Max output 128K. Retirement not sooner than 9 November 2027. Fast mode (`speed: "fast"`, up to 2.5 times the output speed) costs $16/$80 on the Claude API. |
 | Claude Opus 5.5 (`claude-opus-5-5`) | 1M | $4.00 | $20.00 | Yes | Yes (adaptive, always on) | Via claude_local | **New.** Anthropic's recommended starting model. Default effort `medium`. Max output 128K. |
 | Claude Sonnet 5.5 (`claude-sonnet-5-5`) | 1M | $2.00 | $10.00 | Yes | Yes (adaptive) | Via claude_local | **New.** Speed and intelligence balance. Default effort `high`. Max output 128K. |
 | Claude Haiku 5.5 (`claude-haiku-5-5`) | 1M | $0.10 (prompts up to 100K) / $0.50 (over 100K) | $0.50 / $2.50 | Yes | Yes (adaptive, can be disabled at low to high effort) | Via claude_local | **New.** For classification, extraction and routing. Default effort `medium`. Price depends on prompt length. |
@@ -53,13 +65,14 @@ Every price below was read from the provider's own pricing or models page on 10 
 | GPT-6.1 Sol (`gpt-6.1-sol`) | 1.05M | $2.00 | $10.00 | Yes | Yes (low to max; default medium) | Yes | **New.** Balance of intelligence and cost. Cached input $0.10. Codex config example uses this model. |
 | GPT-6.1 Terra (`gpt-6.1-terra`) | 1.05M | $1.00 | $5.00 | Yes | Yes (none to max; default medium) | Yes | **New.** Fast and efficient. Cached input $0.05. Needs Codex CLI 0.159.0 or later. |
 | GPT-6 Luna (`gpt-6-luna`) | 1.05M | $0.10 | $0.50 | Yes | Yes (supports `none`) | Yes | **New.** Cost-sensitive, high-volume work. Cached input $0.01. Replacement for GPT-4o and GPT-4o mini. |
+| GPT-6 Cyber (`gpt-6-cyber`) | Not checked | $20.00 (short context) | $100.00 (short context) | Not checked | Yes | Yes | **New (5 November 2026).** Specialist model for investigating and verifying security vulnerabilities in authorised test environments; needs OpenAI's Daybreak setup first. Cached input $2.00. Not for general use. `gpt-5.5-cyber-preview` shuts down 1 February 2027. |
 | GPT-6 Sol (`gpt-6-sol`) | Not checked | $2.00 | $10.00 | Not checked | Yes | Yes | Earlier GPT-6 Sol; still on the price list. Cached input $0.20. Named as the replacement for `gpt-5.3-codex`. |
 | GPT-5.6 Sol / Terra / Luna | Not checked | $4.00 / $2.00 / $0.20 | $20.00 / $12.00 / $1.20 | Not checked | Yes | Yes | Previous generation; still on the price list. |
 | gpt-5.3-codex | N/A | **Weekly quota** (API $1.75) | **Weekly quota** (API $14.00) | No | Yes | codex_local | **Deprecated.** API shutdown 1 April 2027 (replacement `gpt-6-sol`). Already deprecated in Codex when signed in with ChatGPT; update `codex exec --model` and config files. |
 | GPT-4o | 128K | $2.50 | $10.00 | Yes | No | Yes | **Deprecated.** Snapshots `gpt-4o-2024-08-06` and `-11-20` shut down 14 January 2027 (replacement `gpt-6-luna`). `gpt-4o-2024-05-13` shut down 23 October 2026. |
 | GPT-4o mini | 128K | $0.15 | $0.60 | Yes | No | Yes | **Deprecated.** Shuts down 14 January 2027 (replacement `gpt-6-luna`). |
 | ~~o4-mini~~ | n/a | n/a | n/a | n/a | n/a | n/a | **Retired 23 October 2026.** Replacement was `gpt-5.6-terra`. |
-| o3 | 200K | $2.00 | $8.00 | Yes | Yes | Yes | **Deprecated.** Shuts down 11 December 2026 (replacement `gpt-5.6-sol`). Price corrected (was $10/$40). |
+| o3 | 200K | $2.00 | $8.00 | Yes | Yes | Yes | **Deprecated.** Shuts down 11 December 2026 (replacement now `gpt-6.1-sol`; was listed as `gpt-5.6-sol`). Price corrected (was $10/$40). |
 
 > OpenAI API key is SEPARATE from ChatGPT Plus Codex OAuth; safe to add. Codex now offers `gpt-6-astra`, `gpt-6.1-sol`, `gpt-6.1-terra` and `gpt-6-luna`. Source: [Models](https://developers.openai.com/api/docs/models), [Pricing](https://developers.openai.com/api/docs/pricing), [Deprecations](https://developers.openai.com/api/docs/deprecations), [Codex models](https://learn.chatgpt.com/docs/models).
 
@@ -69,7 +82,10 @@ Every price below was read from the provider's own pricing or models page on 10 
 
 | Model | Context | Input /M | Output /M | Vision | Reasoning | OpenAI-compat | Notes |
 |-------|---------|---------|---------|--------|-----------|---------------|-------|
-| Gemini 4 Argon (`gemini-4-argon`) | 1M | $2.00 to 30 Nov 2026; **$4.00 from 1 Dec 2026** | $10.00; **$20.00 from 1 Dec 2026** | Yes | Yes (low, medium, high; default medium) | Via gemini_local | **New.** Flagship reasoning model. Not on the free tier. |
+| Gemini 4 Carbon (`gemini-4-carbon`) | 1M (shared by input, thinking and output) | $2.00 to 30 Nov 2026; **$4.00 from 1 Dec 2026** | $10.00; **$20.00 from 1 Dec 2026** | Yes (text, image, audio, video, PDF in; text out) | Yes (low, medium, high; default medium) | Via gemini_local | **New (10 November 2026).** Google's strongest reasoning model; spends more thinking per turn than Argon. Not on the free tier. Max output 65,536 per request, up to 1M with long decode. Implicit caching only (cached input $0.10, $0.20 from 1 Dec). |
+| Gemini 4 Argon (`gemini-4-argon`) | 1M | $2.00 to 30 Nov 2026; **$4.00 from 1 Dec 2026** | $10.00; **$20.00 from 1 Dec 2026** | Yes | Yes (low, medium, high; default medium) | Via gemini_local | Efficient Gemini 4 reasoning model: faster and fewer tokens per turn than Carbon, same price. Not on the free tier. |
+| Gemini 4 Hydrogen (`gemini-4-hydrogen`) | 1M (shared) | $1.50 | $7.50 | Yes (text, image, audio, video, PDF in; text out) | Yes (low, medium, high, xhigh; **default high**; `minimal` errors) | Via gemini_local | **New (12 November 2026).** Fast, efficient Gemini 4 for everyday coding and agent work. **On the free tier.** Cached input $0.075 (implicit caching only). Batch and Flex half price. |
+| Gemini Decision 1 (`gemini-decision-1`) | 262,144 | $0.10 (all input types) | None (0 output tokens) | Yes (text, image, audio, video, PDF) | n/a | No (own Decisions API, v1beta) | **New (11 November 2026).** Returns calibrated probabilities for yes/no, choice and score questions, up to 1,000 questions per request, instead of generating text. On the free tier. No caching, Batch, Flex or Priority. |
 | Gemini 3.8 Flash (`gemini-3.8-flash`) | Not stated | $0.75 to 31 Dec 2026; **$1.50 from 1 Jan 2027** | $3.75; **$7.50 from 1 Jan 2027** | Yes | Yes (low, medium, high; default medium) | Via gemini_local | **New.** Most capable Flash. Gemini 2.5 Pro traffic routes here on 1 December 2026. `gemini-3.7-flash` already routes here. |
 | Gemini 3.6 Flash (`gemini-3.6-flash`) | Not stated | $0.75 to 31 Dec 2026; **$1.50 from 1 Jan 2027** | $3.75; **$7.50 from 1 Jan 2027** | Yes | Yes (minimal to high; default medium) | Via gemini_local | **New.** Previous-generation Flash, stable. `gemini-3.5-flash` now routes here. |
 | Gemini 3.5 Flash-Lite (`gemini-3.5-flash-lite`) | Not stated | $0.30 | $2.50 | Yes | Yes (minimal to high; default minimal) | Via gemini_local | **New.** Cheapest current 3.x text model. Gemini 2.5 Flash traffic routes here on 1 December 2026. |
@@ -81,7 +97,7 @@ Every price below was read from the provider's own pricing or models page on 10 
 | Gemini 2.5 Flash-Lite | 1M | $0.10 | $0.40 | Yes | Off by default | Via gemini_local | Legacy: served only to existing users; no shutdown date. **Price corrected** (was $0.075/$0.30). |
 | ~~Gemini 2.0 Flash~~ | n/a | n/a | n/a | n/a | n/a | n/a | **Retired. Shut down 1 June 2026.** |
 
-> Greg's global default for user apps (Gemini 2.5 Flash-Lite, then 2.5 Flash, then 2.5 Pro) is affected: 2.5 Flash and 2.5 Pro silently switch model and price on 1 December 2026. Source: [Pricing](https://aistudio.google.com/docs/pricing), [Models](https://aistudio.google.com/docs/models), [Deprecations](https://aistudio.google.com/docs/deprecations), [Thinking](https://aistudio.google.com/docs/thinking).
+> Greg's global default for user apps (Gemini 2.5 Flash-Lite, then 2.5 Flash, then 2.5 Pro) is affected: 2.5 Flash and 2.5 Pro silently switch model and price on 1 December 2026. Gemini 4 Hydrogen and Gemini Decision 1 are the new free-tier options; Hydrogen's paid price ($1.50/$7.50) is well above 2.5 Flash-Lite's, so it is not a like-for-like replacement for cheap extraction. Source: [Pricing](https://aistudio.google.com/docs/pricing), [Models](https://aistudio.google.com/docs/models), [Deprecations](https://aistudio.google.com/docs/deprecations), [Thinking](https://aistudio.google.com/docs/thinking), [Changelog](https://aistudio.google.com/docs/changelog), [Decisions API](https://aistudio.google.com/docs/decisions-api).
 
 ---
 
@@ -130,7 +146,7 @@ Every price below was read from the provider's own pricing or models page on 10 
 | ~~Magistral Medium 1.2 / Small 1.2~~ | n/a | n/a | n/a | n/a | n/a | n/a | **Retired 31 July 2026.** |
 | ~~Mistral Nemo~~ | n/a | n/a | n/a | n/a | n/a | n/a | **Retired 31 July 2026.** Replacement Ministral 3 8B. |
 
-> Mistral now also resells Z.ai GLM 5.3 ($1.40/$4.40) and GLM 5.3 Flash ($0.15/$0.50), and DeepSeek V4.1 Flash ($0.30/$1.20). Source: [API pricing](https://mistral.ai/pricing/api), [Models and deprecations](https://docs.mistral.ai/getting-started/models/models_overview/), [Reasoning](https://docs.mistral.ai/studio-api/conversations/reasoning).
+> Mistral now also resells Z.ai GLM 5.3 ($1.40/$4.40) and GLM 5.3 Flash ($0.15/$0.50), and DeepSeek V4.1 Flash ($0.30/$1.20). Prices re-read 16 November 2026, unchanged. Source: [API pricing](https://docs.mistral.ai/inference/pricing) (the old mistral.ai/pricing/api link now redirects here), [Models and deprecations](https://docs.mistral.ai/getting-started/models/models_overview/), [Reasoning](https://docs.mistral.ai/studio-api/conversations/reasoning).
 
 ---
 
@@ -143,7 +159,7 @@ Every price below was read from the provider's own pricing or models page on 10 
 | ~~DeepSeek V4 Flash~~ (`deepseek-v4-flash`, `deepseek-v4-flash-vision-exp`) | n/a | n/a | n/a | n/a | n/a | n/a | **Retired.** Names still accepted; served by V4.1 Flash at Flash prices. |
 | DeepSeek V3.2 (`deepseek-chat`), R1 (`deepseek-reasoner`) | n/a | n/a | n/a | n/a | n/a | n/a | **Not on DeepSeek's API docs any more.** Third-party reports say both names were retired 24 July 2026; not confirmed on DeepSeek's own site. Treat as unavailable. |
 
-> Off-peak prices (half of peak) apply outside 01:00 to 04:00 and 06:00 to 10:00 UTC on weekdays, and all weekend and Chinese public holidays. In Brisbane time, peak is 11:00 am to 2:00 pm and 4:00 pm to 8:00 pm, Monday to Friday. DeepSeek also offers an Anthropic-compatible endpoint at `https://api.deepseek.com/anthropic`. Source: [Models and pricing](https://api-docs.deepseek.com/quick_start/pricing), [Quick start](https://api-docs.deepseek.com/).
+> Off-peak prices (half of peak) apply outside 01:00 to 04:00 and 06:00 to 10:00 UTC on weekdays, and all weekend and Chinese public holidays. In Brisbane time, peak is 11:00 am to 2:00 pm and 4:00 pm to 8:00 pm, Monday to Friday. DeepSeek also offers an Anthropic-compatible endpoint at `https://api.deepseek.com/anthropic`. Since 13 November 2026 web search, file input, URL reading and model safety checks can be turned on through the existing APIs, and speech recognition and text-to-speech are separate APIs (their prices were not read). Source: [Models and pricing](https://api-docs.deepseek.com/quick_start/pricing), [Quick start](https://api-docs.deepseek.com/), [News](https://api-docs.deepseek.com/updates).
 
 ---
 
@@ -184,7 +200,9 @@ Every price below was read from the provider's own pricing or models page on 10 
 | Qwen3.8-Flash (`qwen3.8-flash`) | Up to 1M | $0.15 | $0.47 | Not checked | Yes (hybrid; on by default) | Yes | **New.** Fast, low cost. |
 | Qwen3.7-Flash (`qwen3.7-flash`) | Up to 1M | $0.03 (up to 32K) / $0.10 / $0.20 | $0.13 / $0.40 / $0.80 | Not checked | Not checked | Yes | **New.** Cheapest current Qwen; three prompt-length tiers. |
 | Qwen 2.5-Max, Qwen-Turbo | n/a | n/a | n/a | n/a | n/a | n/a | **Not in the International price tables** (10 November 2026). Status not confirmed; use the Qwen3.7 or 3.8 models instead. |
-| Qwen-Plus, Qwen2.5 72B | Not re-checked | Not re-checked | Not re-checked | No | No | Yes | Old prices from April 2026, not re-checked this pass. Qwen-Plus is still listed but its International USD row was not read. |
+| Qwen4-Max-Preview (`qwen4-max-preview`) | 1M | Not published | Not published | Yes (image and video understanding) | Yes (on by default; `reasoning_effort` low, medium, xhigh; default xhigh) | Yes (also Anthropic-compatible) | **New (11 November 2026), preview only.** Token Plan only; pay-as-you-go keys are refused. Preview runs to 24:00 25 November 2026 (UTC+8), then the model is retired. Max output 393,216 (thinking plus answer). Do not build on it. |
+| Qwen-Plus (`qwen-plus`, alias of 2025-12-01) | Up to 1M | $0.40 (up to 256K) / $1.20 | Non-thinking $1.20 / $3.60; thinking $4.00 / $12.00 | Not checked | Yes (hybrid) | Yes | International price **now read** (16 November 2026). No free quota. Qwen3.7-Plus costs the same input and less for thinking output. |
+| Qwen2.5 72B | Not re-checked | Not re-checked | Not re-checked | No | No | Yes | Old prices from April 2026, not re-checked. |
 | qwen3.8:27b (local via Ollama) | 256K | FREE | FREE | Yes | Yes | Yes | Coding/agent local model on the RTX 4090. Replaces Qwen2.5 and Qwen3 32B. |
 
 > `qwen3.8:27b` is the local Qwen on this machine: free, private, about 18 GB. Run it on its own.  
@@ -197,7 +215,7 @@ Every price below was read from the provider's own pricing or models page on 10 
 | Model | Context | Input /M | Output /M | Vision | Reasoning | OpenAI-compat | Notes |
 |-------|---------|---------|---------|--------|-----------|---------------|-------|
 | GLM-5.3 (`glm-5.3`) | 1M | $1.40 | $4.40 | No (text only) | Yes (always on; low, high, max; default max) | Yes | **New.** Max output 128K. Cached input $0.26. |
-| GLM-5.3-Flash | 1M (per Mistral's listing) | $0.15 | $0.50 | Not checked | Yes | Yes | **New.** Cached input $0.03. |
+| GLM-5.3-Flash | 1M (per Mistral's listing) | $0.15 | $0.50 | Yes (native visual input, per Z.ai's 26 August 2026 release note) | Yes | Yes | **New.** Cached input $0.03. 320B total, 18B active parameters. |
 | GLM-5.3-FlashX | Not stated | $0.37 | $1.25 | Not checked | Not checked | Yes | **New.** A `-Legal` variant has the same price. |
 | GLM-5.2 / GLM-5.1 | Not stated | $1.40 | $4.40 | Not checked | Yes | Yes | **New.** Mistral retired its resold GLM 5.2 on 31 October 2026; Z.ai still lists it. |
 | GLM-5 | Not stated | $1.00 | $3.20 | Yes | Yes | Yes | Prices now published. |
