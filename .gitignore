@@ -82,3 +82,6 @@ youtube-brain.db
 # Rotation-temp secrets (never commit)
 .secrets/
 
+
+# Monthly rules review reports (local only, scripts/monthly_rules_review.py)
+reports/rules-review/

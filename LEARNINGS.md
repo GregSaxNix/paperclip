@@ -21,3 +21,9 @@
 - **Follow-up (10 November 2026):** after switching the Researcher to `kimi-k2.6` (Moonshot url and key restored, `timeoutMs` raised to 600000 because the 120 s default timed out on a reasoning model), run ecc9b55a succeeded. But the `ollama_local` adapter only sends one chat request and posts the reply as an issue comment: it cannot edit files, search the web or close issues. The reply claimed "MEMORY.md updated" and "LA-357 closure"; neither happened. **Don't trust** an ollama_local agent's claims of file edits; check git and the issue status.
 - **Resolution (10 November 2026):** the weekly refresh now runs as Task Scheduler `Paperclip Weekly Guidelines Refresh` (Monday 10:00 AM, hidden launcher `scripts/weekly-guidelines-refresh-hidden.vbs`, script `scripts/weekly_guidelines_refresh.py`). It runs `claude -p` with `--permission-mode dontAsk`, web tools and Edit rights on the two files only, then commits, pushes and closes the Paperclip issues. First run: 25 minutes, 149 turns, about US$8.40 of Max-plan usage (API-equivalent), commit e93f92cf, audit clean (13 filled, 0 stale).
 - **Gotcha:** importing `check_model_lineups` runs `logging.basicConfig()` at import, so a second script's own `basicConfig` is silently ignored and its log lines land in `model-lineups.log`. Pass `force=True`.
+
+## `claude -p` permission rules: Write needs an Edit(...) rule (18 November 2026)
+- **Symptom:** a scheduled `claude -p --permission-mode dontAsk` run finished with exit 0 but never wrote its report; the Write call was in `permission_denials`.
+- **Root cause:** `--allowedTools "Write(/path)"` does not grant writes. File writes are governed by `Edit(...)` path rules.
+- **Fix:** allow `Edit(/reports/rules-review/*-rules-review.md)` (path relative to the run's working folder). Tested: that path is allowed, any other file stays denied.
+- **Don't try:** a bare `Write` allow (opens every file), or shell redirects to get round the rule.
