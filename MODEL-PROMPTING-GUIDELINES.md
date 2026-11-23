@@ -19,15 +19,18 @@
 | Anthropic | Claude Opus 5.5, Sonnet 5.5, Haiku 5.5, Fable 5.2 (legacy notes for 4.6 / 4.5) | [§ Anthropic Claude](#anthropic--claude-opus-55--sonnet-55--haiku-55--fable-52) | Filled 2026-11-10 |
 | Google | Gemini 4 Argon, 3.8 Flash, 3.6 Flash, 3.5 Flash-Lite | [§ Google Gemini 4 / 3.8 / 3.6](#google--gemini-4-argon--38-flash--36-flash--35-flash-lite) | Filled 2026-11-10 |
 | Google | Gemini 4 Carbon, Gemini 4 Hydrogen | [§ Google Gemini 4 Carbon / Hydrogen](#google--gemini-4-carbon--gemini-4-hydrogen) | Filled 2026-11-16 |
+| Google | Gemini 4 Neon | [§ Google Gemini 4 Neon](#google--gemini-4-neon) | Filled 2026-11-23 |
 | Google | Gemini Decision 1 (Decisions API: yes/no, choice, score) | [§ Google Gemini Decision 1](#google--gemini-decision-1-decisions-api) | Filled 2026-11-16 |
-| Google | Gemini 3.5 Flash (now routes to 3.6), 3.1 Flash-Lite, 3.1 Pro (preview) | [§ Google Gemini 3.x](#google--gemini-35-flash--31-flash-lite--31-pro-preview) | Filled 2026-05-20; status note 2026-11-10 |
-| Google | Gemini 2.5 Pro, Flash, Flash-Lite (deprecated / legacy) | [§ Google Gemini 2.5](#google--gemini-25-pro--flash--flash-lite) | Filled 2026-05-18; status note 2026-11-10 |
+| Google | Gemini 3.5 Flash (now routes to 3.6), 3.1 Flash-Lite, 3.1 Pro (preview) | [§ Google Gemini 3.x](#google--gemini-35-flash--31-flash-lite--31-pro-preview) | Refreshed 2026-11-23 |
+| Google | Gemini 2.5 Pro, Flash, Flash-Lite (deprecated / legacy) | [§ Google Gemini 2.5](#google--gemini-25-pro--flash--flash-lite) | Refreshed 2026-11-23 |
 | Google | Gemma 4 12B / 26B (local via Ollama) | [§ Google Gemma 4](#google--gemma-4-12b--26b-local-via-ollama) | Filled 2026-06-07 |
 | DeepSeek | V4.1 Flash (`deepseek-flash`), V4 Pro | [§ DeepSeek](#deepseek--v41-flash--v4-pro) | Filled 2026-11-10 |
 | Moonshot | Kimi K3.1 Pro, K3 (K2 series retiring) | [§ Kimi](#moonshot--kimi-k31-pro--k3) | Filled 2026-11-10 |
-| xAI | Grok 4.7, 4.6, 4.5, 4.3, Build 0.1 | [§ xAI Grok](#xai--grok-47--46--45--43--build-01) | Filled 2026-11-10 |
+| xAI | Grok 4.7, 4.6, 4.5, 4.3 (Build 0.1 ended 19 November 2026) | [§ xAI Grok](#xai--grok-47--46--45--43--build-01) | Filled 2026-11-10; status note 2026-11-23 |
+| OpenAI | GPT-6.2 Astra, GPT-6.2 Sol (API) | [§ OpenAI GPT-6.2](#openai--gpt-62-astra--gpt-62-sol) | Filled 2026-11-23 |
 | OpenAI | GPT-6 Astra, 6.1 Sol, 6.1 Terra, 6 Luna (API and Codex) | [§ OpenAI](#openai--gpt-6-astra--61-sol--61-terra--6-luna-api-and-codex) | Filled 2026-11-10 |
 | Mistral | Large 4, Small 4, Ministral 3, Codestral | [§ Mistral](#mistral--large-4--small-4--ministral-3--codestral) | Filled 2026-11-10 |
+| Alibaba | Qwen4-Max | [§ Qwen4-Max](#alibaba--qwen4-max) | Filled 2026-11-23 |
 | Alibaba | Qwen3.8-Max, Qwen3.7-Plus, Qwen3.8-Flash (note on Qwen4-Max-Preview) | [§ Qwen](#alibaba--qwen38-max--qwen37-plus--qwen38-flash) | Filled 2026-11-10; preview note 2026-11-16 |
 | Zhipu AI | GLM-5.3, GLM-5.3-Flash, GLM-4.7 | [§ GLM](#zhipu-ai--glm-53--glm-53-flash--glm-47) | Filled 2026-11-10 |
 | MiniMax | MiniMax-M3.1-Flash, M3 | [§ MiniMax](#minimax--m31-flash--m3) | Filled 2026-11-10 |
@@ -185,7 +188,7 @@ result = json.loads(text)
 
 Google's Gemini docs moved from ai.google.dev to aistudio.google.com (old links redirect). Gemini 2.5 Pro and 2.5 Flash route to 3.8 Flash and 3.5 Flash-Lite on 1 December 2026, so prompts written for 2.5 will start running on these models whether or not the code changes.
 
-Gemini 4 Carbon and Gemini 4 Hydrogen (released 10 and 12 November 2026) have their own section, [§ Gemini 4 Carbon / Hydrogen](#google--gemini-4-carbon--gemini-4-hydrogen), which lists where they differ from this one.
+Gemini 4 Carbon and Gemini 4 Hydrogen (released 10 and 12 November 2026) have their own section, [§ Gemini 4 Carbon / Hydrogen](#google--gemini-4-carbon--gemini-4-hydrogen), which lists where they differ from this one. Gemini 4 Neon (18 November 2026) has [§ Gemini 4 Neon](#google--gemini-4-neon).
 
 ### 1. Prompt structure recommendations
 
@@ -389,6 +392,113 @@ Add few-shot examples in the same `<example>` layout as the Argon section's exam
 
 ---
 
+## Google — Gemini 4 Neon
+
+**Provider docs URL:** https://aistudio.google.com/docs/whats-new-gemini-4-neon + https://aistudio.google.com/docs/thinking + https://aistudio.google.com/docs/structured-output
+**Date captured:** 2026-11-23
+**Applies to model IDs:** `gemini-4-neon` (GA 18 November 2026)
+
+The general Gemini rules in [§ Gemini 4 Argon / 3.8 Flash](#google--gemini-4-argon--38-flash--36-flash--35-flash-lite) (context first and question last, consistent few-shot examples, enum labels, one delimiter style) apply. This section lists what is specific to Neon. Not used by any Paperclip agent yet.
+
+Which one: Google says Neon "brings frontier-level intelligence with fast end-to-end task completion" for complex software engineering, knowledge work and science, and places it between Hydrogen and Carbon for frequent complex tasks. Carbon stays the choice for the hardest architecture, debugging, science and security problems; Hydrogen stays the default for everyday coding and agent work. Neon costs $3/$15 per 1M tokens, paid tier only (see MODEL-RESEARCH.md).
+
+### 1. Prompt structure recommendations
+
+- Same as the Argon section; Neon's what's-new page adds no new prompt-structure rules.
+- Keep conversation state with `previous_interaction_id` (Interactions API), or, in a client-managed history, return earlier turns and thought signatures unchanged. Do not copy a thought signature across parallel `functionCall` parts.
+
+### 2. JSON output mechanism
+
+- Google's structured-output page (23 November 2026) shows the Interactions API form: `response_format={"type": "text", "mime_type": "application/json", "schema": Model.model_json_schema()}`, then parse `interaction.output_text` (for example Pydantic `model_validate_json`).
+- Same limits as the Argon section: `minLength`, `maxLength`, `minProperties`, `maxProperties`, `uniqueItems`, `contains`, `minContains` and `maxContains` are stripped without error; `minItems` and `maxItems` are enforced. `enum` is supported "for classification tasks".
+- Declare tools through function calling or use structured outputs. Telling the model in a system instruction to write raw-text JSON tool calls with no tools declared can return `MALFORMED_FUNCTION_CALL`.
+
+### 3. Delimiter preferences
+
+Same as the Argon section: XML-style tags or Markdown headings, one style per prompt.
+
+### 4. Classification task framing
+
+- Labels as an `enum` in the schema.
+- Google: evaluate at all four thinking levels with a high `max_output_tokens`, then "pick the lowest `thinking_level` that meets your quality bar". Neon defaults to `high`, which is likely more than a simple classifier needs, so test `low`.
+- For pure yes/no, pick-one or score decisions, consider [§ Gemini Decision 1](#google--gemini-decision-1-decisions-api), which is far cheaper.
+
+### 5. Temperature default & quirks
+
+- **Remove `temperature`, `top_p` and `top_k`.** In-range values are ignored; out-of-range values return a 400 error.
+- **`thinking_level`:** `low`, `medium`, `high` (**default**), `xhigh`. `minimal` is rejected. Start with `high` for complex tasks and keep `xhigh` for hard problems, because it raises latency and token use. Moving from Gemini 3.8 Flash or earlier, note the default is `high`, not `medium`.
+- **`max_output_tokens` caps thinking plus answer.** A synchronous call stops at 65,536 per hop. Remove low caps such as 8,192 or raise them to 65,536; to save tokens, lower `thinking_level` instead.
+- **Long output:** `background: true` with `max_output_tokens` set (Google's examples use 131,072 or 262,144); without the field the server stops at 65,536.
+- **Timeouts:** hard prompts can take several minutes; use background execution or an HTTP timeout of at least 15 minutes.
+- **No explicit caching** (`cachedContents`, `caches.create`, `cached_content`). Implicit caching is on by default for prompts of at least 4,096 tokens, with a 95% discount on cache hits.
+- Billing counts thinking tokens and, with grounding, Google's internal tool instructions and function declarations. Grounding with Google Search is billed per query.
+
+### 6. Worked example
+
+```python
+from typing import Literal
+from google import genai
+from pydantic import BaseModel
+
+class ClauseClassification(BaseModel):
+    clause_type: Literal["indemnification", "limitation_of_liability", "termination",
+                         "confidentiality", "ip_ownership", "payment_terms", "warranty",
+                         "data_protection", "non_compete", "force_majeure",
+                         "governing_law", "auto_renewal", "other"]
+    risk_score: Literal[1, 2, 3, 4, 5]
+    rationale: str
+
+client = genai.Client()
+
+prompt = """<rules>
+You are a contract clause classifier. Risk: 1 = boilerplate, 2 = mildly unusual,
+3 = noteworthy, 4 = material exposure, 5 = escalate.
+</rules>
+
+<examples>
+<example>
+<clause>Either party may terminate with 30 days notice.</clause>
+<answer>{"clause_type": "termination", "risk_score": 2, "rationale": "Mutual 30-day termination is standard."}</answer>
+</example>
+</examples>
+
+<clause>
+Customer indemnifies Supplier against any third-party IP claims arising from
+Customer's modifications to the Software.
+</clause>
+
+Based on the clause above, choose one clause_type, score its risk, and give a one-sentence rationale."""
+
+interaction = client.interactions.create(
+    model="gemini-4-neon",
+    input=prompt,
+    response_format={
+        "type": "text",
+        "mime_type": "application/json",
+        "schema": ClauseClassification.model_json_schema(),
+    },
+    generation_config={
+        "thinking_level": "low",          # default is high; test the lowest level that passes
+        "max_output_tokens": 65536,       # thinking + answer; do not cap low
+        # no temperature / top_p / top_k
+    },
+)
+result = ClauseClassification.model_validate_json(interaction.output_text)
+```
+
+### 7. Known anti-patterns
+
+- **Don't** send `thinking_level="minimal"` (error) or default to `xhigh` for every task.
+- **Don't** keep a hard-coded low `max_output_tokens` such as 8,192.
+- **Don't** send `temperature`, `top_p` or `top_k`.
+- **Don't** pass `cached_content` or create explicit caches.
+- **Don't** prompt for raw-text JSON tool calls; declare tools or use structured outputs.
+- **Don't** copy a thought signature across parallel `functionCall` parts.
+- **Don't** use a short client timeout.
+- **Don't** pick Neon for free-tier work; it is paid only.
+
+---
+
 ## Google — Gemini Decision 1 (Decisions API)
 
 **Provider docs URL:** https://aistudio.google.com/docs/decisions-api
@@ -494,155 +604,180 @@ risk_score = round(a["risk"].score) + 1   # score is 0-based; map to the 1-5 sca
 
 ## Google — Gemini 3.5 Flash / 3.1 Flash-Lite / 3.1 Pro (preview)
 
-**Provider docs URL:** https://ai.google.dev/gemini-api/docs/prompting-strategies (Gemini 3 section) + https://ai.google.dev/gemini-api/docs/structured-output
-**Date captured:** 2026-05-20
-**Applies to model IDs:** `gemini-3.5-flash` (stable), `gemini-3.1-flash-lite` (stable), `gemini-3.1-pro-preview` (preview), `gemini-3-flash-preview` (preview)
+**Provider docs URL:** https://aistudio.google.com/docs/prompting-strategies (Gemini 3 section) + https://aistudio.google.com/docs/structured-output + https://aistudio.google.com/docs/thinking + https://aistudio.google.com/docs/deprecations
+**Date captured:** 2026-11-23
+**Applies to model IDs:** `gemini-3.5-flash` (routes to `gemini-3.6-flash`), `gemini-3.1-flash-lite` (stable), `gemini-3.1-pro-preview` (preview), `gemini-3-flash-preview` (preview)
 
-**Status, 10 November 2026 (section not refreshed):** `gemini-3.5-flash` now routes automatically to `gemini-3.6-flash`. `gemini-3.1-flash-lite` shuts down on 7 May 2027. The temperature rule in section 5 does not apply to Gemini 3.6 and later, which ignore `temperature`, `top_p` and `top_k`. The prices in section 6 are from 20 May 2026. For new work use [§ Google Gemini 4 / 3.8 / 3.6 / 3.5 Flash-Lite](#google--gemini-4-argon--38-flash--36-flash--35-flash-lite). The TalentMap findings below are kept as history.
+**Status (deprecations page, 23 November 2026):** `gemini-3.5-flash` is no longer in AI Studio and its endpoint routes to `gemini-3.6-flash` (no shutdown date), so calls to it follow the 3.6 Flash rules in [§ Gemini 4 Argon / 3.8 / 3.6](#google--gemini-4-argon--38-flash--36-flash--35-flash-lite). `gemini-3.1-flash-lite` shuts down on 7 May 2027 (replacement `gemini-3.5-flash-lite`). `gemini-3.1-pro-preview` and `gemini-3-flash-preview` are previews with no shutdown date (Google names `gemini-3.6-flash` as the replacement for 3 Flash preview). For new work use the Argon section. Refreshed 23 November 2026 from Google's current pages; the May 2026 capture's "must run at temperature 1.0" wording is replaced by Google's current rule in section 5.
 
-### 1. Prompt structure — same as 2.5 (context-first, question-last) but stricter
+### 1. Prompt structure recommendations
 
-Same context-first / question-last pattern as Gemini 2.5. The transition phrase ("Based on the information above, answer the following:") is even more important on 3.x — anecdotal observation 2026-05-20 is that 3.5 Flash without the transition phrase is more prone to ignoring late-prompt overrides.
+- Google: Gemini 3 models "respond best to prompts that are direct, well-structured, and clearly define the task and any constraints."
+- Be precise and direct; explain any ambiguous term or parameter.
+- **Verbosity:** "By default, Gemini 3 models provide direct and efficient answers." Ask explicitly for a more detailed or conversational reply when you want one.
+- Put essential constraints, persona and output format in the system instruction or at the very start of the user prompt.
+- **Long inputs:** "supply all the context first. Place your specific instructions or questions at the very *end* of the prompt." After a large block of data, use a transition phrase such as "Based on the information above..."
+- **Few-shot:** always include a few examples with identical structure; too many can cause overfitting.
+- Treat text, images, audio and video as equal-class inputs and refer to each one clearly.
+- **Gemini 3 Flash system-instruction clauses** Google suggests: a current-date clause ("For time-sensitive user queries that require up-to-date information, you MUST follow the provided current time (date and year) when formulating search queries in tool calls. Remember it is 2026 this year."), a knowledge-cutoff clause ("Your knowledge cutoff date is January 2025."), and a strict grounding clause when answers must come only from the supplied context.
 
-### 2. JSON output — `response_schema` works the same BUT budget for thinking
+### 2. JSON output mechanism
 
-`response_schema` and `response_mime_type='application/json'` work identically to 2.5. The new operational gotcha:
-
-**`max_output_tokens` must be ≥8000 for 3.x classification.** 3.5 Flash burns tokens on internal reasoning even when `thinking_budget` is not explicitly set. Observed at 800 tokens: ~5–10% of responses are JSON-truncated mid-value. At 8000, errors drop to zero. Real-world example from TalentMap classifier 2026-05-20 on 150-row sample: 3.5 Flash output ~500 tokens on average per call vs ~150 tokens for 2.5 Flash.
-
-For reliable JSON on 3.x:
-```python
-config=types.GenerateContentConfig(
-    temperature=1.0,                  # see §5 — non-optional for 3.x
-    max_output_tokens=8000,           # not 800 — leave head-room for reasoning
-    response_mime_type='application/json',
-    response_schema=YourPydanticModel,
-)
-```
+- **Interactions API (the form on Google's structured-output page, 23 November 2026):** `response_format={"type": "text", "mime_type": "application/json", "schema": Model.model_json_schema()}`, then parse `interaction.output_text`.
+- **`generateContent`:** `response_mime_type="application/json"` with `response_json_schema` (as captured in the Argon section on 10 November 2026). `response_schema`, used in older TalentMap code, is the older name.
+- Stripped without error: `minLength`, `maxLength`, `minProperties`, `maxProperties`, `uniqueItems`, `contains`, `minContains`, `maxContains`. Enforced: `minItems`, `maxItems`, `enum`. Validate in code.
+- Structured outputs plus built-in tools is available only on Gemini 4 and Gemini 3 series models.
+- `max_output_tokens` includes thought tokens and is a hard cutoff: if it is reached while the model is reasoning, the reply is `"incomplete"`, truncated or empty, and the thinking is still billed. To save tokens, lower `thinking_level` rather than the cap. (In-house, 20 May 2026: TalentMap's 3.5 Flash classifier truncated 5 to 10% of JSON replies at 800 tokens and none at 8,000.)
 
 ### 3. Delimiter preferences
 
-Same as 2.5: XML for long contexts, markdown for short. No change.
+"XML-style tags (e.g., `<context>`, `<task>`) or Markdown headings are effective. Choose one format and use it consistently within a single prompt."
 
 ### 4. Classification task framing
 
-Same multiple-choice / enumerated-set advice as 2.5. 3.5 Flash returns slightly higher 6-digit rate (98.7%) vs the 4-digit honest-partial fallback that the prompt allows; this MAY be a regression in "stop when evidence is thin" behaviour vs 2.5 Flash (which returned 100% 6-digit on the same sample). Watch this on graded-confidence tasks.
+- Put labels in the schema as an `enum`; Google describes `enum` as listing "a specific set of possible strings for classification tasks".
+- Few-shot examples fix the label's format and scope. Rephrasing an open question as multiple choice makes the model pick one listed option (Google's iteration example).
+- Google's thinking guidance: "Use minimal thinking for fact retrieval or classification."
 
-### 5. Temperature default & quirks (the non-optional rule)
+### 5. Temperature default & quirks
 
-**3.x family MUST run at `temperature=1.0`.** Google's Gemini 3 prompting doc states this explicitly — any other value degrades output. This is the OPPOSITE of 2.5 (where 0 was best for structured extraction) and the OPPOSITE of every other provider.
+- **Sampling:** "For earlier Gemini 3 models, keep these parameters at their default values to avoid degraded reasoning performance" (the parameters are `temperature`, `top_p` and `top_k`). That covers 3.1 Pro preview, 3.1 Flash-Lite and 3 Flash preview: do not send them. Calls to `gemini-3.5-flash` now run on 3.6 Flash, which ignores them and returns deprecation warning headers (a 400 error in a future release), so remove them there too.
+- **Thinking (`thinking_level`), from the Thinking page:**
 
-Consequence: 3.x classification is non-deterministic by design. Two runs on the same input will not necessarily produce the same code. For audit-style use cases run N times and take majority vote.
+| Model | Default | Levels |
+|---|---|---|
+| `gemini-3.1-pro-preview` | On (`high`) | low, medium, high |
+| `gemini-3.1-flash-lite` | On (`minimal`) | minimal, low, medium, high |
+| `gemini-3-flash-preview` | On (`high`) | minimal, low, medium, high |
+| `gemini-3.5-flash` (served by 3.6 Flash) | On (`medium`) | minimal to high |
 
-3.x **does** support `thinking_config=types.ThinkingConfig(thinking_budget=N)` like 2.5 — but the "burn-on-reasoning" behaviour seen at 800 max_output_tokens happens even when thinking is not explicitly enabled. Setting `thinking_budget=0` may help reduce output cost but was not verified as of 2026-05-20.
+- `minimal` "matches a near-off setting for most queries" on these models.
+- The current Thinking page documents only `thinking_level` for Gemini 3; the May 2026 note about `thinking_budget` is superseded.
+- Prices: see MODEL-RESEARCH.md (the May 2026 price table that was here is out of date).
 
-### 6. Pricing (per 1M tokens, captured 2026-05-20)
+### 6. Worked example
 
-| Model | Input | Output | Status |
-|---|---:|---:|---|
-| `gemini-3.5-flash` | $1.50 | $9.00 | stable |
-| `gemini-3.1-flash-lite` | $0.25 | $1.50 | stable |
-| `gemini-3.1-pro-preview` | $2.00 (≤200k) / $4.00 (>200k) | $12.00 / $18.00 | preview |
-| `gemini-3-flash-preview` | $0.50 | $3.00 | preview |
+```python
+from typing import Literal
+from google import genai
+from pydantic import BaseModel
 
-For comparison: 2.5 Flash is $0.30/$2.50, 2.5 Flash-Lite is $0.10/$0.40. **3.5 Flash is 5x input / 3.6x output more expensive than 2.5 Flash.** Real-world per-call cost with classification prompt (3.5k input, ~500 output) is ~$0.010 for 3.5 Flash vs ~$0.0014 for 2.5 Flash — a 7x multiplier.
+class ClauseClassification(BaseModel):
+    clause_type: Literal["indemnification", "limitation_of_liability", "termination",
+                         "confidentiality", "ip_ownership", "payment_terms", "warranty",
+                         "data_protection", "non_compete", "force_majeure",
+                         "governing_law", "auto_renewal", "other"]
+    risk_score: Literal[1, 2, 3, 4, 5]
+    rationale: str
 
-### 7. TalentMap empirical findings (2026-05-20, 150-row rich-context sample)
+client = genai.Client()
+
+prompt = """<rules>
+You are a contract clause classifier. Risk: 1 = boilerplate, 2 = mildly unusual,
+3 = noteworthy, 4 = material exposure, 5 = escalate.
+</rules>
+
+<examples>
+<example>
+<clause>Supplier indemnifies Customer for ALL losses without cap.</clause>
+<answer>{"clause_type": "indemnification", "risk_score": 5, "rationale": "Uncapped indemnity needs escalation."}</answer>
+</example>
+</examples>
+
+<clause>
+Customer indemnifies Supplier against any third-party IP claims arising from
+Customer's modifications to the Software.
+</clause>
+
+Based on the information above, choose one clause_type, score its risk, and give a one-sentence rationale."""
+
+interaction = client.interactions.create(
+    model="gemini-3.1-flash-lite",   # shuts down 7 May 2027; new work: gemini-3.5-flash-lite
+    input=prompt,
+    response_format={
+        "type": "text",
+        "mime_type": "application/json",
+        "schema": ClauseClassification.model_json_schema(),
+    },
+    generation_config={
+        "thinking_level": "minimal",  # Google: minimal thinking for classification
+        "max_output_tokens": 8000,    # head-room; the cap includes thinking
+        # no temperature / top_p / top_k: keep the defaults on earlier Gemini 3 models
+    },
+)
+result = ClauseClassification.model_validate_json(interaction.output_text)
+```
+
+### 7. Known anti-patterns
+
+- **Don't** set `temperature`, `top_p` or `top_k` on earlier Gemini 3 models (keep the defaults), or on `gemini-3.5-flash` (now 3.6 Flash, which ignores them and will error later).
+- **Don't** set a tight `max_output_tokens` such as 800; thinking shares the cap and the reply truncates.
+- **Don't** start new work on `gemini-3.5-flash` or `gemini-3.1-flash-lite`; one is redirected and the other shuts down on 7 May 2027.
+- **Don't** mix XML and Markdown delimiters in one prompt.
+- **Don't** rely on stripped schema keywords such as `minLength`.
+- **Don't** assume a Gemini 3.x model is a drop-in replacement for 2.5 prompts; re-validate downstream consumers (in-house: 36% of TalentMap rows changed at the 6-digit level going from 2.5 Flash to 3.5 Flash).
+
+### TalentMap findings (history, 20 May 2026, 150-row rich-context sample)
+
+In-house results, not Google guidance. Costs used May 2026 prices (3.5 Flash was then $1.50/$9.00).
 
 | Model | vs Claude @6 | vs 2.5 Flash @6 | 6-digit rate | Cost / 72k rows |
 |---|---:|---:|---:|---:|
-| 2.5 Flash-Lite | 17.5% | — | 100% | $30 |
+| 2.5 Flash-Lite | 17.5% | n/a | 100% | $30 |
 | 2.5 Flash | 19.2% | (self) | 100% | $104 |
 | 3.1 Flash-Lite | 15.8% | 46.0% | 86.7% | $118 |
 | 3.5 Flash | **24.1%** | 64.2% | 98.7% | $709 |
 
-3.5 Flash: +5pp absolute Claude-agreement vs 2.5 Flash at 6.8x cost. Worth it for audit / re-classification; **not** worth it for production polling.
-
-3.1 Flash-Lite: **regression** — lower Claude-agreement than 2.5 Flash-Lite AND 4x more expensive. Avoid.
-
-### 8. Known anti-patterns
-
-- **Don't** run 3.x at temperature 0 — output degrades materially per Google's docs.
-- **Don't** set `max_output_tokens=800` for 3.x classification — JSON gets truncated mid-string.
-- **Don't** assume 3.x is a drop-in replacement for 2.x prompts — 36% of rows change at 6-digit level when swapping 2.5 → 3.5 Flash. Re-validate every downstream consumer of the classifier output.
+- 3.5 Flash: 5 points more Claude agreement than 2.5 Flash at 6.8 times the cost; judged worth it for audit, not for production polling.
+- 3.1 Flash-Lite: lower agreement than 2.5 Flash-Lite and about 4 times the cost; avoided.
+- 3.5 Flash gave 6-digit codes 98.7% of the time against 100% for 2.5 Flash; watch "stop when evidence is thin" behaviour on graded-confidence tasks.
 
 ---
 
 ## Google — Gemini 2.5 Pro / Flash / Flash-Lite
 
-**Provider docs URL:** https://ai.google.dev/gemini-api/docs/prompting-strategies + https://ai.google.dev/gemini-api/docs/structured-output
-**Date captured:** 2026-05-18
+**Provider docs URL:** https://aistudio.google.com/docs/prompting-strategies + https://aistudio.google.com/docs/structured-output + https://aistudio.google.com/docs/thinking + https://aistudio.google.com/docs/deprecations
+**Date captured:** 2026-11-23
 **Applies to model IDs:** `gemini-2.5-pro`, `gemini-2.5-flash`, `gemini-2.5-flash-lite`
 
-**Status, 10 November 2026 (section not refreshed):** `gemini-2.5-pro` and `gemini-2.5-flash` are deprecated; on 1 December 2026 their requests route to `gemini-3.8-flash` and `gemini-3.5-flash-lite`. `gemini-2.5-flash-lite` is served only to existing users. Google's current structured-output page names the schema field `response_json_schema`; the `response_schema` used below is the older name. For new work use [§ Google Gemini 4 / 3.8 / 3.6 / 3.5 Flash-Lite](#google--gemini-4-argon--38-flash--36-flash--35-flash-lite).
+**Status (deprecations and pricing pages, 23 November 2026):** `gemini-2.5-pro` and `gemini-2.5-flash` are deprecated and no longer selectable in AI Studio. **On 1 December 2026** their requests route to `gemini-3.8-flash` and `gemini-3.5-flash-lite` respectively and are billed at those models' rates. `gemini-2.5-flash-lite` is not deprecated and has no shutdown date. Greg's global default (2.5 Flash-Lite, then 2.5 Flash, then 2.5 Pro) is therefore only stable for Flash-Lite. For new work use [§ Gemini 4 Argon / 3.8 / 3.6 / 3.5 Flash-Lite](#google--gemini-4-argon--38-flash--36-flash--35-flash-lite). Refreshed 23 November 2026; claims from the May 2026 capture that Google's current pages no longer make are removed or labelled.
 
 ### 1. Prompt structure recommendations
 
-Gemini's official guide is **context-first, question-last**. The model attends most heavily to tokens near the end of the context window for generation, so:
+Google's general prompting guidance (not model-specific) applies:
 
-1. **`system_instruction`** parameter — role + invariant rules. Separate from `contents`; don't bury role in the first user turn.
-2. **Context block first** — reference docs, schema, examples, prior decisions. Use XML or markdown headers.
-3. **Few-shot examples** if applicable.
-4. **Transition phrase** — `"Based on the information above, answer the following:"`. The Google docs explicitly recommend this exact phrasing; it materially improves long-context recall.
-5. **Question / instruction last.**
-6. **Output format spec** is delivered via the `response_schema` API parameter, NOT inside the prompt text (see §2).
+1. Essential constraints, persona and output format go in the system instruction or "at the very beginning of the user prompt".
+2. **Context first, question last:** "supply all the context first. Place your specific instructions or questions at the very *end* of the prompt."
+3. After a large block of data, "use a clear transition phrase to bridge the context and your query", for example "Based on the information above...".
+4. "Always include few-shot examples": a few, with identical formatting; too many cause overfitting.
+5. The output format goes in the schema parameter (section 2), not only in prose.
 
-For long-context tasks (>50k tokens), put the **question both before AND after** the context. Gemini's "needle-in-haystack" performance is best with question framing twice.
+The May 2026 capture also advised repeating the question before and after very long contexts. Google's current page does not say this, so treat it as optional.
 
 ### 2. JSON output mechanism
 
-**Use the `response_schema` API parameter — do NOT format JSON via prose instructions.**
-
-```python
-from google import genai
-from google.genai import types
-from pydantic import BaseModel, Field
-from typing import Literal
-
-class ClassifiedClause(BaseModel):
-    clause_type: Literal["indemnification", "termination", "confidentiality", "other"]
-    risk_score: int = Field(ge=1, le=5)
-    rationale: str
-
-client = genai.Client()
-response = client.models.generate_content(
-    model="gemini-2.5-flash-lite",
-    contents="...",
-    config=types.GenerateContentConfig(
-        response_mime_type="application/json",
-        response_schema=ClassifiedClause,
-        temperature=0,
-    )
-)
-parsed: ClassifiedClause = response.parsed   # already a Pydantic instance
-```
-
-The `response_schema` can be a Pydantic class, a `genai.types.Schema` proto, or a raw JSON Schema dict. Pydantic is the cleanest in Python.
-
-**Enum constraints** are honoured: `Literal["a","b","c"]` becomes a JSON enum that Gemini cannot violate.
-
-For Gemini 2.5 Pro/Flash, you can also use **function calling** (`tools=[...]`) which works identically to Claude's tool use — pick one or the other, not both in the same call.
+- **`generateContent` (existing app code):** `response_mime_type="application/json"` with `response_json_schema=Model.model_json_schema()` (the current name, per the 10 November 2026 capture in the Argon section). `response_schema=Model` with `response.parsed` is the older form many apps still use.
+- **Interactions API:** `response_format={"type": "text", "mime_type": "application/json", "schema": ...}`, parsed from `interaction.output_text`. Google's structured-output page now shows only this form and does not name Gemini 2.5.
+- `enum` is supported for strings and numbers. `minLength`, `maxLength`, `minProperties`, `maxProperties`, `uniqueItems`, `contains`, `minContains` and `maxContains` are stripped without error; validate in code.
+- Use a schema or function calling, not prose "return JSON" instructions.
 
 ### 3. Delimiter preferences
 
-Either XML tags OR markdown headers — both work for Gemini. The official guide leans **XML for long contexts** (>10k tokens), **markdown for short**.
-
-Naming convention from the docs: `<role>`, `<context>`, `<example>`, `<question>`, `<output_format>`.
+"XML-style tags (e.g., `<context>`, `<task>`) or Markdown headings are effective. Choose one format and use it consistently within a single prompt." (The May 2026 "XML for long, Markdown for short" split is not on Google's current page.)
 
 ### 4. Classification task framing
 
-Frame as **multiple-choice** wherever possible. Gemini calibrates strongly to enumerated candidate sets — Google's docs recommend this explicitly over open-ended classification.
-
-For graded scoring, provide anchor descriptions per level (same as Claude — Gemini benefits identically).
-
-**Important Gemini quirk:** if you specify the enum in BOTH the prompt text AND the `response_schema`, occasionally Gemini will return a value from the prompt that isn't in the schema (causing a validation error). Specify enums **only in `response_schema`** and leave the prompt high-level.
+- Put the allowed labels in the schema as an `enum` (`Literal` in Pydantic).
+- Rephrasing an open question as multiple choice makes the model pick one listed option (Google's iteration example).
+- For graded scores, give an anchor description for each level.
+- Earlier in-house note (May 2026, not in Google's current docs): listing the enum in both the prompt and the schema occasionally produced a value outside the schema, so keep the label list in the schema.
 
 ### 5. Temperature default & quirks
 
-- **Default for structured extraction:** `temperature=0`.
-- **Default for creative writing:** `temperature=1.0`.
-- **Thinking mode** (Flash and Pro): set `thinking_config=types.ThinkingConfig(thinking_budget=N)` where N is token budget. `thinking_budget=0` disables thinking on Flash; `-1` lets the model decide. Flash-Lite does NOT support thinking.
-- **Gemini 3.0 forward-compat note:** Google's Gemini 3 docs state the model "MUST run at temperature 1.0" — any other value degrades output. If/when 3.0 lands in `MODEL-RESEARCH.md`, this section gets split.
+- Google's current pages give no Gemini 2.5-specific sampling rule. They say lower temperatures suit less open-ended answers and "A temperature of 0 is deterministic"; the default `topP` is 0.95. `temperature=0` for extraction on 2.5 therefore still fits.
+- **Thinking** (Thinking page): `gemini-2.5-pro` and `gemini-2.5-flash` are on by default and `gemini-2.5-flash-lite` is **off** by default; all three list `thinking_level` `low`, `medium` and `high`. The May 2026 note that Flash-Lite does not support thinking is out of date, and the page no longer documents `thinking_budget`.
+- **After 1 December 2026 the routing targets follow different rules.** `gemini-2.5-pro` calls run on 3.8 Flash, which ignores `temperature`, `top_p` and `top_k` (and will error later) and does not accept `thinking_level="minimal"`. `gemini-2.5-flash` calls run on 3.5 Flash-Lite, an earlier Gemini 3 model where Google says to keep sampling at the defaults. So remove any `temperature=0` from 2.5 Pro or 2.5 Flash code before that date.
+- `max_output_tokens` includes thinking; leave head-room when thinking is on.
 
 ### 6. Worked example
 
@@ -664,9 +799,7 @@ class ClassifiedClause(BaseModel):
 
 client = genai.Client()
 
-prompt = """<role>You are a contract clause classifier.</role>
-
-<context>
+prompt = """<context>
 Risk scale anchors:
 1 = boilerplate, no negotiation needed
 2 = mildly unusual but acceptable
@@ -678,11 +811,11 @@ Risk scale anchors:
 <examples>
 <example>
 <input>Either party may terminate with 30 days notice.</input>
-<output>termination, score 2 — mutual 30-day termination is standard.</output>
+<output>termination, score 2: mutual 30-day termination is standard.</output>
 </example>
 <example>
 <input>Supplier indemnifies Customer for ALL losses including consequential and indirect damages without cap.</input>
-<output>indemnification, score 5 — uncapped indemnity including consequentials.</output>
+<output>indemnification, score 5: uncapped indemnity including consequentials.</output>
 </example>
 </examples>
 
@@ -692,31 +825,33 @@ Based on the information above, classify the clause inside <input> and return th
 """
 
 response = client.models.generate_content(
-    model="gemini-2.5-flash-lite",
+    model="gemini-2.5-flash-lite",    # not deprecated; 2.5 Flash and 2.5 Pro change model on 1 Dec 2026
     contents=prompt,
     config=types.GenerateContentConfig(
         system_instruction=(
-            "You categorise contract clauses by type and assess risk on a 1–5 scale. "
-            "Always return a single best-fit clause_type from the enum and a rationale "
-            "shorter than 30 words."
+            "You are a contract clause classifier. You categorise contract clauses by type "
+            "and assess risk on a 1 to 5 scale. Always return a single best-fit clause_type "
+            "and a rationale shorter than 30 words."
         ),
         response_mime_type="application/json",
-        response_schema=ClassifiedClause,
-        temperature=0,
-    )
+        response_json_schema=ClassifiedClause.model_json_schema(),
+        temperature=0,                # 2.5 Flash-Lite only; remove for 2.5 Pro and 2.5 Flash
+    ),
 )
 
-result: ClassifiedClause = response.parsed
+result = ClassifiedClause.model_validate_json(response.text)
 ```
+
+Pydantic turns `ge`/`le` into `minimum`/`maximum`. Google does not list those among the stripped keywords, but validate the result in code anyway.
 
 ### 7. Known anti-patterns
 
-- **Don't** put the question FIRST then dump 50k tokens of context — positional weighting hurts recall. Context first, question last.
-- **Don't** ask for JSON in prose when `response_schema` exists — Gemini sometimes wraps JSON in ```json fences when prompted in prose.
-- **Don't** specify enums in BOTH the prompt text and the schema — schema-only is more reliable.
-- **Don't** use Flash-Lite for thinking-mode tasks — it doesn't support it. Use Flash or Pro.
-- **Don't** put role/persona in the first user message — use `system_instruction`. Persona inside user content is occasionally ignored or merged with the question.
-- **Don't** use markdown headers for prompts >10k tokens — switch to XML.
+- **Don't** assume code pinned to `gemini-2.5-pro` or `gemini-2.5-flash` behaves the same after 1 December 2026; it runs on 3.8 Flash or 3.5 Flash-Lite at their prices. Re-test, and remove `temperature`, `top_p` and `top_k`.
+- **Don't** put the question first and then a long context; context first, question last.
+- **Don't** ask for JSON in prose when a schema parameter exists.
+- **Don't** mix XML and Markdown delimiters in one prompt.
+- **Don't** rely on stripped schema keywords such as `minLength`.
+- **Don't** put the role or persona in the first user message; use the system instruction.
 
 ---
 
@@ -1030,7 +1165,7 @@ result = json.loads(response.choices[0].message.content)   # never reasoning_con
 
 **Provider docs URL:** https://docs.x.ai/developers/model-capabilities/text/best-practices + https://docs.x.ai/docs/guides/structured-outputs + https://docs.x.ai/developers/model-capabilities/text/reasoning
 **Date captured:** 2026-11-10
-**Applies to model IDs:** `grok-4.7`, `grok-4.6`, `grok-4.5`, `grok-4.3`, `grok-build-0.1`
+**Applies to model IDs:** `grok-4.7`, `grok-4.6`, `grok-4.5`, `grok-4.3`. `grok-build-0.1` reached end of life on 19 November 2026 and "is no longer served on the API" (xAI release notes, read 23 November 2026); no replacement is named, so do not use it. Grok-Code-Fast-1 used to redirect to it, so its current behaviour is unconfirmed.
 
 **URL change:** the old `https://docs.x.ai/docs/guides/prompt-engineering` page returns 404 (checked 10 November 2026). xAI's guidance now lives on the best-practices and reasoning pages above. Grok-4, Grok-4.1 Fast, Grok-3 and Grok-Code-Fast-1 were retired on 15 May 2026; their slugs redirect to Grok 4.3 or Build 0.1 and are billed at those prices. xAI publishes no prompt guide for Build 0.1.
 
@@ -1128,6 +1263,97 @@ response = client.chat.completions.create(
 - **Don't** edit, reorder or filter output items before sending them back, or rebuild the conversation in a different format between turns.
 - **Don't** extract `output_text` and append it as a plain assistant message; that drops the reasoning and function-call items.
 - **Don't** use Chat Completions for multi-turn or tool-calling work.
+- **Don't** call `grok-build-0.1`; it ended on 19 November 2026.
+
+---
+
+## OpenAI — GPT-6.2 Astra / GPT-6.2 Sol
+
+**Provider docs URL:** [Using GPT-6.2](https://developers.openai.com/api/docs/guides/latest-model) · [Structured Outputs](https://developers.openai.com/api/docs/guides/structured-outputs) · [Models](https://developers.openai.com/api/docs/models)
+**Date captured:** 2026-11-23
+**Applies to model IDs:** `gpt-6.2-astra`, `gpt-6.2-sol` (API; released 17 November 2026)
+
+OpenAI now says: "If you're not sure where to start, use GPT-6.2 Astra, our flagship model for complex reasoning and coding." Sol is "our go-to model for everyday work, from coding to powering agents at scale". Both have a 1.05M context, 128K max output, text and image input, and reasoning efforts `low`, `medium`, `high`, `xhigh`, `max`. Prices: Astra $8/$40, Sol $2/$10 (see MODEL-RESEARCH.md). Not used by any Paperclip agent yet. The [§ OpenAI GPT-6](#openai--gpt-6-astra--61-sol--61-terra--6-luna-api-and-codex) section still covers 6.1 Terra, 6 Luna and Codex; this section lists what OpenAI's GPT-6.2 guide says. Codex availability of GPT-6.2 was not checked this pass.
+
+### 1. Prompt structure recommendations
+
+- **Where instructions go:** "Starting with GPT-6.2, the Responses API appends top-level `instructions` after `input`." Put reusable guidance "in a `developer` message as the first item in `input`" so it is cacheable, and use top-level `instructions` only for guidance specific to the current request.
+- **Writing style:** "The model's writing tends to be more concise and direct by default." Revisit old "be concise" rules when migrating; set the tone for the audience, and give background when a draft is for an external reader.
+- **Unsupervised work:** state the outcome and which decisions need the user; otherwise the model may propose a next step and wait. Allow it to "Make reasonable, reversible assumptions to carry work forward and state them if it progresses the task within scope."
+- **Final answers:** keep them self-contained, without shorthand carried over from reasoning, tool calls or subagent instructions.
+- **Coding:** describe project conventions; reuse existing logic; skip new tests unless asked or needed for a regression; avoid unnecessary abstraction.
+- **Persistence:** ask for verification before completion; higher effort helps with final checks on long tasks.
+
+### 2. JSON output mechanism
+
+- **Responses API:** `text: {format: {type: "json_schema", name: "...", strict: true, schema: {...}}}`. In the Python SDK, `client.responses.parse(..., text_format=Model)` returns `response.output_parsed`. OpenAI's structured-output guide says "For new projects, start with `gpt-6.2-astra`."
+- The examples set `additionalProperties: false` and list every property in `required`.
+- Handle refusals (a `refusal` field), incomplete responses and API errors; structured outputs do not guarantee a usable result. The first request with a new schema is slower.
+- To change the output format mid-conversation, send a `configuration_update` input item (GPT-6 and later, standard single-agent mode); each update replaces the whole format.
+- **Tool calling requires the Responses API.** Chat Completions works for other uses.
+
+### 3. Delimiter preferences
+
+Not covered by the GPT-6.2 guide. Keep one consistent style (the GPT-6 section notes OpenAI's earlier example used an XML-tagged block).
+
+### 4. Classification task framing
+
+Put the labels in the schema as an `enum` (Pydantic `Literal`) and use Structured Outputs. The GPT-6.2 guide gives no classification-specific advice.
+
+### 5. Temperature default & quirks
+
+- **Remove sampling settings.** Chat Completions: omit `temperature`, `top_p`, `logprobs` and `top_logprobs`. Responses: omit `temperature`, `top_p` and `top_logprobs`, and remove `message.output_text.logprobs` from `include`.
+- **Reasoning effort:** set with `reasoning.effort` (Responses) or `reasoning_effort` (Chat Completions). "For a new integration, start with `medium`." If old code uses `none` or `minimal`, use `low`. The default is not stated, so set it explicitly.
+- **Keep the conversation prefix unchanged.** The Responses API drops reasoning items after edits to earlier history, some model changes (including downgrades), or a change of end user or organisation, and "When the model loses access to reasoning items, answer quality can decline."
+- **Caching:** from GPT-5.5 or earlier, replace `prompt_cache_retention` with `prompt_cache_options.ttl` set to `"30m"`.
+- **Zero Data Retention:** `store` is treated as `false`; pass prior output items back in order, including encrypted reasoning items.
+- **Background mode (beta):** 2-hour or 8-hour completion windows at 30% and 40% off Standard. Flex processing (`service_tier: flex`) is not supported.
+
+### 6. Worked example
+
+```python
+from typing import Literal
+from openai import OpenAI
+from pydantic import BaseModel
+
+class ClauseClassification(BaseModel):
+    clause_type: Literal["indemnification", "limitation_of_liability", "termination",
+                         "confidentiality", "ip_ownership", "payment_terms", "warranty",
+                         "data_protection", "non_compete", "force_majeure",
+                         "governing_law", "auto_renewal", "other"]
+    risk_score: Literal[1, 2, 3, 4, 5]
+    rationale: str
+
+client = OpenAI()
+
+response = client.responses.parse(
+    model="gpt-6.2-sol",
+    reasoning={"effort": "low"},          # set explicitly; no temperature / top_p
+    input=[
+        {"role": "developer", "content": (   # reusable guidance first, so it caches
+            "You classify one contract clause. Risk: 1 = boilerplate, "
+            "2 = mildly unusual, 3 = noteworthy, 4 = material exposure, 5 = escalate. "
+            "Give a one-sentence rationale."
+        )},
+        {"role": "user", "content": (
+            "Customer indemnifies Supplier against any third-party IP claims arising "
+            "from Customer's modifications to the Software."
+        )},
+    ],
+    text_format=ClauseClassification,
+)
+result = response.output_parsed
+```
+
+### 7. Known anti-patterns
+
+- **Don't** put reusable guidance in top-level `instructions` on GPT-6.2; it now comes after `input` and breaks caching. Use a first `developer` message.
+- **Don't** send `temperature`, `top_p` or logprobs parameters.
+- **Don't** send `none` or `minimal` effort; use `low`.
+- **Don't** edit earlier messages or tool calls mid-conversation; reasoning items are dropped.
+- **Don't** use Chat Completions for tool calling.
+- **Don't** keep old "be concise" instructions without checking them; 6.2 is already concise.
+- **Don't** use Flex processing with background mode.
 
 ---
 
@@ -1135,7 +1361,7 @@ response = client.chat.completions.create(
 
 **Provider docs URL:** [Using GPT-6](https://developers.openai.com/api/docs/guides/latest-model) · [Structured Outputs](https://developers.openai.com/api/docs/guides/structured-outputs) · [Codex models](https://learn.chatgpt.com/docs/models) · [Codex best practices](https://developers.openai.com/codex/learn/best-practices) · [AGENTS.md for Codex](https://developers.openai.com/codex/guides/agents-md) · [Codex prompting guide](https://developers.openai.com/cookbook/examples/gpt-5/codex_prompting_guide)
 **Date captured:** 2026-11-10
-**Applies to model IDs:** `gpt-6-astra`, `gpt-6.1-sol`, `gpt-6.1-terra`, `gpt-6-luna` (API and Codex). `gpt-5.3-codex` is deprecated: already in Codex when signed in with ChatGPT, and on the API from 1 April 2027. Not covered: `gpt-6-cyber` (5 November 2026), a specialist vulnerability-research model that needs OpenAI's Daybreak setup; follow that guide if it is ever used (noted 16 November 2026).
+**Applies to model IDs:** `gpt-6-astra`, `gpt-6.1-sol`, `gpt-6.1-terra`, `gpt-6-luna` (API and Codex). `gpt-5.3-codex` is deprecated: already in Codex when signed in with ChatGPT, and on the API from 1 April 2027. Not covered: `gpt-6-cyber` (5 November 2026), a specialist vulnerability-research model that needs OpenAI's Daybreak setup; follow that guide if it is ever used (noted 16 November 2026). GPT-6.2 Astra and GPT-6.2 Sol (17 November 2026) have their own section, [§ OpenAI GPT-6.2](#openai--gpt-62-astra--gpt-62-sol); OpenAI now recommends GPT-6.2 Astra as the starting model.
 
 **Scope note:** Two distinct surfaces. **(A) Codex** is the agentic coding and review tool (CLI, IDE, GitHub), driven by natural-language tasks and the repo's `AGENTS.md`, not by JSON API calls. This is what Greg uses for code review, signed in with ChatGPT Plus. **(B) the OpenAI API** for programmatic calls. Codex now offers `gpt-6-astra` (most demanding work), `gpt-6.1-sol` (lower cost for repeated, long-running work), `gpt-6.1-terra` (writing and visual tasks; needs Codex CLI 0.159.0 or later) and `gpt-6-luna` (focused, high-volume tasks). Codex's config example sets `model = "gpt-6.1-sol"`. Update any script, config file or `codex exec --model` call that still names `gpt-5.3-codex` or `gpt-5.2`.
 
@@ -1353,6 +1579,91 @@ response = client.chat.parse(
 
 ---
 
+## Alibaba — Qwen4-Max
+
+**Provider docs URL:** https://www.alibabacloud.com/help/en/model-studio/qwen4-max + https://www.alibabacloud.com/help/en/model-studio/qwen-structured-output + https://www.alibabacloud.com/help/en/model-studio/deep-thinking
+**Date captured:** 2026-11-23
+**Applies to model IDs:** `qwen4-max` (International / Singapore and other regions; released 16 November 2026). Not `qwen4-max-preview`, which is Token Plan only and ends on 25 November 2026 (see the Qwen3.8 section).
+
+Alibaba calls it the new-generation flagship multimodal Qwen, for programming, office work, front-end design and complex agent tasks. Text, image and video in, text out. 1M context; max output 131,072 (non-thinking) or 262,144 (thinking). $1.50/$4.50 per 1M tokens in Singapore, cheaper than Qwen3.8-Max (see MODEL-RESEARCH.md). It can be called through OpenAI Chat Completions, OpenAI Responses, Anthropic Messages or DashScope. Not used by any Paperclip agent yet.
+
+### 1. Prompt structure recommendations
+
+The Qwen4-Max page gives no prompting advice. Use Model Studio's general prompt guide as captured in the [§ Qwen3.8](#alibaba--qwen38-max--qwen37-plus--qwen38-flash) section on 10 November 2026: Context, Objective, Style, Tone, Audience, Response, with explicit steps or prompt chaining for multi-step work.
+
+### 2. JSON output mechanism
+
+- Model Studio's structured-output page lists `qwen4-max` for both **JSON Object** (`response_format={"type": "json_object"}`) and **JSON Schema** (`response_format={"type": "json_schema", "json_schema": {..., "strict": True}}`) modes.
+- **Conflict on that page:** it still says "Singapore region models are not supported yet" for JSON Schema mode, yet its own JSON Schema examples call `qwen4-max` on the Singapore (`ap-southeast-1`) endpoint. Until tested, use JSON Object mode on the International endpoint and validate the result, or test JSON Schema mode first.
+- JSON Object mode needs the word "JSON" in the system or user message (Qwen3.8 section, 10 November 2026 capture).
+- `qwen4-max` is not marked as a model that supports structured output "only in non-thinking mode", but turning thinking off for simple extraction also saves output tokens.
+
+### 3. Delimiter preferences
+
+Not on the Qwen4-Max page. Model Studio's general guide recommends separators that are rare in natural text, such as `###`, `===` or `>>>` (Qwen3.8 section).
+
+### 4. Classification task framing
+
+Give an explicit output format with a template and a filled-in sample (general guide). Put the labels in a schema `enum` if JSON Schema mode works on your endpoint.
+
+### 5. Temperature default & quirks
+
+- **Hybrid thinking, on by default.** Turn it off with `enable_thinking: False` (in the OpenAI Python SDK, inside `extra_body`); the model then "responds directly".
+- **`reasoning_effort`:** `low`, `high` or `xhigh`, default `high`. On OpenAI Chat Completions, Responses and DashScope, `minimal` maps to `low`, `medium` to `high` and `max` to `xhigh`. Anthropic Messages uses `output_config.effort` with the same values. If neither `reasoning_effort` nor `thinking_budget` is set, the defaults are `high` and `thinking_budget=131072`.
+- **Sampling defaults** listed on the page: thinking mode `temperature` 1.0, `top_p` 0.95, `presence_penalty` 0.0; non-thinking mode `temperature` 0.7, `top_p` 0.8, `presence_penalty` 1.5; both modes `top_k` 20 and `repetition_penalty` 1.0. The page gives no tuning advice, so leave them unset unless testing shows otherwise.
+- **Earlier reasoning in multi-turn calls:** the Qwen4-Max page says the reasoning ciphertext must be passed back unchanged; the deep-thinking page shows plain `reasoning_content` on earlier assistant messages, with `preserve_thinking` set, and says it is billed as input. Pass back whatever the API returned, unchanged.
+- Explicit cache (5-minute or 1-hour TTL) and implicit cache are supported. Batch is Beijing only.
+
+### 6. Worked example
+
+```python
+import json
+import os
+from openai import OpenAI
+
+client = OpenAI(
+    api_key=os.environ["DASHSCOPE_API_KEY"],
+    base_url="https://{WorkspaceId}.ap-southeast-1.maas.aliyuncs.com/compatible-mode/v1",  # replace {WorkspaceId}
+)
+
+system = """### Context
+You label contract clauses for a legal review team.
+### Objective
+Choose one clause_type and one risk_score for the clause you are given.
+clause_type is one of: indemnification, limitation_of_liability, termination,
+confidentiality, ip_ownership, payment_terms, warranty, data_protection, non_compete,
+force_majeure, governing_law, auto_renewal, other.
+risk_score is 1 (boilerplate) to 5 (escalate to a partner).
+### Response
+Return JSON only, in this template:
+{"clause_type": "<value>", "risk_score": <1-5>, "rationale": "<one sentence>"}
+Sample:
+{"clause_type": "termination", "risk_score": 2, "rationale": "Mutual 30-day termination is standard."}"""
+
+response = client.chat.completions.create(
+    model="qwen4-max",
+    messages=[
+        {"role": "system", "content": system},
+        {"role": "user", "content": "### Clause\nCustomer indemnifies Supplier against any "
+                                    "third-party IP claims arising from Customer's "
+                                    "modifications to the Software.\n###"},
+    ],
+    response_format={"type": "json_object"},       # "JSON" appears in the system prompt
+    extra_body={"enable_thinking": False},          # simple task; thinking is on by default
+)
+result = json.loads(response.choices[0].message.content)
+```
+
+### 7. Known anti-patterns
+
+- **Don't** build on `qwen4-max-preview`; it is Token Plan only and ends on 25 November 2026.
+- **Don't** assume JSON Schema mode works on the Singapore endpoint until you have tested it; Alibaba's page contradicts itself.
+- **Don't** send JSON Object mode without the word "JSON" in the messages.
+- **Don't** leave thinking on (default `high`, budget 131,072) for simple, high-volume calls.
+- **Don't** edit or drop earlier reasoning in multi-turn calls; pass it back as returned.
+
+---
+
 ## Alibaba — Qwen3.8-Max / Qwen3.7-Plus / Qwen3.8-Flash
 
 **Provider docs URL:** https://www.alibabacloud.com/help/en/model-studio/prompt-engineering-guide + https://www.alibabacloud.com/help/en/model-studio/qwen-structured-output + https://www.alibabacloud.com/help/en/model-studio/deep-thinking
@@ -1361,7 +1672,7 @@ response = client.chat.parse(
 
 Not yet used by any Paperclip agent in the cloud. Filled from the stub on 10 November 2026 because the lineup moved to Qwen3.7 and 3.8.
 
-**Qwen4-Max-Preview (`qwen4-max-preview`, added 11 November 2026) is deliberately not given its own section.** It is reachable only through a Token Plan key (pay-as-you-go keys are refused) and is retired after 24:00 on 25 November 2026 (UTC+8). Its page notes, for anyone trialling it before then: thinking is on by default and set with `reasoning_effort` (`low`, `medium`, or the default `xhigh`), never together with `thinking_budget`; `max_tokens` covers thinking plus answer (up to 393,216); JSON Object and JSON Schema modes are both supported; return earlier thinking in `reasoning_content`, not `content`. Base URL `https://token-plan.ap-southeast-1.maas.aliyuncs.com`. Source: [Qwen4-Max-Preview](https://www.alibabacloud.com/help/en/model-studio/qwen4-max-preview), read 16 November 2026.
+**Qwen4-Max-Preview (`qwen4-max-preview`, added 11 November 2026) is deliberately not given its own section.** It is reachable only through a Token Plan key (pay-as-you-go keys are refused) and is retired after 24:00 on 25 November 2026 (UTC+8). Its page notes, for anyone trialling it before then: thinking is on by default and set with `reasoning_effort` (`low`, `medium`, or the default `xhigh`), never together with `thinking_budget`; `max_tokens` covers thinking plus answer (up to 393,216); JSON Object and JSON Schema modes are both supported; return earlier thinking in `reasoning_content`, not `content`. Base URL `https://token-plan.ap-southeast-1.maas.aliyuncs.com`. Source: [Qwen4-Max-Preview](https://www.alibabacloud.com/help/en/model-studio/qwen4-max-preview), read 16 November 2026. The generally available `qwen4-max` (16 November 2026) has its own section, [§ Qwen4-Max](#alibaba--qwen4-max).
 
 ### 1. Prompt structure recommendations
 
@@ -1650,6 +1961,8 @@ This file is owned by the **Researcher position** ([positions/research/researche
 
 ---
 
-_Last updated: 2026-11-16. Weekly pass: added sections for Gemini 4 Carbon / Hydrogen and Gemini Decision 1 (Decisions API); added a Qwen4-Max-Preview note to the Qwen section (Token Plan only, retires after 25 November 2026, so no full section); noted `gpt-6-cyber` as out of scope in the OpenAI section; corrected the `thinking_budget` note in the Gemini 4 Argon section. No section was stale or had a broken URL; no stubs remain. Other sections unchanged._
+_Last updated: 2026-11-23. Weekly pass: refreshed the two stale sections, Gemini 3.x (3.5 Flash now routes to 3.6 Flash; Google's current sampling rule for earlier Gemini 3 models is "keep the defaults", replacing the old "must run at 1.0") and Gemini 2.5 (1 December 2026 routing; Flash-Lite thinking corrected; unsourced May 2026 claims removed or labelled). Added sections for Gemini 4 Neon, GPT-6.2 Astra / Sol and Qwen4-Max. Noted Grok Build 0.1's end of life (19 November 2026) in the xAI section. No broken URLs found; no stubs remain. Other sections unchanged._
+
+_Previous update 2026-11-16. Weekly pass: added sections for Gemini 4 Carbon / Hydrogen and Gemini Decision 1 (Decisions API); added a Qwen4-Max-Preview note to the Qwen section (Token Plan only, retires after 25 November 2026, so no full section); noted `gpt-6-cyber` as out of scope in the OpenAI section; corrected the `thinking_budget` note in the Gemini 4 Argon section. No section was stale or had a broken URL; no stubs remain. Other sections unchanged._
 
 _Previous update 2026-11-10. Weekly pass: refreshed Anthropic (Claude 5 family), OpenAI (GPT-6 family and Codex), xAI (old prompt-engineering URL now 404), DeepSeek (V4.1 Flash, V4 Pro) and Kimi (K3.1 Pro, K3); added a section for Gemini 4 Argon, 3.8 Flash, 3.6 Flash and 3.5 Flash-Lite; filled the Mistral, Qwen, GLM and MiniMax stubs; added status notes to the Gemini 3.x and 2.5 sections. Gemma 4 unchanged (quarterly local review). Previous update 2026-06-13._
